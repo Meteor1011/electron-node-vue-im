@@ -1,0 +1,11 @@
+{
+"netError": "ne može se povezati s mrežom",
+"retry": "Molim te pokušaj ponovno",
+"wrong_user_pwd": "Neispravno korisničko ime i zaporka",
+"more_msg": "više",
+"no_more_msg": "nema više povijesne poruke",
+"send": "poslati",
+"user": "Korisničko ime",
+"pwd": "lozinka",
+"login": "Prijaviti se"
+}

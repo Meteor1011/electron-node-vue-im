@@ -1,0 +1,11 @@
+{
+"netError": "nuk mund të lidhet me rrjetin",
+"retry": "Ju lutemi provoni përsëri",
+"wrong_user_pwd": "Emër përdoruesi dhe fjalëkalim i pasaktë",
+"more_msg": "më shumë",
+"no_more_msg": "nuk ka më mesazh historik",
+"send": "dërgoj",
+"user": "Emri i përdoruesit",
+"pwd": "fjalëkalim",
+"login": "Hyni"
+}

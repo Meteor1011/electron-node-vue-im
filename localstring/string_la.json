@@ -1,0 +1,11 @@
+{
+"netError": "non poterat coniungere ad network",
+"retry": "Quaero, iterum conare",
+"wrong_user_pwd": "Non recta username et password",
+"more_msg": "magis",
+"no_more_msg": "ultra historiae nuntius",
+"send": "mitte",
+"user": "nomen usoris",
+"pwd": "password",
+"login": "inscribe"
+}

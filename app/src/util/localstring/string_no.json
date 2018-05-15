@@ -1,0 +1,11 @@
+{
+"netError": "kan ikke koble til nettverket",
+"retry": "Vær så snill, prøv på nytt",
+"wrong_user_pwd": "Feil brukernavn og passord",
+"more_msg": "mer",
+"no_more_msg": "Ingen mer historikkmelding",
+"send": "sende",
+"user": "brukernavn",
+"pwd": "passord",
+"login": "Logg inn"
+}

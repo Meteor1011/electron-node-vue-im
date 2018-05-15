@@ -1,0 +1,211 @@
+.closed_friend{
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    top: 21px;
+    right: 10px;
+    background:url('../../../dist/images/closed_friend.jpg')no-repeat;
+    display: none;
+}
+.closed_friend:hover{
+    display:inline-block;
+}
+.lan_icon{
+    position: absolute;
+    right: 1px;
+    top:1px;
+    display: inline-block;
+    width: 18px;
+    height: 24px;
+    background:url('../../../dist/images/lan_icon.jpg')no-repeat;
+    cursor: pointer;
+}
+#sel_lan{
+    color: #58B7FF;
+    float: right;
+    line-height: 26px;
+    width: 120px;
+    height: 26px;
+    margin-right: 18px;
+    text-align: center;
+    background: #e5eeff;
+    border: 1px solid #2799ea;
+}
+.lanList{
+    width: 180px;
+    height: 26px;
+    position: relative;
+    margin: 0 auto;
+}
+.lanList>span{
+    display: inline-block;
+    height: 26px;
+}
+.lanBox{
+    overflow: hidden;
+}
+.lanBox ul,lanBox li{
+    list-style: none;
+    float:left;
+    margin:0;
+    padding:0;
+}
+
+.box{
+    width: 469px;
+    height: 387px;
+    position: absolute;
+    top:-380px;
+    left:50px;
+    z-index: 10;
+    border:1px solid #aaa;
+    box-shadow: 2px 2px 4px #ccc;
+    background:#fff;
+}
+
+.lanBox>ul{
+    padding:10px 0 0 0;
+    height: 384px;
+    width:100%;
+    overflow-y: auto;
+}
+.lanBox>ul::-webkit-scrollbar-track{
+    border-radius: 10px;
+}
+.lanBox>ul::-webkit-scrollbar{
+    width: 12px;
+    height: 12px;
+    background-color: #f5f5f5;
+}
+.lanBox>ul::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #999;
+}
+
+.lanBox ul li{
+    width: 33.3%;
+    float:left;
+    text-align: center;
+    padding:3px 0px;
+    margin:1px 0;
+    line-height: 14px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    color:#000;
+}
+
+.list{
+    height: inherit;
+}
+
+.list footer{
+    margin-bottom:10px;
+}
+.list .search {
+    padding: 0 10px;
+    width:143px;
+    font-size: 12px;
+    color: #fff;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 4px;
+    outline: none;
+    border: solid 1px #48a8f1;
+    background:none;
+    margin-left: 10px;
+}
+.set_btn{
+    display: inline;
+    width:16px;
+    height: 16px;
+    background: url('../../../dist/images/set.jpg')
+}
+
+.list .mList{
+    height: calc(100% - 150px);
+}
+.list .mList>ul{
+    height:100%;
+    overflow-y:auto;
+}
+.list .mList>ul::-webkit-scrollbar-track{
+    border-radius: 10px;
+}
+.list .mList>ul::-webkit-scrollbar{
+    width: 12px;
+}
+.list .mList>ul::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #999;
+}
+
+.list .mList>ul li {
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: background-color .1s;
+    position:relative;
+}
+.list .mList>ul li em.closed_friend{
+    display: none;
+}
+.list .mList>ul li:hover {
+    background-color: #48a8f1;
+}
+.list .mList>ul li:hover em.closed_friend{
+    display: inline-block;
+}
+
+.list .mList>ul li.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.list .mList>ul li.active>span{
+    display:none;
+}
+.list .avatar,
+.name {
+    vertical-align: middle;
+}
+
+.list .avatar {
+    border-radius: 2px;
+}
+
+.list .name {
+    display: inline-block;
+    margin: 0 0 0 5px;
+    overflow: hidden;
+    width: 106px;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+
+.list lanList{
+    width:180px;
+    height: 26px;
+    position:relative;
+}
+.msg_hint{
+    position:absolute;
+    top:12px;
+    right:7px;
+    width:12px;
+    height:12px;
+    border-radius:6px;
+    background:red;
+    z-index: 0;
+}
+.showmsg{
+    display:inline-block;
+}
+.masking{
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+}

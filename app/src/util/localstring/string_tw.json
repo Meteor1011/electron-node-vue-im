@@ -1,0 +1,11 @@
+{
+"netError": "無法連接到網絡",
+"retry": "請再試一次",
+"wrong_user_pwd": "用戶名和密碼不正確",
+"more_msg": "更多",
+"no_more_msg": "沒有更多的歷史消息",
+"send": "發送",
+"user": "用戶名",
+"pwd": "密碼",
+"login": "登錄"
+}

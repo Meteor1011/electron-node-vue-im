@@ -1,0 +1,11 @@
+{
+"netError": "ağa bağlanılamıyor",
+"retry": "Lütfen tekrar deneyin",
+"wrong_user_pwd": "Yanlış kullanıcı adı ve şifre",
+"more_msg": "Daha",
+"no_more_msg": "Artık geçmiş mesajı yok",
+"send": "göndermek",
+"user": "kullanıcı adı",
+"pwd": "parola",
+"login": "oturum aç"
+}

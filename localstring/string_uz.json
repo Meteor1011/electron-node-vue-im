@@ -1,0 +1,11 @@
+{
+"netError": "tarmoqqa ulanish imkoni yo'q",
+"retry": "Iltimos, yana bir bor urinib ko'ring",
+"wrong_user_pwd": "Foydalanuvchi nomi va parol noto'g'ri",
+"more_msg": "Ko'proq",
+"no_more_msg": "tarixiy xabar yo'q",
+"send": "yuborish",
+"user": "foydalanuvchi nomi",
+"pwd": "parol",
+"login": "tizimga kirish"
+}

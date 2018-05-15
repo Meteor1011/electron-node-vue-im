@@ -1,0 +1,135 @@
+.text {
+    height: 160px;
+    border-top: solid 1px #ddd;
+}
+.xf_config{
+    height:30px;
+    position:relative;
+}
+.xf_config ul{
+    float:left;
+}
+.xf_config ul li{
+    float:left;
+    padding:5px 10px;
+    margin-left:20px;
+    line-height:20px;
+}
+.xf_config ul li img{
+   vertical-align: middle;
+}
+.xf_face{
+    position:absolute;
+    top:-72px;
+    left:3px;
+    border: 1px solid #ccc;
+    width: 274px;
+    padding: 3px;
+    z-index:10;
+    box-shadow: 1px 1px 2px;
+    background:#fff;
+}
+.xf_face>a{
+    margin-left:2px;
+}
+.text textarea {
+    padding: 10px;
+    height:calc(100% - 30px);
+    width: 100%;
+    border: none;
+    outline: none;
+    font-family: "Micrsofot Yahei";
+    resize: none;
+}
+.xf_send{
+    position:absolute;
+    right:25px;
+    bottom:4px;
+    padding:2px 5px;
+    cursor:pointer;
+    border-radius:3px;
+    background:#fff;
+    min-width:60px;
+    text-align: center;
+}
+.xf_send:hover{
+    background:#58B7FF;
+    color:#fff;
+}
+.product{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 40;
+}
+.product_body{
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top:50%;
+    left:50%;
+    width:422px;
+    background: #fff;
+}
+
+   /* 产品链接样式 */
+   .customs{
+	width:400px;
+	height: 80px;
+	position: relative;
+    display: block;
+    white-space: normal;
+    word-wrap: normal;
+    font-size: 20px;
+    margin: 10px 10px 0 10px;
+}
+.custom_pics{
+	display: block;
+	width:80px;
+	height: 80px;
+	position: absolute;
+	top:0px;
+    left:0px;
+}
+.custom_pics>img{
+	width:80px;
+	height: 80px;
+	vertical-align: bottom;
+}
+.custom_descs{
+	display: block;
+	margin-left:90px;
+    padding-top:10px;
+    font-family: "微软雅黑";
+    font-size: 16px;
+}
+.custom_descs>a{
+	display: block;
+	margin-bottom: 10px;
+	text-decoration: none;
+}
+.custom_descs>em{
+	color:red;
+}
+.isMakeSure{
+    text-align: right;
+    margin-top:20px;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+}
+.btn{
+    padding: 10px 22px;
+    border-radius: 8px;
+    margin-right: 20px;
+    line-height: 37px;
+    border: 1px solid #999999;
+    font-family: "微软雅黑";
+    font-size: 14px;
+}
+.btn:hover{
+    background: #2799ea;
+}
+
+

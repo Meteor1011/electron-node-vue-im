@@ -1,0 +1,66 @@
+[
+  {
+    "shortname":"ar",
+    "lang":"\u0627\u0644\u0639\u0631\u0628\u064a\u0629"
+  },
+  {
+    "shortname":"de",
+    "lang":" Deutsch"
+  },
+  {
+    "shortname":"en-US",
+    "lang":"english"
+  },
+  {
+    "shortname":"es",
+    "lang":"espa\u00f1ol"
+  },
+  {
+    "shortname":"fr",
+    "lang":"fran\u00e7ais"
+  },
+  {
+    "shortname":"it",
+    "lang":"lingua italiana"
+  },
+  {
+    "shortname":"ja",
+    "lang":"\u65e5\u672c\u306e"
+  },
+  {
+    "shortname":"ms",
+    "lang":"Malay"
+  },
+  {
+    "shortname":"ru",
+    "lang":"\u0440\u0443\u0441\u0441\u043a\u0438\u0439"
+  },
+  {
+    "shortname":"th",
+    "lang":"\u0e44\u0e17\u0e22"
+  },
+  {
+    "shortname":"vi",
+    "lang":"ti\u1ebfng vi\u1ec7t"
+  },
+  {
+    "shortname":"zh-CN",
+    "lang":"\u4e2d\u6587"
+  },
+  {
+    "lang":"\u4e2d\u6587\u7e41",
+    "shortname":"zh-TW"
+  },
+  {
+    "lang":"\u10e5\u10d0\u10e0\u10d7\u10e3\u10da\u10d8",
+    "shortname":"ka"
+  },
+  {
+    "lang":"Indonesia",
+    "shortname":"id"
+  },
+  {
+    "lang":"Português",
+    "shortname":"pt"
+  }
+]

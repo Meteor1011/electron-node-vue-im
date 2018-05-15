@@ -1,0 +1,11 @@
+{
+"netError": "kan inte ansluta till nätverket",
+"retry": "Var god försök igen",
+"wrong_user_pwd": "Felaktigt användarnamn och lösenord",
+"more_msg": "Mer",
+"no_more_msg": "inget mer historia meddelande",
+"send": "skicka",
+"user": "Användarnamn",
+"pwd": "Lösenord",
+"login": "logga in"
+}

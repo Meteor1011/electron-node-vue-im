@@ -1,0 +1,11 @@
+{
+"netError": "şəbəkəyə qoşula bilmir",
+"retry": "Zəhmət olmasa bir daha cəhd edin",
+"wrong_user_pwd": "Yanlış istifadəçi adı və parol",
+"more_msg": "daha çox",
+"no_more_msg": "tarixdən daha çox mesaj yoxdur",
+"send": "göndər",
+"user": "istifadəçi adı",
+"pwd": "parol",
+"login": "daxil olun"
+}

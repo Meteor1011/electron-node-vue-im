@@ -1,0 +1,11 @@
+{
+"netError": "nemôže sa pripojiť k sieti",
+"retry": "Prosím skúste znova",
+"wrong_user_pwd": "Nesprávne používateľské meno a heslo",
+"more_msg": "viac",
+"no_more_msg": "žiadne ďalšie správy z histórie",
+"send": "odoslať",
+"user": "užívateľské meno",
+"pwd": "heslo",
+"login": "Prihlásiť sa"
+}

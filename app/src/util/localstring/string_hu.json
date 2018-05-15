@@ -1,0 +1,11 @@
+{
+"netError": "nem tud csatlakozni a hálózathoz",
+"retry": "Kérlek próbáld újra",
+"wrong_user_pwd": "Helytelen felhasználónév és jelszó",
+"more_msg": "több",
+"no_more_msg": "nincs több történeti üzenet",
+"send": "elküld",
+"user": "felhasználónév",
+"pwd": "jelszó",
+"login": "Bejelentkezés"
+}

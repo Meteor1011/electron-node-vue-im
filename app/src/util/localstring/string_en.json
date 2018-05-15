@@ -1,0 +1,11 @@
+{
+"netError": "unable to connect to the network",
+"retry": "Please try again",
+"wrong_user_pwd": "Incorrect username and password",
+"more_msg": "more",
+"no_more_msg": "no more history message",
+"send": "send",
+"user": "username",
+"pwd": "password",
+"login": "sign in"
+}

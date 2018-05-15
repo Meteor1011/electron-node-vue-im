@@ -1,0 +1,11 @@
+{
+"netError": "hindi makakonekta sa network",
+"retry": "Pakisubukang muli",
+"wrong_user_pwd": "Maling username at password",
+"more_msg": "higit pa",
+"no_more_msg": "wala nang mensahe sa kasaysayan",
+"send": "magpadala",
+"user": "username",
+"pwd": "password",
+"login": "mag-sign in"
+}

@@ -1,0 +1,11 @@
+{
+"netError": "dili makonektar sa network",
+"retry": "Palihug sulayi pag-usab",
+"wrong_user_pwd": "Sayop nga username ug password",
+"more_msg": "labaw pa",
+"no_more_msg": "wala nay mensahe sa kasaysayan",
+"send": "ipadala",
+"user": "username",
+"pwd": "password",
+"login": "mag-sign in"
+}

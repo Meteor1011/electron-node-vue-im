@@ -1,0 +1,11 @@
+{
+"netError": "Ekki er hægt að tengjast netinu",
+"retry": "Vinsamlegast reyndu aftur",
+"wrong_user_pwd": "Rangt notandanafn og lykilorð",
+"more_msg": "meira",
+"no_more_msg": "ekki fleiri skeyti",
+"send": "senda",
+"user": "notendanafn",
+"pwd": "lykilorð",
+"login": "skráðu þig inn"
+}

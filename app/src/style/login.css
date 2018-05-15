@@ -1,0 +1,371 @@
+body,
+    div,
+    ul,
+    li,
+    input {
+        margin: 0px;
+        padding: 0px;
+        font: 14px/1.4em 'Helvetica Neue', Helvetica, 'Microsoft Yahei', Arial, sans-serif;
+    }
+    
+    input {
+        width: 100%;
+        height: 32px;
+        line-height: 32px;
+      /*  border:none;
+        outline: 0;
+        padding:5px;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;*/
+    }
+
+/*input:focus {
+    border-color: rgba(82, 168, 236, .8);
+    box-shadow: 0 0 8px rgba(82, 168, 236, .6);
+}
+*/
+    .clearfix:after {
+        content: ".";
+        height: 0px;
+        display: block;
+        clear: both;
+        visibility: hidden;
+    }
+    
+    .login-wrapper {
+        position: relative;
+        width: 380px;
+        height: 600px;
+        background: url('../../../dist/images/login_bg.png') center no-repeat;
+        -webkit-app-region: no-drag;
+    }
+
+    .login-wrapper #del_dialog{
+        position: absolute;
+        width: 240px;
+        height: 112px;
+        left: 70px;
+        top: 244px;
+        z-index: 15;
+        border-radius: 4px;
+        border: 1px solid #000;
+        box-shadow: 0 0 12px 1px rgba(0,0,0,.35);
+        background-color: #fff;
+    }
+
+    .login-wrapper #del_dialog .title{
+        width: 100%;
+        height: 56px;
+        color: #333;
+        overflow: hidden;
+    }
+
+    .login-wrapper #del_dialog .title .left{
+        float: left;
+        width: 55px;
+        height: 100%;
+    }
+
+    .login-wrapper #del_dialog .title .right{
+        float: left;
+        width: 183px;
+        height: 100%;
+        padding-top: 10px;
+    }
+    .login-wrapper #del_dialog .title .left img{
+        vertical-align: middle;
+        padding-left: 20px;
+        padding-right: 3px;
+        padding-top: 10px;
+    }
+
+    .login-wrapper #del_dialog .btn1{
+        width: 100%;
+        height: 56px;
+    }
+
+    .login-wrapper #del_dialog .btn1 span:first-child{
+        display: inline-block;
+        width: 68px;
+        height: 26px;
+        text-align: center;
+        line-height: 26px;
+        color: #fff;
+        border-radius: 3px;
+        margin: 8px 20px 0px 20px;
+        background-color: #2799ea;
+        cursor: default;
+    }
+    .login-wrapper #del_dialog .btn1 span:last-child{
+        display: inline-block;
+        width: 68px;
+        height: 26px;
+        text-align: center;
+        line-height: 26px;
+        border-radius: 3px;
+        border: 1px solid #999;
+        color: #666;
+        cursor: default;
+    }
+
+     .login-wrapper .toolBar{
+         width: 100%;
+         height: 35px;
+         -webkit-app-region:drag;
+     }
+
+     .login-wrapper .min{
+        display: inline-block;
+        position: absolute;
+        top: 11px;
+        right: 42px;
+         width: 10px;
+         height: 10px;
+         vertical-align: middle;
+        -webkit-app-region: no-drag;
+     }
+
+     .login-wrapper .min img{
+         position: absolute;
+         top: 4px;
+         right: 0px;
+     }
+    .login-wrapper .close{
+        position: absolute;
+        top: 11px;
+        right: 13px;
+        -webkit-app-region: no-drag;
+    }
+
+    .login-wrapper .main{
+        width: 100%;
+        height: 565px;
+        -webkit-app-region:no-drag;
+    }
+
+    .login-wrapper  .content{
+        position: absolute;
+        left: 70px;
+        top: 270px;
+        width: 240px;
+        height: 192px;
+    }
+
+    .login-wrapper  .content .user-input{
+        position: relative;
+    }
+
+    .login-wrapper  .content .active1{
+        border-left: 1px solid #2e98ea;
+        border-top: 1px solid #2e98ea;
+        border-right: 1px solid #2e98ea;
+    }
+
+    .login-wrapper  .content .user-input img{
+        position: absolute;
+        top: 9px;
+        left: 215px;
+    }
+
+    .login-wrapper .content .user-input .drop-up {
+        transform: rotate(180deg);
+    }
+
+    .login-wrapper  .content .input-username{
+        outline: 0;
+        border: 1px solid #ddd;
+        text-indent: 38px;
+        background: url("../../../dist/images/c_03.png") no-repeat 15px;
+    }
+
+
+.login-wrapper .content .option-container {
+    width: 100%;
+    border-left: 1px solid #2e98ea;
+    border-bottom: 1px solid #2e98ea;
+    border-right: 1px solid #2e98ea;
+    background-color: #FFF;
+    position: absolute;
+    top: 33px;
+    right: 0px;
+    box-sizing: border-box;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.login-wrapper .content .option-ul-list {
+    max-height: 104px;
+    list-style-type: none;
+    /*overflow-x: visible;*/
+    overflow-y: auto;
+    cursor: pointer;
+}
+
+.login-wrapper .content .option-ul-list li {
+    position: relative;
+    height: 32px;
+    line-height: 30px;
+    box-sizing: border-box;
+    text-indent: 6px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    color: #333;
+}
+
+    .login-wrapper .content .option-ul-list li .headerImage{
+        vertical-align: middle;
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+    }
+
+    .login-wrapper .content .option-ul-list li .del{
+        position: absolute;
+        right: 10px;
+        top: 11px;
+        visibility: hidden;
+    }
+
+    .login-wrapper .content .option-ul-list li:hover {
+        height: 40px;
+        line-height: 40px;
+        background-color: #2e98ea;
+        color: #FFF;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .login-wrapper .content .option-ul-list li:hover > .del{
+        visibility: visible;
+    }
+
+    .login-wrapper .content .option-ul-list li:hover > .headerImage{
+       width: 24px;
+        height: 24px;
+    }
+
+    .login-wrapper .content .option-ul-list .selected {
+        background-color: #DDD;
+    }
+
+    .login-wrapper  .content .pwd-input{
+        margin-top: 20px;
+    }
+
+    .login-wrapper  .content .input-pwd{
+        outline: 0;
+        border: 1px solid #ddd;
+        text-indent: 38px;
+        background: url("../../../dist/images/c_10.png") no-repeat 10px;
+    }
+
+    .login-wrapper  .content .password{
+        margin-top: 9px;
+        overflow: hidden;
+        color: #333;
+    }
+
+    .login-wrapper  .content .password p:first-child{
+         float: left;
+         vertical-align: middle;
+     }
+
+    .login-wrapper  .content .password p:last-child{
+        float: right;
+    }
+
+    .login-wrapper  .content .password span{
+        color: #333;
+        cursor: pointer;
+    }
+
+    .login-wrapper  .content .login{
+        margin-top: 30px;
+        width: 100%;
+        height: 34px;
+        background-color: #2799ea;
+        text-align: center;
+        border-radius: 4px;
+    }
+
+    .login-wrapper  .content .login span{
+        font-size: 16px;
+        color: #fff;
+        line-height: 34px;
+        letter-spacing: 1px;
+        cursor: default;
+    }
+
+    .login-wrapper  .content .errorShow{
+        margin-top: 8px;
+        overflow: hidden;
+    }
+
+    .login-wrapper  .content .errorShow span:first-child{
+        display: inline-block;
+        float: left;
+        color: #d72b2b;
+    }
+
+    .login-wrapper  .content .errorShow span:last-child{
+        display: inline-block;
+        float: right;
+        color: #333;
+        cursor: pointer;
+    }
+
+    .Head-portrait{
+     border-radius:100%;
+     margin-bottom:30px;
+    }
+    .login-wrapper .display-container {
+        width: 100%;
+        min-height: 34px;
+        box-sizing: border-box;
+        position: relative;
+        display: block;
+        padding: 0px 1px;
+        color: #555;
+        background-color: #FFF;
+        border-radius: 4px;
+        word-break: break-all;
+        cursor: pointer;
+    }
+    
+    .login-wrapper .single-selected-focus {
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+        transition: all 0.5s ease;
+    }
+    
+    .login-wrapper .display-container .drop {
+        position: absolute;
+        top: 4px;
+        right: 6px;
+        float: right;
+        font-style: normal;
+        transition: all 0.5s ease;
+    }
+    
+    .login-wrapper .display-container .drop-up {
+        transform: rotate(180deg);
+    }
+    
+
+    
+    .pwd-input {
+        margin-top: 20px;
+        padding: 0px 1px;
+    }
+    
+    .login-btn {
+        margin-top: 30px;
+        text-align: center;
+        padding: 10px 8px;
+        border-radius: 5px;
+        background-color: #3c82f7;
+        color: #fff;
+        cursor:pointer;
+    }

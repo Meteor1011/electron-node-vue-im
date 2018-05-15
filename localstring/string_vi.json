@@ -1,0 +1,11 @@
+{
+"netError": "không thể kết nối với mạng",
+"retry": "Vui lòng thử lại",
+"wrong_user_pwd": "Tên người dùng và mật khẩu không chính xác",
+"more_msg": "hơn",
+"no_more_msg": "không có thông điệp lịch sử",
+"send": "gửi",
+"user": "username",
+"pwd": "mật khẩu",
+"login": "đăng nhập"
+}

@@ -1,0 +1,11 @@
+{
+"netError": "nicht in der Lage, eine Verbindung zum Netzwerk herzustellen",
+"retry": "Bitte versuche es erneut",
+"wrong_user_pwd": "Falscher Benutzername und Passwort",
+"more_msg": "Mehr",
+"no_more_msg": "keine weitere geschichtsmeldung",
+"send": "senden",
+"user": "Benutzername",
+"pwd": "Passwort",
+"login": "anmelden"
+}

@@ -1,0 +1,11 @@
+{
+"netError": "tsis muaj peev xwm mus txuas rau lub network",
+"retry": "Thov rov sim dua",
+"wrong_user_pwd": "Tus usual tsis siv lub npe thiab tus password",
+"more_msg": "ntau dua",
+"no_more_msg": "tsis muaj ntau zaj keeb kwm",
+"send": "xa",
+"user": "username",
+"pwd": "lo lus zais",
+"login": "kos npe hauv"
+}

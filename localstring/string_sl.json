@@ -1,0 +1,11 @@
+{
+"netError": "ni mogoče vzpostaviti povezave z omrežjem",
+"retry": "Prosim poskusite ponovno",
+"wrong_user_pwd": "Nepravilno uporabniško ime in geslo",
+"more_msg": "več",
+"no_more_msg": "ni več sporočila o zgodovini",
+"send": "pošlji",
+"user": "uporabniško ime",
+"pwd": "geslo",
+"login": "Prijava"
+}

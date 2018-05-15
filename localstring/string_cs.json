@@ -1,0 +1,11 @@
+{
+"netError": "se nemůže připojit k síti",
+"retry": "Prosím zkuste to znovu",
+"wrong_user_pwd": "Nesprávné uživatelské jméno a heslo",
+"more_msg": "více",
+"no_more_msg": "žádná další historická zpráva",
+"send": "poslat",
+"user": "uživatelské jméno",
+"pwd": "Heslo",
+"login": "přihlásit se"
+}

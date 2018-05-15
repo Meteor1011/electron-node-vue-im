@@ -1,0 +1,11 @@
+{
+"netError": "Kan geen verbinding maken met het netwerk",
+"retry": "Probeer het opnieuw",
+"wrong_user_pwd": "Onjuiste gebruikersnaam en wachtwoord",
+"more_msg": "meer",
+"no_more_msg": "geen meer geschiedenisbericht",
+"send": "sturen",
+"user": "gebruikersnaam",
+"pwd": "wachtwoord",
+"login": "aanmelden"
+}

@@ -1,0 +1,11 @@
+{
+"netError": "ei suuda võrku ühenduda",
+"retry": "Palun proovi uuesti",
+"wrong_user_pwd": "Vale kasutajanimi ja parool",
+"more_msg": "rohkem",
+"no_more_msg": "pole enam ajaloo sõnumit",
+"send": "saada",
+"user": "kasutajanimi",
+"pwd": "parool",
+"login": "Logi sisse"
+}

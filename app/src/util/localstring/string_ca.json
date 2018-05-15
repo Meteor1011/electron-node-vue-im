@@ -1,0 +1,11 @@
+{
+"netError": "no es pot connectar a la xarxa",
+"retry": "Siusplau torna-ho a provar",
+"wrong_user_pwd": "Nom d'usuari i contrasenya incorrectes",
+"more_msg": "més",
+"no_more_msg": "No hi ha més missatge d'història",
+"send": "enviar",
+"user": "nom d'usuari",
+"pwd": "contrasenya",
+"login": "inici de sessió"
+}

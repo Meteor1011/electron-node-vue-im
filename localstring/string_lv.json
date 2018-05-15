@@ -1,0 +1,11 @@
+{
+"netError": "nevar izveidot savienojumu ar tīklu",
+"retry": "Lūdzu mēģiniet vēlreiz",
+"wrong_user_pwd": "Nepareizs lietotājvārds un parole",
+"more_msg": "vairāk",
+"no_more_msg": "nav vēstures vēstījuma",
+"send": "nosūtīt",
+"user": "lietotājvārds",
+"pwd": "parole",
+"login": "ielogoties"
+}
