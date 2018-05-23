@@ -4,6 +4,9 @@
         methods: {
             picDialogClosed(){
                 this.$emit('picDialogClosed',false);
+                var oDiv = document.getElementById("picScale");
+                oDiv.style.left = "50%";
+                oDiv.style.top = "50%";
             },
             bigimg(i){
                 var zoom = parseInt(i.style.zoom,10)||100;
@@ -15,9 +18,30 @@
         },
         mounted(){
             var self = this;
-            document.getElementById("aa").addEventListener('mousewheel',function(e){
+            var oDiv = document.getElementById("picScale")
+            oDiv.addEventListener('mousewheel',function(e){
                 self.bigimg(e.target)
-            })
+            });
+            oDiv.onmousedown = function (e) {
+                //鼠标按下，计算当前元素距离可视区的距离
+                let disX = e.clientX - oDiv.offsetLeft;
+                let disY = e.clientY - oDiv.offsetTop;
+                e.preventDefault();
+                document.onmousemove = function (e) {
+                    e.preventDefault();
+                    //通过事件委托，计算移动的距离 
+                    let l = e.clientX - disX;
+                    let t = e.clientY - disY;
+                    //移动当前元素  
+                    oDiv.style.left = l + 'px';
+                    oDiv.style.top = t + 'px';
+                };
+                document.onmouseup = function (e) {
+                
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                };
+            }
         }
     };
 </script>
@@ -27,7 +51,7 @@
         <div class="pic_box">
             <span class="pic_dialog_closed" v-on:click = "picDialogClosed">x</span>
             <div class="pic_dialog_body" id="pic_dialog_body">
-                <img id="aa" :src = "imgsrc" alt="">
+                <img id="picScale" :src = "imgsrc" alt="">
             </div>
         </div>
     </div>
@@ -43,10 +67,10 @@
         background: rgba(0,0,0,0.3);
     }
     .pic_dialog_body{
-        max-width:1200px;
+        /* max-width:1200px;
         min-width:220px;
         min-height:220px;
-        background: #fff;
+        background: #fff; */
         overflow: auto;
     }
     .pic_dialog_closed{
@@ -70,10 +94,8 @@
         top:50%;
         left:50%;
         text-align:center;
-        max-width:922px;
-        min-width:220px;
-        min-height:220px;
-        max-height: 800px;
+        width:800px;
+        height: 500px;
         transform:translate(-50%,-50%);
         -ms-transform:translate(-50%,-50%); 	/* IE 9 */
         -moz-transform:translate(-50%,-50%); 	/* Firefox */
@@ -85,5 +107,10 @@
         max-width:922px;
         max-height: 800px;
         vertical-align: bottom;
+        cursor: move;
+        position: absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%,-50%);
     }
 </style>
