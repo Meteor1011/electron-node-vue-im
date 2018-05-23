@@ -30,7 +30,7 @@
     "css-loader": "^0.25.0",
     "electron": "^1.4.15",
     "electron-cookies": "^1.1.0",
-    "electron-packager": "^8.7.1",
+    "electron-packager": "^8.7.2",
     "electron-reload": "^1.0.2",
     "extract-text-webpack-plugin": "^2.1.2",
     "file-loader": "^0.9.0",

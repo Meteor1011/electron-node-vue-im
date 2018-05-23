@@ -1,0 +1,45 @@
+{
+  "name": "16Chat",
+  "version": "2.1.0",
+  "description": "16Chat.",
+  "main": "main.js",
+  "scripts": {
+    "dev": "webpack",
+    "start": "electron .",
+    "package":"electron-packager ./app 16Chat --all --out ./OutApp --version 2.1.0 --overwrite --icon=./icon.png"
+  },
+  "dependencies": {
+    "axios": "^0.17.1",
+    "cos-nodejs-sdk-v5": "^2.0.6",
+    "electron-squirrel-startup": "^1.0.0",
+    "getLan": "file:../module/getDefaultLan",
+    "regedit": "^2.2.7",
+    "vue": "^2.0.1",
+    "vue-i18n": "^7.6.0",
+    "vuex": "^2.2.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.5.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-register": "^6.24.1",
+    "css-loader": "^0.25.0",
+    "electron": "^1.4.15",
+    "electron-cookies": "^1.1.0",
+    "electron-reload": "^1.0.2",
+    "extract-text-webpack-plugin": "^2.1.2",
+    "file-loader": "^0.9.0",
+    "grunt-electron-installer": "^2.1.0",
+    "html-webpack-plugin": "^2.28.0",
+    "node-xmpp-client": "^3.2.0",
+    "style-loader": "^0.19.1",
+    "vue-loader": "^9.5.1",
+    "vue-resource": "^1.2.1",
+    "vue-router": "^2.3.0",
+    "webpack": "^2.7.0"
+  }
+}
