@@ -1,6 +1,5 @@
 export default function getSupportLan(){
     let url="../../lanList.json";
-    console.log(url)
     return fetch(url) 
     .then(response=>response.json())
     .then(data=>{

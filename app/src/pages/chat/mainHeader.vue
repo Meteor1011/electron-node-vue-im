@@ -66,14 +66,12 @@
     .mainHeader > span {
         font-size: 17px;
         float: left;
-        width: 50%;
         padding-left: 22px;
         line-height: 49px;
     }
 
     .mainHeader > em {
         float: right;
-        width: 50%;
         text-align: right;
         -webkit-app-region: no-drag;
     }

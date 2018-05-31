@@ -42,11 +42,24 @@ const friendList = {
         if(i !== -1){
           var oldInfo = state.friends[i];
           oldInfo.unRead = obj.unRead;
-          state.friends.splice(i,1,oldInfo)
+          //state.friends.splice(i,1,oldInfo)
+            state.friends.splice(i,1);
+            state.friends.unshift(oldInfo);
         }else{
           applyaddfriend(obj.selToID,true)
         }
       },
+        //更新好友列表顺序
+        UPDATE_FRIEND_ORDER:(state, obj)=>{
+            //console.log('state.friends=====',state.friends);
+            //console.log('obj.selToID=====',obj.selToID);
+            var i = state.friends.findIndex(item=>item.selToID === obj.selToID);
+            if(i !== -1){
+                var oldInfo = state.friends[i];
+                state.friends.splice(i,1);
+                state.friends.unshift(oldInfo);
+            }
+        },
       //更新好友在线状态
       UPDATE_OFFLINE:(state, arr)=>{
         let j = 0, len = arr.length;
@@ -65,9 +78,9 @@ const friendList = {
         if(needTalk){
           state.needTalk = needTalk;
         }
-        /* else{
+        else{
           state.needTalk = '';
-        } */
+        }
       },
       //选择好友进行聊天
       SELECT_FRIEND:(state, friendId)=>{
@@ -83,7 +96,7 @@ const friendList = {
           if(state.init){
             return;
           }
-          //state.needTalk = ''
+          state.needTalk = ''
         }
       },
       INIT_DONE:(state)=>{
@@ -108,6 +121,9 @@ const friendList = {
       },
       update_friend:({ commit },obj)=>{
         commit('UPDATE_FRIEND',obj)
+      },
+       update_friend_order:({commit},obj)=>{
+        commit('UPDATE_FRIEND_ORDER',obj);
       },
       set_needTalk:({ dispatch,commit, state}, needTalk)=>{
           var needTalks = needTalk.split(',')[0];

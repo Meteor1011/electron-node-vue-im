@@ -12,7 +12,8 @@ const messageList = {
       currentMsg:[],
       selToID:"",
       msgTip:g_msgTip[0],
-      transed:new Map()
+      transed:new Map(),
+      scrollTop:0
     },
     mutations: {
       //初始化消息，用于切换好友时重新拉取消息
@@ -49,7 +50,11 @@ const messageList = {
       NEED_TALK:(state, selToID)=>{
         state.selToID = selToID;
       },
+      SET_SCROLLTOP:(state,scrollTop)=>{
+        state.scrollTop = scrollTop;
+      },
       TRANS_DONE:(state,obj)=>{
+        console.log(obj,'fanyi')
         state.transed.set(obj.uid, obj.transText);
         for(let i in state.currentMsg){
           if(state.currentMsg[i].uniqueId === obj.uid){
@@ -89,6 +94,9 @@ const messageList = {
       },
       trans_done({commit}, obj){
         commit("TRANS_DONE", obj)
+      },
+      set_scrolltop({commit},scrollTop){
+        commit("SET_SCROLLTOP",scrollTop)
       }
     }
   };

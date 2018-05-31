@@ -17,7 +17,22 @@
                     lan:this.$store.getters.getLan,
                     shotSet:false,
                     hotKeys:"Ctrl+Alt+D",
-                    guide_show:false,
+                    guide_ar_show:false, //阿拉伯语
+                    guide_de_show:false, //德语
+                    guide_en_show:false, //英语
+                    guide_es_show:false, //西班牙语
+                    guide_fr_show:false, //法语
+                    guide_it_show:false, //意大利语
+                    guide_ja_show:false, //日语
+                    guide_ms_show:false, //马来语
+                    guide_ru_show:false, //俄语
+                    guide_th_show:false, //泰语
+                    guide_vi_show:false, //越南语
+                    guide_pt_show:false, //葡萄牙语
+                    guide_show:false,    //中文简
+                    guide_zh_show:false, //中文繁
+                    guide_ko_show:false, //韩语
+                    guide_in_show:false, //印尼语
                     textShow:false,
                     lanArr:[],
                     curLan:'',
@@ -27,14 +42,42 @@
             return data;
         },
         created() {
-            ipcRenderer.on('localLang1', (event, arg) => {
-                this.localeL = arg;
-                console.log('主进程传过来的arg===', arg);
-                this.$i18n.locale = arg;
-            })
+            console.log('this.$i18n.locale=====',this.$i18n.locale);
             var isFirst = localStorage.getItem('isFirst');
             if(!isFirst){
-                this.guide_show = true;
+                if(this.$i18n.locale == 'ar'){
+                    this.guide_ar_show = true;
+                }else if(this.$i18n.locale == 'de'){
+                    this.guide_de_show = true;
+                }else if(this.$i18n.locale == 'en-US'){
+                    this.guide_en_show = true;
+                }else if(this.$i18n.locale == 'es'){
+                    this.guide_es_show = true;
+                }else if(this.$i18n.locale == 'fr'){
+                    this.guide_fr_show = true;
+                }else if(this.$i18n.locale == 'it'){
+                    this.guide_it_show = true;
+                }else if(this.$i18n.locale == 'ja'){
+                    this.guide_ja_show = true;
+                }else if(this.$i18n.locale == 'ms'){
+                    this.guide_ms_show = true;
+                }else if(this.$i18n.locale == 'ru'){
+                    this.guide_ru_show = true;
+                }else if(this.$i18n.locale == 'th'){
+                    this.guide_th_show = true;
+                }else if(this.$i18n.locale == 'vi'){
+                    this.guide_vi_show = true;
+                }else if(this.$i18n.locale == 'pt'){
+                    this.guide_pt_show = true;
+                }else if(this.$i18n.locale == 'zh-CN'){
+                    this.guide_show = true;
+                }else if(this.$i18n.locale == 'zh-TW'){
+                    this.guide_zh_show = true;
+                }else if(this.$i18n.locale == 'ko'){
+                    this.guide_ko_show = true;
+                }else if(this.$i18n.locale == 'in'){
+                    this.guide_in_show = true;
+                }
                 localStorage.setItem('isFirst','true');
             }
         },
@@ -45,7 +88,6 @@
                 for (var i = 0; i < this.lanArr.length; i++) {
                     if (this.$i18n.locale == this.lanArr[i].shortname) {
                         this.curLan = this.lanArr[i].lang;
-                        //console.log('this.lanArr[i].lang=====',this.lanArr[i].lang);
                     }
 
                 }
@@ -142,15 +184,63 @@
                             send = false;
                         }
                         self.$store.dispatch('setSend', send);
-                        self.open_set();
                     }
                 })
             },
             closeGuide() {
+                this.guide_ar_show = false;
+                this.guide_de_show = false;
+                this.guide_en_show = false;
+                this.guide_es_show = false;
+                this.guide_fr_show = false;
+                this.guide_it_show = false;
+                this.guide_ja_show = false;
+                this.guide_ms_show = false;
+                this.guide_ru_show = false;
+                this.guide_th_show = false;
+                this.guide_vi_show = false;
+                this.guide_pt_show = false;
                 this.guide_show = false;
+                this.guide_zh_show = false;
+                this.guide_ko_show = false;
+                this.guide_in_show = false;
             },
             guideShow() {
-                this.guide_show = true;
+                if(this.$i18n.locale == 'zh-CN'){
+                    this.guide_show = true;
+                }else if(this.$i18n.locale == 'en-US'){
+                    this.guide_en_show = true;
+                }else if(this.$i18n.locale == 'zh-TW'){
+                    this.guide_zh_show = true;
+                }else if(this.$i18n.locale == 'ar'){
+                    this.guide_ar_show = true;
+                }else if(this.$i18n.locale == 'de'){
+                    this.guide_de_show = true;
+                }else if(this.$i18n.locale == 'es'){
+                    this.guide_es_show = true;
+                }else if(this.$i18n.locale == 'fr'){
+                    this.guide_fr_show = true;
+                }else if(this.$i18n.locale == 'it'){
+                    this.guide_it_show = true;
+                }else if(this.$i18n.locale == 'ja'){
+                    this.guide_ja_show = true;
+                }else if(this.$i18n.locale == 'ru'){
+                    this.guide_ru_show = true;
+                }else if(this.$i18n.locale == 'th'){
+                    this.guide_th_show = true;
+                }else if(this.$i18n.locale == 'vi'){
+                    this.guide_vi_show = true;
+                }else if(this.$i18n.locale == 'ms'){
+                    this.guide_ms_show = true;
+                }else if(this.$i18n.locale == 'pt'){
+                    this.guide_pt_show = true;
+                }else if(this.$i18n.locale == 'ko'){
+                    this.guide_ko_show = true;
+                }else if(this.$i18n.locale == 'in'){
+                    this.guide_in_show = true;
+                }
+
+                //this.guide_show = true;
                 this.set_show = false;
                 this.textShow = false;
             },
@@ -170,6 +260,7 @@
                         // 按第三次以上包括第三次，判断是不是连续按了ctrl、alt
                         if(e.keyCode !== 17 && e.keyCode !== 18){
                             let temp = e.key.length == 1 ? e.key.toUpperCase() : e.key;
+                            console.log(e.key,'33333',process.platform)
                             other = temp.replace(/\s/g, 'Space').replace(/Meta/g, process.platform !== 'darwin' ? 'Super' : 'Cmd');
                             _this.hotKeys = `${ctrl}+${shift}+${other}`;
                             let data = {
@@ -244,32 +335,33 @@
                 }
                 this.objArr.push(obj);
                 localStorage.setItem('userLan', JSON.stringify(this.objArr));
+                this.$store.dispatch('setLan',shortname);
             },
             checkVersion() {
                 let _this = this;
                 this.get_remoteversion().then(res => {
                     if (this.$store.state.card.remoteVersion > +versionCode) {
                         this.$refs.version.init({
-                            content: '检测到新版本，是否更新',
+                            content: _this.$t("message.obj.isUpdate"),
                             btns: {
                                 ok: {
-                                    txt: '确定',
+                                    txt: _this.$t("message.obj.sure"),
                                     cb() {
                                         _this.download();
                                         return false;
                                     }
                                 },
                                 cancle: {
-                                    txt: '取消'
+                                    txt: _this.$t("message.obj.off")
                                 }
                             }
                         });
                     } else {
                         this.$refs.version.init({
-                            content: '当前是最新版本',
+                            content: _this.$t("message.obj.new_version"),
                             btns: {
                                 cancle: {
-                                    txt: '确定'
+                                    txt: _this.$t("message.obj.sure")
                                 }
                             }
                         });
@@ -296,6 +388,51 @@
 
             <div class="guides" v-show="guide_show" @click="closeGuide">
                 <img src="../../../../dist/images/guide.png"/>
+            </div>
+            <div class="guides" v-show="guide_zh_show" @click="closeGuide">
+                <img src="../../../../dist/images/zh.png"/>
+            </div>
+            <div class="guides" v-show="guide_ar_show" @click="closeGuide">
+                <img src="../../../../dist/images/ar.png"/>
+            </div>
+            <div class="guides" v-show="guide_de_show" @click="closeGuide">
+                <img src="../../../../dist/images/de.png"/>
+            </div>
+            <div class="guides" v-show="guide_en_show" @click="closeGuide">
+                <img src="../../../../dist/images/en.png"/>
+            </div>
+            <div class="guides" v-show="guide_es_show" @click="closeGuide">
+                <img src="../../../../dist/images/es.png"/>
+            </div>
+            <div class="guides" v-show="guide_fr_show" @click="closeGuide">
+                <img src="../../../../dist/images/fr.png"/>
+            </div>
+            <div class="guides" v-show="guide_it_show" @click="closeGuide">
+                <img src="../../../../dist/images/it.png"/>
+            </div>
+            <div class="guides" v-show="guide_ja_show" @click="closeGuide">
+                <img src="../../../../dist/images/ja.png"/>
+            </div>
+            <div class="guides" v-show="guide_ms_show" @click="closeGuide">
+                <img src="../../../../dist/images/ms.png"/>
+            </div>
+            <div class="guides" v-show="guide_ru_show" @click="closeGuide">
+                <img src="../../../../dist/images/ru.png"/>
+            </div>
+            <div class="guides" v-show="guide_th_show" @click="closeGuide">
+                <img src="../../../../dist/images/th.png"/>
+            </div>
+            <div class="guides" v-show="guide_vi_show" @click="closeGuide">
+                <img src="../../../../dist/images/vi.png"/>
+            </div>
+            <div class="guides" v-show="guide_ko_show" @click="closeGuide">
+                <img src="../../../../dist/images/ko.png"/>
+            </div>
+            <div class="guides" v-show="guide_pt_show" @click="closeGuide">
+                <img src="../../../../dist/images/pt.png"/>
+            </div>
+            <div class="guides" v-show="guide_in_show" @click="closeGuide">
+                <img src="../../../../dist/images/in.png"/>
             </div>
             <div class="setting" v-show="set_show">
                 <div class="set">
@@ -592,6 +729,7 @@
         float: left;
         width: 140px;
         margin-top: 15px;
+        padding-left: 10px;
     }
 
     .set_lan_list > ul > li:hover {

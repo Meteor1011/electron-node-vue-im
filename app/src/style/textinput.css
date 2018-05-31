@@ -132,4 +132,63 @@
     background: #2799ea;
 }
 
+/* 截图选项 */
+.xf_config .screenshot-box{
+    position: relative;
+    padding: 0;
+}
+.screenshot-box span.screenShot-btn{
+    display: block;
+    padding: 5px 10px;
+}
+.screenshot-box span.screenShot-btn::after{
+    position: absolute;
+    right: -1px;
+    top: 50%;
+    content: '';
+    width: 0;
+    height: 0;
+    border-color: #999 transparent;
+    border-style: solid;
+    border-width: 5px 4px 0;
+    transform: translateY(-50%);
+}
+.screenshot-box span.screenShot-btn.active::after{
+    position: absolute;
+    right: -1px;
+    top: 50%;
+    content: '';
+    width: 0;
+    height: 0;
+    border-color: #999 transparent;
+    border-style: solid;
+    border-width: 0 4px 5px;
+    transform: translateY(-50%);
+}
+.screenshot-setting{
+    position: absolute;
+    left: 0;
+    top: 30px;
+    background-color: #fff;
+    margin: 0;
+    width: 120px;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, .1);
+    overflow: hidden;
+}
+.screenshot-setting dd{
+    margin: 0;
+    padding-left: 14px;
+    border: 1px solid #ddd;
+    white-space: nowrap;
+    line-height: 30px;
+    cursor: pointer;
+}
+.screenshot-setting dd:last-child{
+    border-top: 0;
+}
+.screenshot-setting dd:hover{
+    color: #fff;
+    border-color: #2799ea;
+    background-color: #2799ea;
+}
 

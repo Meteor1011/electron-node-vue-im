@@ -4,7 +4,7 @@
         <div class="tip">
             <div class="tip-content">{{content}}</div>
             <div class="tip-btn">
-                <a v-for="(v, k) of btns" :key="k" @click="clickHandle(v.cb)" href="javascript: void(0);">{{v.txt}}</a>
+                <a v-for="(v, k) of btns" :key="k" @click="clickHandle(v.cb)" href="javascript: void(0);" :title="v.txt" >{{v.txt}}</a>
             </div>
         </div>
     </div>
@@ -59,6 +59,7 @@
         left: 50%;
         top: 50%;
         min-width: 256px;
+        max-width: 316px;
         transform: translate(-50%, -50%);
         background-color: #fff;
         border-radius: 10px;
@@ -73,6 +74,7 @@
     }
     .tip-btn{
         text-align: center;
+        white-space: nowrap;
     }
     .tip-btn a{
         display: inline-block;
@@ -82,8 +84,13 @@
         font-size: 12px;
         text-decoration: none;
         color: #333;
+        width: 88px;
         line-height: 1;
-        margin: 0 10px;
+        height: 26px;
+        margin: 0px 6px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .tip-btn a:first-child{
         color: #fff;

@@ -658,83 +658,84 @@ function applyToTag(styleElement, obj) {
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取MD5对象
+var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5 = __webpack_require__(18); //获取MD5对象
 
 //var getThum=require('./getThum.js');
-!(__WEBPACK_AMD_DEFINE_RESULT__ = function(require, exports, module) {   
+!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, module) {
     var webim = __webpack_require__(67);
     var store = __webpack_require__(6);
     var electron = __webpack_require__(4);
-    var getThum=__webpack_require__(16);
+    var getThum = __webpack_require__(16);
     var ipc = electron.ipcRenderer;
     var userSig,
-    //登录
-    loginInfo = {
-        sdkAppID:'1400065243',//  1400071504   - String, 用户标识接入SDK的应用ID，必填
-        identifier:'',//   - String, 用户帐号,必须是字符串类型，必填
-        accountType:'22062',// 23251 - int, 账号类型，必填
-        identifierNick:'',//   - String, 用户昵称，选填
-        userSig:null,//'eJxlj1FPgzAUhd-5FYRXjbaUjtXEB0NwayYuCzoTX0iFMi4K66DMbsb-7oYkknhfvy-n3PNl2bbtPD3EVyJNt12tE31Q0rFvbAc5l39QKcgSoRPSZP*gNAoamYhcy6aHmFLqIjR2IJO1hhwG40wxJQhP0kLokddm70lf9hvknTzKkO*NFdj0MAqfA74KYoE-F2atp6ZDd*WjIW8XC3FdZhOCjdhVx-Uxf6V4yaFc8U20v4*8A3*RVGm3nQdpOCumVTknmIH5WOZBx3esLmZ*HN6OKjVUcliGqcd8ysYP7WXTwrYehp0Ul6DzOda39QOx8F7J',//      - String, 鉴权Token，必须是字符串类型，必填 
-        //userSig:'eJxlj11PgzAARd-5FYRXjbTQdtZkD0yZYYJzUebmS4NQtmL4WCkbzvjf3ZBEEu-rObk390vTdd148Z*vojgum0Ix9VlxQ7-RDWBc-sGqEgmLFLNl8g-ythKSsyhVXHYQYowtAIaOSHihRCp640wtSAAk8TZSA69OPlg39luETh6mYISGith0MHAXt94dntR5Ox*VCXWPF7tpaO6mdt3Qp8W95WbmW9tIe7Y*OGTrOcIJZuZkw32JHp1lRkNiPoDVcU5X2Tvah06*TF*9a38dwKw8jMeDSSVy3j*DmBCIkD2gey5rURb9sZNi2eAcQ-vWfgAbl12B',//      - String, 鉴权Token，必须是字符串类型，必填 
-        //userSig:userSig,//      - String, 鉴权Token，必须是字符串类型，必填 
-        headurl:''
-    }
-    ,totalCount = 200
-    ,loginoptions = {
-        isAccessFormalEnv:true,
-        isLogOn:false
-    }
-    ,reqMsgCount = 15 //每次请求的历史消息条数
-    ,getPrePageC2CHistroyMsgInfoMap = {} //保留下一次拉取好友历史消息的信息
-    ,selfInfo= {},//自己的用户信息,用来设置昵称和头像等信息
-    friendHeadUrl='/images/1.jpg',
-    selType = webim.SESSION_TYPE.C2C,
-    selSess=null,
-    images=null,
-    offLine={},
-    arrEntities={'lt':'<','gt':'>','amp;nbsp':' ','nbsp':' ','amp':'&','quot':'"'};
-    
-    offLine.title="离线通知";
-    offLine.info="连接断开 点击重新登录";
+        //登录
+        loginInfo = {
+            sdkAppID: '1400065243',//  1400071504   - String, 用户标识接入SDK的应用ID，必填
+            identifier: '',//   - String, 用户帐号,必须是字符串类型，必填
+            accountType: '22062',// 23251 - int, 账号类型，必填
+            identifierNick: '',//   - String, 用户昵称，选填
+            userSig: null,//'eJxlj1FPgzAUhd-5FYRXjbaUjtXEB0NwayYuCzoTX0iFMi4K66DMbsb-7oYkknhfvy-n3PNl2bbtPD3EVyJNt12tE31Q0rFvbAc5l39QKcgSoRPSZP*gNAoamYhcy6aHmFLqIjR2IJO1hhwG40wxJQhP0kLokddm70lf9hvknTzKkO*NFdj0MAqfA74KYoE-F2atp6ZDd*WjIW8XC3FdZhOCjdhVx-Uxf6V4yaFc8U20v4*8A3*RVGm3nQdpOCumVTknmIH5WOZBx3esLmZ*HN6OKjVUcliGqcd8ysYP7WXTwrYehp0Ul6DzOda39QOx8F7J',//      - String, 鉴权Token，必须是字符串类型，必填
+            //userSig:'eJxlj11PgzAARd-5FYRXjbTQdtZkD0yZYYJzUebmS4NQtmL4WCkbzvjf3ZBEEu-rObk390vTdd148Z*vojgum0Ix9VlxQ7-RDWBc-sGqEgmLFLNl8g-ythKSsyhVXHYQYowtAIaOSHihRCp640wtSAAk8TZSA69OPlg39luETh6mYISGith0MHAXt94dntR5Ox*VCXWPF7tpaO6mdt3Qp8W95WbmW9tIe7Y*OGTrOcIJZuZkw32JHp1lRkNiPoDVcU5X2Tvah06*TF*9a38dwKw8jMeDSSVy3j*DmBCIkD2gey5rURb9sZNi2eAcQ-vWfgAbl12B',//      - String, 鉴权Token，必须是字符串类型，必填
+            //userSig:userSig,//      - String, 鉴权Token，必须是字符串类型，必填
+            headurl: ''
+        }
+        , totalCount = 200
+        , loginoptions = {
+            isAccessFormalEnv: true,
+            isLogOn: false
+        }
+        , reqMsgCount = 15 //每次请求的历史消息条数
+        , getPrePageC2CHistroyMsgInfoMap = {} //保留下一次拉取好友历史消息的信息
+        , selfInfo = {},//自己的用户信息,用来设置昵称和头像等信息
+        friendHeadUrl = '/images/1.jpg',
+        selType = webim.SESSION_TYPE.C2C,
+        selSess = null,
+        images = null,
+        offLine = {},
+        arrEntities = {'lt': '<', 'gt': '>', 'amp;nbsp': ' ', 'nbsp': ' ', 'amp': '&', 'quot': '"'};
+
+    offLine.title = "离线通知";
+    offLine.info = "连接断开 点击重新登录";
 
     var mI18nObj = {};
     var curLan = '';
+
     //连接回调函数
-    function _onConnNotify(resp){
+    function _onConnNotify(resp) {
         var info;
         switch (resp.ErrorCode) {
             case webim.CONNECTION_STATUS.ON:
                 //console.log('建立连接成功: ' + resp.ErrorInfo);
-                ipc.send('on-line',selfInfo.memberName);
-                var sefId="UID"+selfInfo.tbMemberId;
+                ipc.send('on-line', selfInfo.memberName);
+                var sefId = "UID" + selfInfo.tbMemberId;
                 _getProfilePortrait([sefId],
                     function (resp) {
                         if (resp.UserProfileItem && resp.UserProfileItem.length > 0) {
-                            var nick = null, gender = null, allowType = null,imageUrl=null,needset=false;
+                            var nick = null, gender = null, allowType = null, imageUrl = null, needset = false;
                             for (var i in resp.UserProfileItem) {
                                 var to_account = resp.UserProfileItem[i].To_Account;
-                                if(resp.UserProfileItem[i].ProfileItem){ //从未设置过，返回的是undefined
+                                if (resp.UserProfileItem[i].ProfileItem) { //从未设置过，返回的是undefined
                                     for (var j in resp.UserProfileItem[i].ProfileItem) {
                                         switch (resp.UserProfileItem[i].ProfileItem[j].Tag) {
                                             case 'Tag_Profile_IM_Nick':
                                                 nick = resp.UserProfileItem[i].ProfileItem[j].Value;
-                                                if(nick != selfInfo.memberName){
+                                                if (nick != selfInfo.memberName) {
                                                     needset = true;
                                                 }
                                                 break;
                                             case 'Tag_Profile_IM_Image':
                                                 imageUrl = resp.UserProfileItem[i].ProfileItem[j].Value;
-                                                if(imageUrl != selfInfo.headImage){
+                                                if (imageUrl != selfInfo.headImage) {
                                                     needset = true;
                                                 }
                                                 break;
                                         }
                                     }
-                                }else{
+                                } else {
                                     needset = true;
                                 }
                             }
-                            if(needset){
+                            if (needset) {
                                 //console.log('need setProfileProtrait==>')
                                 _setProfilePortrait(selfInfo);
                             }
@@ -746,13 +747,15 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
                 webim.syncMsgs(_onMsgNotify);
                 break;
             case webim.CONNECTION_STATUS.OFF:
-                info = '连接已断开，无法收到新消息，请检查下你的网络是否正常: ' + resp.ErrorInfo;
+                //info = '连接已断开，无法收到新消息，请检查下你的网络是否正常: ' + resp.ErrorInfo;
+                info = mI18nObj.$t("message.obj.check_network") + resp.ErrorInfo;
                 //console.log(info)
-                ipc.send('off-line',{'title':'掉线通知','info':info});
+                //ipc.send('off-line', {'title': '掉线通知', 'info': info});
+                ipc.send('off-line', {'title': mI18nObj.$t("message.obj.notice") , 'info': info});
                 break;
             case webim.CONNECTION_STATUS.RECONNECT:
                 info = '连接状态恢复正常: ' + resp.ErrorInfo;
-                ipc.send('on-line',selfInfo.memberName);
+                ipc.send('on-line', selfInfo.memberName);
                 webim.syncMsgs(_onMsgNotify);
                 break;
             default:
@@ -760,70 +763,75 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
                 break;
         }
     }
+
     //新消息
-    function _onMsgNotify(newMsgList){
+    function _onMsgNotify(newMsgList) {
         //console.log('newMsgList',newMsgList)
-        var selToID=store.default.getters.getSelToID;
-        var sess,newMsg,_this=this;
-        var sessMap=webim.MsgStore.sessMap();
-        for(var j in newMsgList){
-            newMsg=newMsgList[j];
-            selSess=newMsg.getSession();
+        var selToID = store.default.getters.getSelToID;
+        var sess, newMsg, _this = this;
+        var sessMap = webim.MsgStore.sessMap();
+        for (var j in newMsgList) {
+            newMsg = newMsgList[j];
+            selSess = newMsg.getSession();
             //消息处理
-            var msgId=newMsg.getFromAccount();
-            
+            var msgId = newMsg.getFromAccount();
+
             var friendInfo;
-            if(msgId!=selToID){//判断是否为当前聊天的好友
-                friendInfo={
-                    'selToID':msgId,
-                    'unRead':true
+            if (msgId != selToID) {//判断是否为当前聊天的好友
+                friendInfo = {
+                    'selToID': msgId,
+                    'unRead': true
                 }
-                store.default.dispatch('update_friend',friendInfo);
-            }else{
+                store.default.dispatch('update_friend', friendInfo);
+            } else {
                 //消息已读上报，以及设置会话自动已读标记
                 webim.setAutoRead(selSess, true, true);
             }
-            var msgs=[];
+            var msgs = [];
             msgs.push(addMsg(newMsg));
-            store.default.dispatch('append_msg',{
-                selToID:msgId,
-                msgList:msgs
+            store.default.dispatch('append_msg', {
+                selToID: msgId,
+                msgList: msgs
             });
 
             ipc.send('has-info')
         }
     }
+
     //好友系统通知
-    function _onFriendSystemNotifys(){
+    function _onFriendSystemNotifys() {
 
     }
+
     //资料系统通知
-    function _onProfileSystemNotifys(){
+    function _onProfileSystemNotifys() {
 
     }
-    
+
     //C2C系统消息通道
-    var  _onC2cEventNotifys={
+    var _onC2cEventNotifys = {
         "92": onMsgReadedNotify,//消息已读通知
     }
+
     //消息已读通知
-    function onMsgReadedNotify(notify){
+    function onMsgReadedNotify(notify) {
         //console.log(notify,'消息已读通知');
-        var sessMap = webim.MsgStore.sessMap()[webim.SESSION_TYPE.C2C+notify.From_Account];
-        if(sessMap){
+        var sessMap = webim.MsgStore.sessMap()[webim.SESSION_TYPE.C2C + notify.From_Account];
+        if (sessMap) {
             var msgs = _.clone(sessMap.msgs());
-            var rm_msgs = _.remove(msgs,function(m){
+            var rm_msgs = _.remove(msgs, function (m) {
                 return m.time <= notify.LastReadTime
             });
-            var unread = sessMap.unread()  - rm_msgs.length;
+            var unread = sessMap.unread() - rm_msgs.length;
             unread = unread > 0 ? unread : 0;
             //更新sess的未读数
-            sessMap.unread( unread );
-            
+            sessMap.unread(unread);
+
         }
     }
+
     //设置用户资料
-    function _setProfilePortrait(userInfo){
+    function _setProfilePortrait(userInfo) {
         var profile_item = [
             {
                 "Tag": "Tag_Profile_IM_Nick",
@@ -841,19 +849,20 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
         var options = {
             'ProfileItem': profile_item
         };
-    
+
         webim.setProfilePortrait(
-                options,
-                function (resp) {
-                   //console.log('setProfilePortrait success')
-                },
-                function (err) {
-                    console.error(err.ErrorInfo);
-                }
+            options,
+            function (resp) {
+                //console.log('setProfilePortrait success')
+            },
+            function (err) {
+                console.error(err.ErrorInfo);
+            }
         );
     }
+
     //获取用户资料
-    function _getProfilePortrait(userInfo,cbOk,cbErr){
+    function _getProfilePortrait(userInfo, cbOk, cbErr) {
         //console.log(userInfo,'userInfo=====>')
         var tag_list = [
             "Tag_Profile_IM_Nick",//昵称
@@ -864,36 +873,37 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
             'To_Account': userInfo,
             'TagList': tag_list
         };
-    
+
         webim.getProfilePortrait(
-                options,cbOk,cbErr
-                
+            options, cbOk, cbErr
         );
     }
+
     //监听事件
     var _onFriendSystemNotifys = {
         "1": onFriendAddNotify, //好友表增加
         //"2": onFriendDeleteNotify, //好友表删除
         //"3": onPendencyAddNotify, //未决增加
-       // "4": onPendencyDeleteNotify, //未决删除
-       // "5": onBlackListAddNotify, //黑名单增加
+        // "4": onPendencyDeleteNotify, //未决删除
+        // "5": onBlackListAddNotify, //黑名单增加
         //"6": onBlackListDeleteNotify//黑名单删除
     };
     var listeners = {
         "onConnNotify": _onConnNotify//监听连接状态回调变化事件,必填
-       // ,"jsonpCallback": jsonpCallback//IE9(含)以下浏览器用到的jsonp回调函数，
-        ,"onMsgNotify": _onMsgNotify//监听新消息(私聊，普通群(非直播聊天室)消息，全员推送消息)事件，必填
+        // ,"jsonpCallback": jsonpCallback//IE9(含)以下浏览器用到的jsonp回调函数，
+        , "onMsgNotify": _onMsgNotify//监听新消息(私聊，普通群(非直播聊天室)消息，全员推送消息)事件，必填
         //,"onBigGroupMsgNotify": onBigGroupMsgNotify//监听新消息(直播聊天室)事件，直播场景下必填
         //,"onGroupSystemNotifys": onGroupSystemNotifys//监听（多终端同步）群系统消息事件，如果不需要监听，可不填
         //,"onGroupInfoChangeNotify": onGroupInfoChangeNotify//监听群资料变化事件，选填
-        ,"onFriendSystemNotifys": _onFriendSystemNotifys//监听好友系统通知事件，选填
-        ,"onProfileSystemNotifys": _onProfileSystemNotifys//监听资料系统（自己或好友）通知事件，选填
-        ,"onKickedEventCall" : _onProfileSystemNotifys//被其他登录实例踢下线
-        ,"onC2cEventNotifys": _onC2cEventNotifys//监听C2C系统消息通道
+        , "onFriendSystemNotifys": _onFriendSystemNotifys//监听好友系统通知事件，选填
+        , "onProfileSystemNotifys": _onProfileSystemNotifys//监听资料系统（自己或好友）通知事件，选填
+        , "onKickedEventCall": _onProfileSystemNotifys//被其他登录实例踢下线
+        , "onC2cEventNotifys": _onC2cEventNotifys//监听C2C系统消息通道
     };
+
     //解析一条消息
-    function convertMsgtoHtml(msg){//解析一条消息
-        var html = "", elems, elem, type, content,_this=this;
+    function convertMsgtoHtml(msg) {//解析一条消息
+        var html = "", elems, elem, type, content, _this = this;
         elems = msg.getElems();//获取消息包含的元素数组
         for (var i in elems) {
             elem = elems[i];
@@ -931,42 +941,52 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
         }
         return html;
     }
+
     //解析文本消息
     function convertTextMsgToHtml(content) {//解析文本消息
-        return content.getText();
+        return content.getText()
+                    .replace(/' '/g, "&nbsp;")
+                    .replace(/\n/g, "<br>")
+                    .replace(/\t+/gim, function(word){
+                        console.log(word.match(/\t/gim));
+                        return `<span style="white-space:pre">${word}</span>`;
+                    });
     }
+
     //解析表情消息元素
-    function convertFaceMsgToHtml(content){//解析表情消息元素
-        //console.log('content----->',content)
-        var index = content.getIndex()||0;
+    function convertFaceMsgToHtml(content) {//解析表情消息元素
+        var index = content.getIndex() || 0;
         var data = content.getData();
-        var url=null;
-        var emotion=webim.Emotions[index];
-        if(emotion && emotion[1]){
-            url=emotion[1];
+        var url = null;
+        var emotion = webim.Emotions[index];
+        if (emotion && emotion[1]) {
+            url = emotion[1];
         }
         if (url) {
-            return    "<img src='" + url + "'/>";
+            return    "<img src='" + url + "' ondragstart='return false;'/>";
         } else {
             return data;
         }
     }
+
     //解析图片消息元素
-    function convertImageMsgToHtml(content){//解析图片消息元素
+    function convertImageMsgToHtml(content) {//解析图片消息元素
         var smallImage = content.getImage(webim.IMAGE_TYPE.SMALL);//小图
         var bigImage = content.getImage(webim.IMAGE_TYPE.LARGE);//大图
         var oriImage = content.getImage(webim.IMAGE_TYPE.ORIGIN);//原图
-        var self=this;
+        var self = this;
         if (!bigImage) {
             bigImage = smallImage;
         }
         if (!oriImage) {
             oriImage = smallImage;
         }
-        return    "<img class = 'imgClick' src='" + smallImage.getUrl() + "#" + bigImage.getUrl() + "#" + oriImage.getUrl() + "' style='CURSOR: hand' id='" + content.getImageId() + "' bigImgUrl='" + bigImage.getUrl() + "'/>";
+        return    "<img class = 'imgClick' src='" + smallImage.getUrl() + "#" + bigImage.getUrl() + "#" + oriImage.getUrl() + "' style='CURSOR: hand' id='" + content.getImageId() + "' bigImgUrl='" + bigImage.getUrl() + "' ondragstart='return false;'/>";
+
     }
+
     //解析自定义消息
-    function convertCustomMsgToHtml(content){
+    function convertCustomMsgToHtml(content) {
         var data = content.getData();
         data = JSON.parse(data);
         return `
@@ -982,13 +1002,14 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
         `
         //return "data=" + data + ", desc=" + desc + ", ext=" + ext;
     }
+
     //增加一条消息
-    function addMsg(msg){
+    function addMsg(msg) {
         //console.log('addMsg---->',msg)
-        var isSelfSend,fromAccount,fromAccountNick,sessType,subType,oneMsg;
-        fromAccount=msg.getFromAccount();
-        if(!fromAccount){
-            fromAccount='';
+        var isSelfSend, fromAccount, fromAccountNick, sessType, subType, oneMsg;
+        fromAccount = msg.getFromAccount();
+        if (!fromAccount) {
+            fromAccount = '';
         }
         //处理消息
         fromAccountNick = msg.getFromAccountNick();
@@ -996,41 +1017,44 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
             fromAccountNick = fromAccount;
         }
         isSelfSend = msg.getIsSend();//消息是否为自己发的
-        var contents=convertMsgtoHtml(msg);
-        contents=escape2Html(contents);
-        oneMsg={
-            date:webim.Tool.formatTimeStamp(msg.getTime()),
-            self:isSelfSend,
-            content:contents,
-            headUrl:isSelfSend ? selfInfo.headImage:store.default.getters.getFriendhead(msg.fromAccount),
-            selToID:msg.getSession().id(),
-            uniqueId:msg.uniqueId
+        var contents = convertMsgtoHtml(msg);
+
+        oneMsg = {
+            date: webim.Tool.formatTimeStamp(msg.getTime()),
+            self: isSelfSend,
+            content: contents,
+            headUrl: isSelfSend ? selfInfo.headImage : store.default.getters.getFriendhead(msg.fromAccount),
+            selToID: msg.getSession().id(),
+            uniqueId: msg.uniqueId
         }
         return oneMsg;
     }
+
     //历史消息回调处理
-    function getHistoryMsgCallback(msgs,selToID){
-        var msg,msgList=[];
+    function getHistoryMsgCallback(msgs, selToID) {
+        var msg, msgList = [];
         for (var j in msgs) {//遍历新消息
             msg = msgs[j];
             msgList.push(addMsg(msg));
         }
-        store.default.dispatch('append_historymsg',{
-            selToID:selToID,
-            msgList:msgList
+        store.default.dispatch('append_historymsg', {
+            selToID: selToID,
+            msgList: msgList
         });
         //消息已读上报，并将当前会话的消息设置成自动已读
         webim.setAutoRead(selSess, true, true);
     }
+
     //friendInfo处理
-    function onFriendAddNotify(notify){
+    function onFriendAddNotify(notify) {
         _getProfilePortrait(notify.Accounts,
             function (resp) {
                 if (resp.UserProfileItem && resp.UserProfileItem.length > 0) {
-                    var nick = null, gender = null, allowType = null,imageUrl=null,needset=false, friendList=[],friendInfos;
+                    var nick = null, gender = null, allowType = null, imageUrl = null, needset = false, friendList = [],
+                        friendInfos;
                     for (var i in resp.UserProfileItem) {
                         var to_account = resp.UserProfileItem[i].To_Account;
-                        if(resp.UserProfileItem[i].ProfileItem){ //从未设置过，返回的是undefined
+                        if (resp.UserProfileItem[i].ProfileItem) { //从未设置过，返回的是undefined
                             for (var j in resp.UserProfileItem[i].ProfileItem) {
                                 switch (resp.UserProfileItem[i].ProfileItem[j].Tag) {
                                     case 'Tag_Profile_IM_Nick':
@@ -1041,68 +1065,74 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
                                         break;
                                 }
                             }
-                            friendInfos={
-                                'headImage':imageUrl,
-                                'friendName':nick,
-                                'selToID':to_account,
-                                'unRead':true,
-                                'offline':false
+                            friendInfos = {
+                                'headImage': imageUrl,
+                                'friendName': nick,
+                                'selToID': to_account,
+                                'unRead': true,
+                                'offline': false
                             }
                             //增加一个好友
                             friendList.push(friendInfos);
-                            store.default.dispatch('add_friends',friendList);
-                        }else{
-                            var b2bId=to_account.substring(3,to_account.length);
-                            getThum.default(b2bId,true);
+                            store.default.dispatch('add_friends', friendList);
+                        } else {
+                            var b2bId = to_account.substring(3, to_account.length);
+                            getThum.default(b2bId, true);
                         }
                     }
-                    
+
                 }
             },
             function (err) {
                 console.error(err.ErrorInfo);
             });
-        
 
 
     }
-    function friendInfo(friends){
-        let i = 0; len = friends.length, friendList=[];
-        for(; i < len;i++){
+
+    function friendInfo(friends) {
+        let i = 0;
+        len = friends.length, friendList = [];
+        for (; i < len; i++) {
             friendObj = friends[i];
             var friend_id = friendObj.Info_Account,//好友id
-            friend_name=friendObj.Info_Account,
-            friendHeadUrl = '/images/1.jpg';
-        
-            if (friendObj.SnsProfileItem && friendObj.SnsProfileItem[0] 
+                friend_name = friendObj.Info_Account,
+                friendHeadUrl = '/images/1.jpg';
+
+            if (friendObj.SnsProfileItem && friendObj.SnsProfileItem[0]
                 && friendObj.SnsProfileItem[0].Tag) {
                 friend_name = friendObj.SnsProfileItem[0].Value;
             }
-            if (friendObj.SnsProfileItem && friendObj.SnsProfileItem[1] 
+            if (friendObj.SnsProfileItem && friendObj.SnsProfileItem[1]
                 && friendObj.SnsProfileItem[1].Tag) {
                 friendHeadUrl = friendObj.SnsProfileItem[1].Value;
             }
-            var friendInfos={
-                'headImage':friendHeadUrl,
-                'friendName':friend_name,
-                'selToID':friend_id,
-                'unRead':false,
-                'offline':true
+            var friendInfos = {
+                'headImage': friendHeadUrl,
+                'friendName': friend_name,
+                'selToID': friend_id,
+                'unRead': false,
+                'offline': true
             }
             //增加一个好友
             friendList.push(friendInfos);
         }
         return friendList;
     }
+
     /*把转义字符转换回原来的符号 */
-    function escape2Html(str) { 
-        return  str.replace(/&(lt|gt|amp;nbsp|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+    function escape2Html(str) {
+        return str.replace(/&(lt|gt|amp;nbsp|nbsp|amp|quot);/ig, function (all, t) {
+            return arrEntities[t];
+        });
     }
 
     //自定义提示弹框
-    function mAlert(content,sure) {
-        var box = this.document.createElement('div');
-        box.innerHTML = `<div id="mbox" style="position: absolute;
+    function mAlert(content, sure) {
+        var mbox = document.getElementById('mbox');
+        if (mbox == null) {
+            var box = this.document.createElement('div');
+            box.innerHTML = `<div id="mbox" style="position: absolute;
                         top: 50%;
                         left: 50%;
                         background: #fff;
@@ -1115,25 +1145,26 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
                 color: #fff" id="box_sure">${sure}</span></div>
                 </div>`;
 
-        this.document.getElementById('app').appendChild(box);
-        this.document.getElementById('box_sure').onclick=function () {
-            console.log('执行了吗');
-            //this.parentNode.parentNode.style.display='none';
-            this.parentNode.parentNode.parentNode.remove();
+            this.document.getElementById('app').appendChild(box);
+            this.document.getElementById('box_sure').onclick = function () {
+                this.parentNode.parentNode.parentNode.remove();
+            }
+        } else {
+            return;
         }
     }
-   
+
     //登录
-    exports.login = function(userInfo,okcb, errcb){
-        selfInfo=userInfo;
-        loginInfo.identifier = 'UID'+userInfo.tbMemberId;
+    exports.login = function (userInfo, okcb, errcb) {
+        selfInfo = userInfo;
+        loginInfo.identifier = 'UID' + userInfo.tbMemberId;
         loginInfo.identifierNick = userInfo.memberName;
         loginInfo.userSig = userInfo.signature;
-        
-        webim.login(loginInfo,listeners,loginoptions, okcb, errcb)
+
+        webim.login(loginInfo, listeners, loginoptions, okcb, errcb)
     }
     //加好友
-    exports.applyaddfriend = function(friendname,unread){
+    exports.applyaddfriend = function (friendname, unread) {
         //添加好友
         var add_friend_item = [
             {
@@ -1155,14 +1186,15 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
                         break;
                     }
                 } else {
-                    var friends=resp.ResultItem;
+                    var friends = resp.ResultItem;
                     _getProfilePortrait([friends[0].To_Account],
                         function (resp) {
                             if (resp.UserProfileItem && resp.UserProfileItem.length > 0) {
-                                var nick = null, gender = null, allowType = null,imageUrl=null,needset=false, friendList=[],friendInfos;
+                                var nick = null, gender = null, allowType = null, imageUrl = null, needset = false,
+                                    friendList = [], friendInfos;
                                 for (var i in resp.UserProfileItem) {
                                     var to_account = resp.UserProfileItem[i].To_Account;
-                                    if(resp.UserProfileItem[i].ProfileItem){ //从未设置过，返回的是undefined
+                                    if (resp.UserProfileItem[i].ProfileItem) { //从未设置过，返回的是undefined
                                         for (var j in resp.UserProfileItem[i].ProfileItem) {
                                             switch (resp.UserProfileItem[i].ProfileItem[j].Tag) {
                                                 case 'Tag_Profile_IM_Nick':
@@ -1173,18 +1205,18 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
                                                     break;
                                             }
                                         }
-                                        friendInfos={
-                                            'headImage':imageUrl,
-                                            'friendName':nick,
-                                            'selToID':to_account,
-                                            'unRead':unread||false,
-                                            'offline':false
+                                        friendInfos = {
+                                            'headImage': imageUrl,
+                                            'friendName': nick,
+                                            'selToID': to_account,
+                                            'unRead': unread || false,
+                                            'offline': false
                                         }
                                         //增加一个好友
-                                       
+
                                         friendList.push(friendInfos);
-                                        store.default.dispatch('add_friends',friendList);
-                                    }else{
+                                        store.default.dispatch('add_friends', friendList);
+                                    } else {
                                         // friendInfos={
                                         //     'headImage':'/images/1.jpg',
                                         //     'friendName':'未命名',
@@ -1194,10 +1226,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
                                         // }
                                         // friendList.push(friendInfos);
                                         let b2bid = to_account.substring(3, to_account.length)
-                                        getThum.default(b2bid,true)
+                                        getThum.default(b2bid, true)
                                     }
                                 }
-                                
+
                             }
                         },
                         function (err) {
@@ -1212,7 +1244,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
         );
     }
     //我的好友列表
-    exports.getAllFriend = function(){
+    exports.getAllFriend = function () {
         var get_all_friend_options = {
             'From_Account': loginInfo.identifier,
             'TimeStamp': 0,
@@ -1220,26 +1252,26 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
             'GetCount': totalCount,
             'LastStandardSequence': 0,
             "TagList":
-                    [
-                        "Tag_Profile_IM_Nick",
-                        "Tag_Profile_IM_Image"
-                    ]
+                [
+                    "Tag_Profile_IM_Nick",
+                    "Tag_Profile_IM_Image"
+                ]
         };
 
         webim.getAllFriend(
             get_all_friend_options,
-            function(resp){
+            function (resp) {
                 //console.log('friendNum==>',resp.FriendNum);
-                
+
                 if (resp.FriendNum > 0) {
                     var friends = resp.InfoItem;
                     if (!friends || friends.length == 0) {
                         return;
                     }
-                    var friendList=friendInfo(friends);
+                    var friendList = friendInfo(friends);
                     //console.log('getAllFriend add_friends',friendList);
-                    store.default.dispatch('add_friends',friendList);//向store放入好友列表
-                    
+                    store.default.dispatch('add_friends', friendList);//向store放入好友列表
+
                 }
             },
             function (err) {
@@ -1247,46 +1279,74 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
             })
     }
     //删除好友
-    exports.delFriend = function(selToID,cbOK) {
-        if (!confirm("确定删除该好友吗？")) {
-            return;
-        }
-        var to_account = [];
-        to_account = [
-            selToID
-        ];
-        if (to_account.length <= 0) {
-            return;
-        }
-        var options = {
-            'From_Account': loginInfo.identifier,
-            'To_Account': to_account,
-            //Delete_Type_Both'//单向删除："Delete_Type_Single", 双向删除："Delete_Type_Both".
-            'DeleteType': 'Delete_Type_Single'
-        };
-        webim.deleteFriend(
-            options,
-            cbOK,
-            function (err) {
-                alert(err.ErrorInfo);
+    exports.delFriend = function (selToID, cbOK) {
+        /* if (!confirm("确定删除该好友吗？")) {
+             return;
+         }*/
+        //mAlert(mI18nObj.$t("message.obj.del_mdir"),mI18nObj.$t("message.obj.sure"));
+        var mbox = document.getElementById('mbox');
+        if (mbox == null) {
+            var box = this.document.createElement('div');
+            box.innerHTML = `<div id="mbox" style="position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        background: #fff;
+                        border-radius: 3px;
+                        box-shadow:0 0 12px 2px rgba(0,0,0,.5);
+                        transform:translate(-50%,-50%);
+                            padding: 0px 5px 5px 5px;">
+                <div style="margin: 15px 10px">${mI18nObj.$t("message.obj.del_friend")}</div>
+                <div style="text-align: right;margin: 8px 3px 5px 0px;">
+                    <span style=";padding: 5px 10px;border-radius: 3px;background-color: #2799ea;
+                    color: #fff" id="box_sure">${mI18nObj.$t("message.obj.sure")}</span>
+                    <span style=";padding: 5px 10px;border-radius: 3px;background-color: #2799ea;
+                    color: #fff" id="box_off">${mI18nObj.$t("message.obj.off")}</span>
+                </div>
+                </div>`;
+
+            this.document.getElementById('app').appendChild(box);
+            this.document.getElementById('box_sure').onclick = function () {
+                var to_account = [];
+                to_account = [
+                    selToID
+                ];
+                if (to_account.length <= 0) {
+                    return;
+                }
+                var options = {
+                    'From_Account': loginInfo.identifier,
+                    'To_Account': to_account,
+                    //Delete_Type_Both'//单向删除："Delete_Type_Single", 双向删除："Delete_Type_Both".
+                    'DeleteType': 'Delete_Type_Single'
+                };
+                webim.deleteFriend(
+                    options,
+                    cbOK,
+                    function (err) {
+                        alert(err.ErrorInfo);
+                    }
+                );
+                this.parentNode.parentNode.parentNode.remove();
             }
-        );
+            this.document.getElementById('box_off').onclick = function (e) {
+                this.parentNode.parentNode.parentNode.remove();
+            }
+        }
+
     }
 
     //发送消息
-    exports.sendMsg = function(msgtosend,selToID){
-        if(!selToID){
-            //alert(mI18nObj.$t("message.obj.no_friend"));
-            mAlert(mI18nObj.$t("message.obj.no_friend"),mI18nObj.$t("message.obj.sure"));
+    exports.sendMsg = function (msgtosend, selToID) {
+        if (!selToID) {
+            mAlert(mI18nObj.$t("message.obj.no_friend"), mI18nObj.$t("message.obj.sure"));
             return;
         }
-        msgtosend=zjlaoEmoji(msgtosend);//转换后的表情
-        msgtosend=escape2Html(msgtosend)
+        msgtosend = zjlaoEmoji(msgtosend);//转换后的表情
+        //msgtosend=escape2Html(msgtosend)
         var msgLen = webim.Tool.getStrBytes(msgtosend);//获取的字节数
 
         if (msgtosend.length < 1) {
-            //alert(mI18nObj.$t("message.obj.send_msg"));
-            mAlert(mI18nObj.$t("message.obj.send_msg"),mI18nObj.$t("message.obj.sure"));
+            mAlert(mI18nObj.$t("message.obj.send_msg"), mI18nObj.$t("message.obj.sure"));
             return;
         }
 
@@ -1294,31 +1354,31 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
         if (selType == webim.SESSION_TYPE.C2C) {
             maxLen = webim.MSG_MAX_LENGTH.C2C;
             errInfo = mI18nObj.$t("message.obj.msg_length");
-        } 
+        }
         if (msgLen > maxLen) {
             alert(errInfo);
             return;
         }
-        if(!selSess){
-            var selSess=new webim.Session(selType,selToID,selToID,friendHeadUrl,Math.round(new Date().getTime() / 1000))
+        if (!selSess) {
+            var selSess = new webim.Session(selType, selToID, selToID, friendHeadUrl, Math.round(new Date().getTime() / 1000))
         }
-        var isSend=true,//是否为自己发送
-            seq=-1,
-            random=Math.round(Math.random()*4294967296),
-            msgTime=Math.round(new Date().getTime()/1000),//消息时间戳
+        var isSend = true,//是否为自己发送
+            seq = -1,
+            random = Math.round(Math.random() * 4294967296),
+            msgTime = Math.round(new Date().getTime() / 1000),//消息时间戳
             subType;
-        if(selType==webim.SESSION_TYPE.C2C){
-            subType=webim.C2C_MSG_SUB_TYPE.COMMON;
+        if (selType == webim.SESSION_TYPE.C2C) {
+            subType = webim.C2C_MSG_SUB_TYPE.COMMON;
         }
-        var msg=new webim.Msg(selSess,isSend,seq,random,msgTime,loginInfo.identifier,subType,loginInfo.identifierNick),
+        var msg = new webim.Msg(selSess, isSend, seq, random, msgTime, loginInfo.identifier, subType, loginInfo.identifierNick),
             text_obj,
             //解析文本和表情
             expr = /\[[^[\]]{1,3}\]/mg,
             emotions = msgtosend.match(expr);
 
-            //console.log("msg--->", msg);
-            //console.log('msg.PushInfoBoolean-->',msg.PushInfoBoolean);
-            //console.log('msg-->')
+        //console.log("msg--->", msg);
+        //console.log('msg.PushInfoBoolean-->',msg.PushInfoBoolean);
+        //console.log('msg-->')
         if (!emotions || emotions.length < 1) {
             text_obj = new webim.Msg.Elem.Text(msgtosend);
             msg.addText(text_obj);
@@ -1351,44 +1411,53 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
             "PushFlag": 0,
             "Ext": loginInfo.identifier, //离线推送透传内容
         };
-    
+
         msg.PushInfoBoolean = true; //是否开启离线推送push同步
-        var _this=this;
+        var _this = this;
         webim.sendMsg(msg,
             function (resp) {//调用消息发送接口
-                //console.log(resp,'sendmsg cb')
                 if (selType == webim.SESSION_TYPE.C2C) {//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
-                    iframe=document.getElementById('editor'),
-                    content=iframe.contentDocument || iframe.contentWindow.document;
-                    content.body.innerHTML="";
-                    var msgList=[];
+                    iframe = document.getElementById('editor'),
+                        content = iframe.contentDocument || iframe.contentWindow.document;
+                    content.body.innerHTML = "";
+                    var msgList = [];
+                    var flag = new webim.Msg.Elem.Text('succ');
+                    msg.addText(flag);
                     msgList.push(addMsg(msg));
-                    store.default.dispatch('append_msg',{
-                        selToID:selToID,
-                        msgList:msgList
+                    store.default.dispatch('append_msg', {
+                        selToID: selToID,
+                        msgList: msgList
+                    });
+                    store.default.dispatch('update_friend_order',{
+                        selToID: selToID,
                     });
                 }
                 webim.Tool.setCookie("tmpmsg_" + selToID, '', 0);
             }, function (err) {
-                //alert(err.ErrorInfo);
                 //发送出错处理
-                if(err.ErrorInfo){
-                    iframe=document.getElementById('editor'),
-                    content=iframe.contentDocument || iframe.contentWindow.document;
-                    content.body.innerHTML="";
-                    var msgList=[];
+                console.log('err.ErrorInfo.response======', err);
+                if (err.ErrorCode == -2) {
+                    mAlert(mI18nObj.$t("message.obj.check_network"), mI18nObj.$t("message.obj.sure"));
+                    return;
+                } else {
+                    iframe = document.getElementById('editor'),
+                        content = iframe.contentDocument || iframe.contentWindow.document;
+                    content.body.innerHTML = "";
+                    var msgList = [];
+                    var flag = new webim.Msg.Elem.Text('fail');
+                    msg.addText(flag);
                     msgList.push(addMsg(msg));
-                    store.default.dispatch('append_msg',{
-                        selToID:selToID,
-                        msgList:msgList
+                    store.default.dispatch('append_msg', {
+                        selToID: selToID,
+                        msgList: msgList
                     });
                 }
             });
-        
+
         /*把表情串转为字符*/
-        function zjlaoEmoji(str){
-            var reg= /<img[^>]*>/ig;
-            var num= str.replace(reg, function(word){
+        function zjlaoEmoji(str) {
+            var reg = /<img[^>]*>/ig;
+            var num = str.replace(reg, function (word) {
                 return word.split('xfei')[0].split('name="')[1];
             });
             return num;
@@ -1396,21 +1465,21 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
     }
 
     //发送自定义消息
-    exports.sendCustomMsg = function (msgtosend, selToID){
+    exports.sendCustomMsg = function (msgtosend, selToID) {
         if (!selToID) {
             //alert(mI18nObj.$t("message.obj.no_friend"));
-            mAlert(mI18nObj.$t("message.obj.no_friend"),mI18nObj.$t("message.obj.sure"));
+            mAlert(mI18nObj.$t("message.obj.no_friend"), mI18nObj.$t("message.obj.sure"));
             return;
         }
         //自定义消息处理
         var data;
         data = msgtosend;
-    
+
         var msgLen = webim.Tool.getStrBytes(data);
-    
+
         if (data.length < 1) {
             //alert(mI18nObj.$t("message.obj.send_msg"));
-            mAlert(mI18nObj.$t("message.obj.send_msg"),mI18nObj.$t("message.obj.sure"));
+            mAlert(mI18nObj.$t("message.obj.send_msg"), mI18nObj.$t("message.obj.sure"));
             return;
         }
         var maxLen, errInfo;
@@ -1425,81 +1494,80 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
             alert(errInfo);
             return;
         }
-    
+
         if (!selSess) {
             selSess = new webim.Session(selType, selToID, selToID, friendHeadUrl, Math.round(new Date().getTime() / 1000));
         }
-        var msg = new webim.Msg(selSess, true,-1,-1,-1,loginInfo.identifier,0,loginInfo.identifierNick);
+        var msg = new webim.Msg(selSess, true, -1, -1, -1, loginInfo.identifier, 0, loginInfo.identifierNick);
         var custom_obj = new webim.Msg.Elem.Custom(data);
         msg.addCustom(custom_obj);
         //调用发送消息接口
         webim.sendMsg(msg, function (resp) {
-            if(selType==webim.SESSION_TYPE.C2C){//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
-                var msgList=[];
+            if (selType == webim.SESSION_TYPE.C2C) {//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
+                var msgList = [];
                 msgList.push(addMsg(msg));
-                console.log(msgList,'zidingyixiaoxi ')
-                store.default.dispatch('append_msg',{
-                    selToID:selToID,
-                    msgList:msgList
+                store.default.dispatch('append_msg', {
+                    selToID: selToID,
+                    msgList: msgList
                 });
             }
         }, function (err) {
             alert(err.ErrorInfo);
         });
     }
-    
+
     //获取最新的c2c历史消息,用于切换好友聊天，重新拉取好友的聊天消息
-    exports.getLastHistoryMsg = function(selToID){
+    exports.getLastHistoryMsg = function (selToID) {
         var lastMsgTime = 0//第一次拉取好友历史消息时，必须传0
-        ,msgKey = ''
-        ,options = {
-        'Peer_Account': selToID, //好友帐号
-        'MaxCnt': reqMsgCount, //拉取消息条数
-        'LastMsgTime': lastMsgTime, //最近的消息时间，即从这个时间点向前拉取历史消息
-        'MsgKey': msgKey
+            , msgKey = ''
+            , options = {
+            'Peer_Account': selToID, //好友帐号
+            'MaxCnt': reqMsgCount, //拉取消息条数
+            'LastMsgTime': lastMsgTime, //最近的消息时间，即从这个时间点向前拉取历史消息
+            'MsgKey': msgKey
         };
         selSess = null;
         webim.MsgStore.delSessByTypeId(selType, selToID);
-    
-        webim.getC2CHistoryMsgs(
-                options,
-                function (resp) {
-                    var complete = resp.Complete;//是否还有历史消息可以拉取，1-表示没有，0-表示有
-                    var retMsgCount = resp.MsgCount;//返回的消息条数，小于或等于请求的消息条数，小于的时候，说明没有历史消息可拉取了
 
-                    if (resp.MsgList.length == 0) {
-                        store.default.dispatch('set_msgtip',3);
-                        console.error("没有历史消息了:data=" + JSON.stringify(options));
-                        return;
-                    }
-                    getPrePageC2CHistroyMsgInfoMap[selToID] = {//保留服务器返回的最近消息时间和消息Key,用于下次向前拉取历史消息
-                        'LastMsgTime': resp.LastMsgTime,
-                        'MsgKey': resp.MsgKey
-                    };
-                    //if (cbOk)
-                    //console.log(resp.MsgList,'msgList');
-                    store.default.dispatch('set_msgtip',1)
-                    var msgs=[];
-                    for(var j in resp.MsgList){
-                        msgs.push(addMsg(resp.MsgList[j]));
-                    }
-                    store.default.dispatch('set_msgtip',1)
-                    store.default.dispatch('init_msg',{
-                        selToID:selToID,
-                        msgList:msgs
-                    });
-                },
-                function(err){
-                    console.error('getLastHistoryMsg=>',err.ErrorInfo)        
+        webim.getC2CHistoryMsgs(
+            options,
+            function (resp) {
+                var complete = resp.Complete;//是否还有历史消息可以拉取，1-表示没有，0-表示有
+                var retMsgCount = resp.MsgCount;//返回的消息条数，小于或等于请求的消息条数，小于的时候，说明没有历史消息可拉取了
+
+                if (resp.MsgList.length == 0) {
+                    store.default.dispatch('set_msgtip', 3);
+                    console.error("没有历史消息了:data=" + JSON.stringify(options));
+                    return;
                 }
+                getPrePageC2CHistroyMsgInfoMap[selToID] = {//保留服务器返回的最近消息时间和消息Key,用于下次向前拉取历史消息
+                    'LastMsgTime': resp.LastMsgTime,
+                    'MsgKey': resp.MsgKey
+                };
+                //if (cbOk)
+                //console.log(resp.MsgList,'msgList');
+                store.default.dispatch('set_msgtip', 1)
+                var msgs = [];
+                for (var j in resp.MsgList) {
+                    msgs.push(addMsg(resp.MsgList[j]));
+                }
+                store.default.dispatch('set_msgtip', 1)
+                store.default.dispatch('init_msg', {
+                    selToID: selToID,
+                    msgList: msgs
+                });
+            },
+            function (err) {
+                console.error('getLastHistoryMsg=>', err.ErrorInfo)
+            }
         );
     }
 
     //向上翻页，获取更早的好友历史消息
-    exports.getPrePageHistorymsg = function(selToID){
+    exports.getPrePageHistorymsg = function (selToID) {
         var tempInfo = getPrePageC2CHistroyMsgInfoMap[selToID]//获取下一次拉取的c2c消息时间和消息Key
-        ,lastMsgTime
-        ,msgKey;
+            , lastMsgTime
+            , msgKey;
         if (tempInfo) {
             lastMsgTime = tempInfo.LastMsgTime;
             msgKey = tempInfo.MsgKey;
@@ -1519,7 +1587,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
             function (resp) {
                 var complete = resp.Complete;//是否还有历史消息可以拉取，1-表示没有，0-表示有
                 if (resp.MsgList.length == 0) {
-                    store.default.dispatch('set_msgtip',3);
+                    store.default.dispatch('set_msgtip', 3);
                     webim.Log.warn("没有历史消息了:data=" + JSON.stringify(options));
                     return;
                 }
@@ -1527,58 +1595,58 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
                     'LastMsgTime': resp.LastMsgTime,
                     'MsgKey': resp.MsgKey
                 };
-                if(resp.MsgList){
-                    store.default.dispatch('set_msgtip',1)
-                    getHistoryMsgCallback(resp.MsgList,selToID);
+                if (resp.MsgList) {
+                    store.default.dispatch('set_msgtip', 1)
+                    getHistoryMsgCallback(resp.MsgList, selToID);
                 }
             },
-            function(err){
-                console.error('getPreHistoryMsg=>',err.ErrorInfo)        
+            function (err) {
+                console.error('getPreHistoryMsg=>', err.ErrorInfo)
             }
         );
     }
     //获取个人的头像和id
-    exports.getLoginInfo=function(){
+    exports.getLoginInfo = function () {
         return {
-            identifier:selfInfo.tbMemberId,
-            usersig:selfInfo.signature
+            identifier: selfInfo.tbMemberId,
+            usersig: selfInfo.signature
         }
     }
     //获取Emotions对象
-    exports.Emotions=function(){
+    exports.Emotions = function () {
         return webim.Emotions;
     }
     //上传图片
-    exports.uploadPic=function(file,selToID,cbOk){
+    exports.uploadPic = function (file, selToID, cbOk) {
         var businessType;
         if (selType == webim.SESSION_TYPE.C2C) {//向好友发文件
             businessType = webim.UPLOAD_PIC_BUSSINESS_TYPE.C2C_MSG;
         }
-       
+
         var opt = {
             'file': file, //图片对象
             //'onProgressCallBack': onProgressCallBack, //上传图片进度条回调函数
             //'abortButton': document.getElementById('upd_abort'), //停止上传图片按钮
-            'From_Account':loginInfo.identifier, //发送者帐号
+            'From_Account': loginInfo.identifier, //发送者帐号
             'To_Account': selToID, //接收者
             'businessType': businessType//业务类型
         };
         webim.uploadPic(opt,
             function (resp) {
                 //console.log(resp,'uploadPic')
-                images=resp;
+                images = resp;
                 //上传成功发送图片
-                var URL_INFO=resp.URL_INFO;
-                var picBox=document.querySelector('#previewPicDiv');
-                picBox.innerHTML="";
-                var img=new Image();
-                img.src=URL_INFO[2].DownUrl+'#'+URL_INFO[1].DownUrl+'#'+URL_INFO[0].DownUrl;
+                var URL_INFO = resp.URL_INFO;
+                var picBox = document.querySelector('#previewPicDiv');
+                picBox.innerHTML = "";
+                var img = new Image();
+                img.src = URL_INFO[2].DownUrl + '#' + URL_INFO[1].DownUrl + '#' + URL_INFO[0].DownUrl;
                 picBox.appendChild(img);
                 cbOk();
-                
+
                 //Msg.sendPic(resp,selToID,selType,selSess,friendHeadUrl,_this.$store);
                 //清空file的value值
-                document.getElementById('file').value='';
+                document.getElementById('file').value = '';
 
             },
             function (err) {
@@ -1587,21 +1655,21 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
         );
     }
     //上传64编码的图片
-    exports.uploadPicByBase64=function(base64str,selToID,cbOk){
+    exports.uploadPicByBase64 = function (base64str, selToID, cbOk) {
         var businessType;//业务类型，1-发群图片，2-向好友发图片
         if (selType == webim.SESSION_TYPE.C2C) {//向好友发图片
             businessType = webim.UPLOAD_PIC_BUSSINESS_TYPE.C2C_MSG;
         }
-        base64str=electron.clipboard.readImage();
-        var dataArr=base64str.toPng();
-        var base64Img=base64str.toDataURL();
-        var base64=base64Img.substring(22);
-        var equalIndex= base64.indexOf('=');
-        if(base64.indexOf('=')>0)
-        {
-            base64=base64.substring(0, equalIndex);
+        base64str = electron.clipboard.readImage();
+        var dataArr = base64str.toPng();
+        var base64Img = base64str.toDataURL();
+        var base64 = base64Img.substring(22);
+        var equalIndex = base64.indexOf('=');
+        if (base64.indexOf('=') > 0) {
+            base64 = base64.substring(0, equalIndex);
         }
-        var len=base64.length;var fileSize=parseInt(len-len/8*2);
+        var len = base64.length;
+        var fileSize = parseInt(len - len / 8 * 2);
 
         var spark = new SparkMD5.ArrayBuffer(); //获取MD5对象
         spark.append(dataArr);
@@ -1609,23 +1677,23 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
         var opt = {
             'toAccount': selToID, //接收者
             'businessType': businessType,//图片的使用业务类型
-            'fileMd5':fileMd5,//fileMd5, //图片md5
-            'totalSize':fileSize, //图片大小,Byte
-            'base64Str':base64 //图片base64编码
-            }
+            'fileMd5': fileMd5,//fileMd5, //图片md5
+            'totalSize': fileSize, //图片大小,Byte
+            'base64Str': base64 //图片base64编码
+        }
         webim.uploadPicByBase64(opt,
             function (resp) {
-               // console.log(resp,'uploadPicbase64')
-                images=resp;
+                // console.log(resp,'uploadPicbase64')
+                images = resp;
                 //上传成功发送图片
-                var URL_INFO=resp.URL_INFO;
-                var picBox=document.querySelector('#previewPicDiv');
-                picBox.innerHTML="";
-                var img=new Image();
-                img.src=URL_INFO[2].DownUrl+'#'+URL_INFO[1].DownUrl+'#'+URL_INFO[0].DownUrl;
+                var URL_INFO = resp.URL_INFO;
+                var picBox = document.querySelector('#previewPicDiv');
+                picBox.innerHTML = "";
+                var img = new Image();
+                img.src = URL_INFO[2].DownUrl + '#' + URL_INFO[1].DownUrl + '#' + URL_INFO[0].DownUrl;
                 picBox.appendChild(img);
                 cbOk();
-                
+
                 //Msg.sendPic(resp,selToID,selType,selSess,friendHeadUrl,_this.$store);
                 //清空file的value值
                 //document.getElementById('previewPicDiv').innerHTML='';
@@ -1637,15 +1705,15 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
         );
     }
     //发送图片
-    exports.sendPic=function(selToID){
+    exports.sendPic = function (selToID) {
         if (!selToID) {
             //alert(mI18nObj.$t("message.obj.no_friend"));
-            mAlert(mI18nObj.$t("message.obj.no_friend"),mI18nObj.$t("message.obj.sure"));
+            mAlert(mI18nObj.$t("message.obj.no_friend"), mI18nObj.$t("message.obj.sure"));
             return;
         }
         if (!selSess) {
-            selSess = new webim.Session(selType, selToID, selToID, friendHeadUrl, 
-            Math.round(new Date().getTime() / 1000));
+            selSess = new webim.Session(selType, selToID, selToID, friendHeadUrl,
+                Math.round(new Date().getTime() / 1000));
         }
         var msg = new webim.Msg(selSess, true);
         var images_obj = new webim.Msg.Elem.Images(images.File_UUID);
@@ -1664,8 +1732,8 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
                     type = 2;//大图
                     break;
             }
-            newImg = new webim.Msg.Elem.Images.Image(type, img.PIC_Size, img.PIC_Width, 
-            img.PIC_Height, img.DownUrl);
+            newImg = new webim.Msg.Elem.Images.Image(type, img.PIC_Size, img.PIC_Width,
+                img.PIC_Height, img.DownUrl);
             images_obj.addImage(newImg);
         }
         //处理图片
@@ -1674,42 +1742,42 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
             "PushFlag": 0,
             "Ext": selToID, //离线推送透传内容
         };
-    
+
         msg.PushInfoBoolean = true; //是否开启离线推送push同步
         //调用发送图片接口
         webim.sendMsg(msg,
-            function(resp){
-                var msgList=[];
+            function (resp) {
+                var msgList = [];
                 msgList.push(addMsg(msg));
-                store.default.dispatch('append_msg',{
-                    selToID:selToID,
-                    msgList:msgList
+                store.default.dispatch('append_msg', {
+                    selToID: selToID,
+                    msgList: msgList
                 })
-                document.getElementById('previewPicDiv').innerHTML='';
-            },function(err){
+                document.getElementById('previewPicDiv').innerHTML = '';
+            }, function (err) {
                 alert(err.ErrorInfo);
-        });
+            });
     }
     //设置好友头像
-    exports.setFriendHeadImg=function(friendHeadimg){
-        friendHeadUrl=friendHeadimg;
+    exports.setFriendHeadImg = function (friendHeadimg) {
+        friendHeadUrl = friendHeadimg;
     },
     /*设置已读*/
-    exports.setRead=function(selToID){
+    exports.setRead = function (selToID) {
         //console.log('setread====')
-        var selSess=webim.MsgStore.sessByTypeId(selType, selToID);
+        var selSess = webim.MsgStore.sessByTypeId(selType, selToID);
         if (!selSess) {
             selSess = new webim.Session(selType, selToID, selToID, friendHeadUrl, Math.round(new Date().getTime() / 1000));
         }
         webim.setAutoRead(selSess, true, true)
     },
     /*退出登录 */
-    exports.logout=function(cbOK,cbErr){
+    exports.logout = function (cbOK, cbErr) {
         //console.log('logout')
-        webim.logout(cbOK,cbErr)
+        webim.logout(cbOK, cbErr)
     }
     /* 获取i18n对象*/
-    exports.getI18n=function (obj) {
+    exports.getI18n = function (obj) {
         mI18nObj = obj;
         //console.log('mI18nObj=======',mI18nObj.$i18n);
         curLan = mI18nObj.$i18n.locale;
@@ -1717,7 +1785,383 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var SparkMD5=__webpack_require__(18); //获取
 
     }
 
+    function uploadPicByBase64(base64str,selToID,cbOk){
+        return new Promise(function(resolve, reject){
+            var businessType;//业务类型，1-发群图片，2-向好友发图片
+            if (selType == webim.SESSION_TYPE.C2C) {//向好友发图片
+                businessType = webim.UPLOAD_PIC_BUSSINESS_TYPE.C2C_MSG;
+            }
+            base64str = electron.clipboard.readImage();
+            var dataArr = base64str.toPng();
+            var base64Img = base64str.toDataURL();
+            var base64 = base64Img.substring(22);
+            var equalIndex = base64.indexOf('=');
+            if(base64.indexOf('=')>0)
+            {
+                base64=base64.substring(0, equalIndex);
+            }
+            var len=base64.length;
+            var fileSize=parseInt(len-len/8*2);
 
+            var spark = new SparkMD5.ArrayBuffer(); //获取MD5对象
+            spark.append(dataArr);
+            var fileMd5 = spark.end();
+            var opt = {
+                'toAccount': selToID, //接收者
+                'businessType': businessType,//图片的使用业务类型
+                'fileMd5':fileMd5,//fileMd5, //图片md5
+                'totalSize':fileSize, //图片大小,Byte
+                'base64Str':base64 //图片base64编码
+                }
+            webim.uploadPicByBase64(opt,
+                function (resp) {
+                    resolve({
+                        type: 'success',
+                        data: resp
+                    });
+                    // console.log(resp,'uploadPicbase64')
+                    // console.log(resp);
+                    return false;
+                    images=resp;
+                    //上传成功发送图片
+                    var URL_INFO=resp.URL_INFO;
+                    var picBox=document.querySelector('#previewPicDiv');
+                    picBox.innerHTML="";
+                    var img=new Image();
+                    img.src=URL_INFO[2].DownUrl+'#'+URL_INFO[1].DownUrl+'#'+URL_INFO[0].DownUrl;
+                    picBox.appendChild(img);
+                    cbOk();
+                },
+                function (err) {
+                    if(err.ErrorCode == -4){ // 没有登录，走Promise的捕错流程
+                        reject(err);
+                    }else{ // 其他错误，走自定义的错误处理流程
+                        resolve({
+                            type: 'error',
+                            data: {
+                                err,
+                                base64str,
+                                selToID
+                            }
+                        });
+                    }
+                    // alert(err.ErrorInfo);
+                }
+            );
+        });
+        
+    }
+
+    function returnImageObject(image){
+        var images_obj = new webim.Msg.Elem.Images(image.File_UUID);
+        for (var i in image.URL_INFO) {
+            var img = image.URL_INFO[i];
+            var newImg;
+            var type;
+            switch (img.PIC_TYPE) {
+                case 1://原图
+                    type = 1;//原图
+                    break;
+                case 2://小图（缩略图）
+                    type = 3;//小图
+                    break;
+                case 4://大图
+                    type = 2;//大图
+                    break;
+            }
+            newImg = new webim.Msg.Elem.Images.Image(type, img.PIC_Size, img.PIC_Width, img.PIC_Height, img.DownUrl);
+            images_obj.addImage(newImg);
+        }
+        return images_obj;
+    }
+
+    // 上传编辑器中的base64格式图片
+    function uploadImageOfMsg(msgtosend, selToID){
+        var imageExpr = /<img[^>]*\bdata-format\b[^>]*[\/]*>/img;  // 匹配带有data-format属性的img标签 图片消息
+        var images = msgtosend.match(imageExpr);
+        var imageArray = [];
+        let promiseArray = [];
+        if(images && images.length > 0){
+            for(let i = 0, len = images.length; i < len; i++){
+                let base64str = images[i].match(/src\s*=\s*[\'|\"][^\s\'\"]*/gim)[0].split('=')[1];
+                let p = uploadPicByBase64(base64str, selToID);
+                promiseArray.push(p);
+            }
+        }
+        return promiseArray;
+    }
+    // 执行同步上传图片，第一次失败后，重新执行失败的，重新执行失败后，提示错误，请求重新发送信息
+    function executePromiseArray(promiseArray, index, cb){
+        if(promiseArray.length < 1){
+            cb([]);
+            return false;
+        }
+        index++;
+        Promise.all(promiseArray)
+        .then(function(values){
+            let rejectPromiseArray = [];
+            for(let i = 0; i < values.length; i++){
+                if(values[i].type == 'error'){
+                    rejectPromiseArray.push(uploadPicByBase64(values[i].base64str, values[i].selToID));
+                }
+            }
+            if(rejectPromiseArray.length > 0 && index <= 2){
+                executePromiseArray(rejectPromiseArray, index, cb);
+            }else if(rejectPromiseArray.length > 0 && index > 2){
+                alert('上传图片失败，请重新发送。');
+            }else if(rejectPromiseArray.length < 1 && index <= 2){
+                cb(values);
+            }
+        })
+        .catch(function(err){
+            alert(err.ErrorInfo);
+        });
+    }
+
+    function exist(str, array){
+        let temp = false;
+        for(let i = 0; i < array.length; i++){
+            temp = str.includes(array[i]);
+            if(temp){
+                break;
+            }
+        }
+        return temp;
+    }
+
+    // 增加一条自定义消息（包括文本、表情、图片(base64格式)3种元素） by xh
+    exports.addCustomMsg = function(msgtosend, selToID){
+        if (!selToID) {
+            mAlert(mI18nObj.$t("message.obj.no_friend"), mI18nObj.$t("message.obj.sure"));
+            return;
+        }
+        if (msgtosend.length < 1) {
+            mAlert(mI18nObj.$t("message.obj.send_msg"), mI18nObj.$t("message.obj.sure"));
+            return;
+        }
+        if(!selSess){
+            var selSess=new webim.Session(selType,selToID,selToID,friendHeadUrl,Math.round(new Date().getTime() / 1000))
+        }
+        var isSend=true,//是否为自己发送
+            seq=-1,
+            random=Math.round(Math.random()*4294967296),
+            msgTime=Math.round(new Date().getTime()/1000),//消息时间戳
+            subType;
+        if(selType==webim.SESSION_TYPE.C2C){
+            subType=webim.C2C_MSG_SUB_TYPE.COMMON;
+        }
+
+        var msg = new webim.Msg(selSess, isSend, seq, random, msgTime, loginInfo.identifier, subType, loginInfo.identifierNick);   
+        var text_obj, face_obj, tmsg, emotionIndex, emotion, image, restMsgIndex;
+
+        executePromiseArray(uploadImageOfMsg(msgtosend, selToID), 0, function(values){
+            let imagesMsg_array = [];
+            if(values && values.length > 0){
+                for(let i = 0; i < values.length; i++){
+                    imagesMsg_array.push(returnImageObject(values[i].data));
+                }
+            }
+
+            // 匹配带有data-format属性的img标签 图片消息
+            var imageExpr = /<img[^>]*\bdata-format\b[^>]*[\/]*>/img;
+            // 匹配带有xfei标记的img标签  表情消息 
+            var faceExpr = /<img[^>]*xfei\b[^>]*[\/]*>/img;
+            let imageSign = 0;
+            msgtosend = msgtosend.replace(faceExpr, function(faceword){
+                return faceword.match(/alt\s*=\s*[\'|\"]+[^\s\'\"]*[\'|\"]+/gim)[0].split('=')[1].split('"')[1];
+            });
+            msgtosend = msgtosend.replace(imageExpr, function(imageword){
+                return `{imageSign_${imageSign++}}`;
+            });
+
+            var maxLen, errInfo;
+            if (selType == webim.SESSION_TYPE.C2C) {
+                maxLen = webim.MSG_MAX_LENGTH.C2C;
+                errInfo = mI18nObj.$t("message.obj.msg_length");
+            } 
+            var msgLen = webim.Tool.getStrBytes(msgtosend);
+            if (msgLen > maxLen) {
+                console.log(msgLen, maxLen);
+                alert(errInfo);
+                return;
+            }
+
+            var imageStringExpr = /\{imageSign_[^{\}]{1,3}\}/mg;
+            var faceStringExpr = /\[[^[\]]{1,3}\]/mg;
+
+            var images = msgtosend.match(imageStringExpr);
+            var emotions = msgtosend.match(faceStringExpr);
+
+            // 只有文本
+            if((!images || images.length < 1) && (!emotions || emotions.length < 1)){
+                text_obj = new webim.Msg.Elem.Text(msgtosend);
+                msg.addText(text_obj);
+            }else if((emotions && emotions.length > 0) && (!images || images.length < 1)){ // 包含表情，即文本+表情
+                for(var i = 0; i < emotions.length; i++){
+                    tmsg = msgtosend.substring(0, msgtosend.indexOf(emotions[i]));
+                    if(tmsg){
+                        text_obj = new webim.Msg.Elem.Text(tmsg);
+                        msg.addText(text_obj);
+                    }
+                    emotionIndex = webim.EmotionDataIndexs[emotions[i]];
+                    emotion = webim.Emotions[emotionIndex];
+                    if (emotion) {
+                        face_obj = new webim.Msg.Elem.Face(emotionIndex, emotions[i]);
+                        msg.addFace(face_obj);
+                    } else {
+                        text_obj = new webim.Msg.Elem.Text(emotions[i]);
+                        msg.addText(text_obj);
+                    }
+                    restMsgIndex = msgtosend.indexOf(emotions[i]) + emotions[i].length;
+                    msgtosend = msgtosend.substring(restMsgIndex);
+
+                    if (!exist(msgtosend, emotions)) {
+                        text_obj = new webim.Msg.Elem.Text(msgtosend);
+                        msg.addText(text_obj);
+                    }
+                }
+            }else if((images && images.length > 0) && (!emotions || emotions.length < 1)){ // 包含图片，即文本+图片
+                for(var i = 0; i < images.length; i++){
+                    tmsg = msgtosend.substring(0, msgtosend.indexOf(images[i]));
+                    if(tmsg){
+                        text_obj = new webim.Msg.Elem.Text(tmsg);
+                        msg.addText(text_obj);
+                    }
+                    image = imagesMsg_array[i];
+                    if (image) {
+                        msg.addImage(image);
+                    } else {
+                        text_obj = new webim.Msg.Elem.Text(images[i]);
+                        msg.addText(text_obj);
+                    }
+                    restMsgIndex = msgtosend.indexOf(images[i]) + images[i].length;
+                    msgtosend = msgtosend.substring(restMsgIndex);
+
+                    if (!exist(msgtosend, images)) {
+                        text_obj = new webim.Msg.Elem.Text(msgtosend);
+                        msg.addText(text_obj);
+                    }
+                }
+            }else if(emotions &&  emotions.length > 0 && images && images.length > 0){ // 包含图片，表情，即文本+表情+图片 
+                for(let i = 0; i < images.length; i++){
+                    tmsg = msgtosend.substring(0, msgtosend.indexOf(images[i]));
+                    if(tmsg){
+                        if(exist(tmsg, emotions)){
+                            for(let n = 0; n < emotions.length; n++){
+                                subtmsg = tmsg.substring(0, tmsg.indexOf(emotions[n]));
+                                if(subtmsg){
+                                    text_obj = new webim.Msg.Elem.Text(subtmsg);
+                                    msg.addText(text_obj);
+                                }
+                                emotionIndex = webim.EmotionDataIndexs[emotions[n]];
+                                emotion = webim.Emotions[emotionIndex];
+                                if (emotion) {
+                                    face_obj = new webim.Msg.Elem.Face(emotionIndex, emotions[n]);
+                                    msg.addFace(face_obj);
+                                } else {
+                                    text_obj = new webim.Msg.Elem.Text(emotions[n]);
+                                    msg.addText(text_obj);
+                                }
+                                subRestMsgIndex = tmsg.indexOf(emotions[n]) + emotions[n].length;
+                                tmsg = tmsg.substring(subRestMsgIndex);
+                                if (!exist(tmsg, emotions)) {
+                                    text_obj = new webim.Msg.Elem.Text(tmsg);
+                                    msg.addText(text_obj);
+                                }
+                            }
+                        }else{
+                            text_obj = new webim.Msg.Elem.Text(tmsg);
+                            msg.addText(text_obj);
+                        }
+                    }
+                    image = imagesMsg_array[i];
+                    if (image) {
+                        msg.addImage(image);
+                    } else {
+                        text_obj = new webim.Msg.Elem.Text(images[i]);
+                        msg.addText(text_obj);
+                    }
+                    
+                    restMsgIndex = msgtosend.indexOf(images[i]) + images[i].length;
+                    msgtosend = msgtosend.substring(restMsgIndex);
+                    
+                    if(!exist(msgtosend, images)) {
+                        if(exist(msgtosend, emotions)){
+                            for(let m = 0; m < emotions.length; m++){
+                                subtmsg = msgtosend.substring(0, msgtosend.indexOf(emotions[m]));
+                                if(subtmsg && subtmsg.trim() != ''){
+                                    text_obj = new webim.Msg.Elem.Text(subtmsg);
+                                    msg.addText(text_obj);
+                                }
+                                emotionIndex = webim.EmotionDataIndexs[emotions[m]];
+                                emotion = webim.Emotions[emotionIndex];
+                                if (emotion) {
+                                    face_obj = new webim.Msg.Elem.Face(emotionIndex, emotions[m]);
+                                    msg.addFace(face_obj);
+                                } else {
+                                    text_obj = new webim.Msg.Elem.Text(emotions[m]);
+                                    msg.addText(text_obj);
+                                }
+                                subRestMsgIndex = msgtosend.indexOf(emotions[m]) + emotions[m].length;
+                                msgtosend = msgtosend.substring(subRestMsgIndex);
+                                if (!exist(msgtosend, emotions)) {
+                                    text_obj = new webim.Msg.Elem.Text(msgtosend);
+                                    msg.addText(text_obj);
+                                }
+                            }
+                        }else{
+                            text_obj = new webim.Msg.Elem.Text(msgtosend);
+                            msg.addText(text_obj);
+                        }
+                    }
+                }
+            }
+
+            // console.log(msg);
+            // return false;
+
+            webim.sendMsg(msg, function (resp) {
+                if (selType == webim.SESSION_TYPE.C2C) {//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
+                    iframe = document.getElementById('editor'),
+                        content = iframe.contentDocument || iframe.contentWindow.document;
+                    content.body.innerHTML = "";
+                    var msgList = [];
+                    var flag = new webim.Msg.Elem.Text('succ');
+                    msg.addText(flag);
+                    msgList.push(addMsg(msg));
+                    store.default.dispatch('append_msg', {
+                        selToID: selToID,
+                        msgList: msgList
+                    });
+                    store.default.dispatch('update_friend_order',{
+                        selToID: selToID,
+                    });
+                }
+                webim.Tool.setCookie("tmpmsg_" + selToID, '', 0);
+            }, function (err) {
+                //发送出错处理
+                console.log('err.ErrorInfo.response======', err);
+                if (err.ErrorCode == -2) {
+                    mAlert(mI18nObj.$t("message.obj.check_network"), mI18nObj.$t("message.obj.sure"));
+                    return;
+                } else {
+                    iframe = document.getElementById('editor'),
+                        content = iframe.contentDocument || iframe.contentWindow.document;
+                    content.body.innerHTML = "";
+                    var msgList = [];
+                    var flag = new webim.Msg.Elem.Text('fail');
+                    msg.addText(flag);
+                    msgList.push(addMsg(msg));
+                    store.default.dispatch('append_msg', {
+                        selToID: selToID,
+                        msgList: msgList
+                    });
+                }
+            });
+
+        });
+    }
+    
 }.call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) 
 
@@ -2821,7 +3265,7 @@ module.exports = defaults;
 /* 12 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"16Chat","version":"2.1.0","description":"16Chat.","main":"main.js","scripts":{"dev":"webpack","start":"electron .","package":"./node_modules/.bin/electron-packager ./ 16Chat --platfrom=win32 --arch=ia32 --out=./OutApp --electron-version=1.4.15 --app-version=2.1.0 --overwrite --ignore=.svn --ignore="},"dependencies":{"axios":"^0.17.1","cos-nodejs-sdk-v5":"^2.0.6","electron-squirrel-startup":"^1.0.0","getLan":"file:../module/getDefaultLan","regedit":"^2.2.7","vue":"^2.0.1","vue-i18n":"^7.6.0","vuex":"^2.2.1"},"devDependencies":{"babel-core":"^6.25.0","babel-loader":"^7.0.0","babel-plugin-transform-object-rest-spread":"^6.26.0","babel-plugin-transform-runtime":"^6.23.0","babel-preset-env":"^1.5.2","babel-preset-es2015":"^6.24.1","babel-preset-stage-2":"^6.24.1","babel-register":"^6.24.1","css-loader":"^0.25.0","electron":"^1.4.15","electron-cookies":"^1.1.0","electron-packager":"^8.7.1","electron-reload":"^1.0.2","extract-text-webpack-plugin":"^2.1.2","file-loader":"^0.9.0","grunt-electron-installer":"^2.1.0","html-webpack-plugin":"^2.28.0","node-xmpp-client":"^3.2.0","style-loader":"^0.19.1","vue-loader":"^9.5.1","vue-resource":"^1.2.1","vue-router":"^2.3.0","webpack":"^2.7.0"}}
+module.exports = {"name":"16Chat","version":"2.1.0","description":"16Chat.","main":"main.js","scripts":{"dev":"webpack","start":"electron .","package":"./node_modules/.bin/electron-packager ./ 16Chat --platfrom=win32 --arch=ia32 --out=./OutApp --electron-version=1.4.15 --app-version=2.1.0 --overwrite --ignore=.svn --ignore="},"dependencies":{"axios":"^0.17.1","cos-nodejs-sdk-v5":"^2.0.6","electron-squirrel-startup":"^1.0.0","getLan":"file:../module/getDefaultLan","regedit":"^2.2.7","vue":"^2.0.1","vue-i18n":"^7.4.1","vuex":"^2.2.1"},"devDependencies":{"babel-core":"^6.25.0","babel-loader":"^7.0.0","babel-plugin-transform-object-rest-spread":"^6.26.0","babel-plugin-transform-runtime":"^6.23.0","babel-preset-env":"^1.5.2","babel-preset-es2015":"^6.24.1","babel-preset-stage-2":"^6.24.1","babel-register":"^6.24.1","css-loader":"^0.25.0","electron":"^1.4.15","electron-cookies":"^1.1.0","electron-packager":"^8.7.1","electron-reload":"^1.0.2","extract-text-webpack-plugin":"^2.1.2","file-loader":"^0.9.0","grunt-electron-installer":"^2.1.0","html-webpack-plugin":"^2.28.0","node-xmpp-client":"^3.2.0","style-loader":"^0.19.1","vue-loader":"^9.5.1","vue-resource":"^1.2.1","vue-router":"^2.3.0","webpack":"^2.7.0"}}
 
 /***/ }),
 /* 13 */
@@ -12176,7 +12620,7 @@ function getThum(friendid,unread) {
     method: 'post',
     mode:'cors',
     data: formData
-  }).then(res=>{
+  }).then(res=>{  
     let data =JSON.parse(res.data.ret);
     for(var item in data){
         var obj=data[item];
@@ -12212,7 +12656,6 @@ const prelogin = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.create({
   //baseURL: "http://im.1818lao.com", // api的base_url 线上环境
   timeout: 5000                  // 请求超时时间
 });
-
 
 /* harmony default export */ __webpack_exports__["a"] = (prelogin);
 
@@ -13630,97 +14073,97 @@ module.exports = require("https");
 /* 32 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"اسم المستخدم","IM_network_error":"!هناك مشكلة في الشبكة","IM_login":"ادخل الآن ","IM_send":"إرسال الرسالة","IM_no_more":"لا مزيد من الأخبار التاريخية","IM_username_error":"اسم المستخدم أو كلمة المرور غير صحيحة","IM_password":"كلمة المرور","IM_try_again":"الرجاء النقر على إعادة المحاولة","IM_get_more":"انقر لمشاهدة المزيد من الرسائل","update":"التحقق من التحديثات","send":"إرسال","new_guid":":دليل المبتدئين","set":"إعداد ","send_img":"إرسال الصور","check_network":"لا يوجد اتصال بالشبكة، يرجى التحقق من إعدادات الشبكة","username_hd":"ادخل اسم المستتخدم","16chat":"16Chat 1.0","friendchat":"لم يتم اختيار الأصدقاء للدردشة","network":"الشبكة هي مشكلة بعض الشيء! من فضلك","version":":معلومات الإصدار","username":"اسم المستخدم لا يمكن أن يكون فارغا","retry_Click":"انقر للمحاولة مرة أخرى","pwd_hd":"فضلك إدخال كلمة المرور","sys_lan":":لغة النظام","no_friend":"لم تحدد أصدقاء بعد، لا يمكنك الدردشة الآن","trans_err":"هناك خطأ في الترجمة","notice":"الإخطار دون اتصال","pwd_err":"تخطىءفي إدخال كلمة السر","copy":"نسخة","sure":"تأكيد","send_msg":"!لا يمكن أن تكون الرسالة المرسلة فارغة","screenshot":"قطة شاشة","trans_lan":"اللغة المترجمة","username_err":"خطأ في إدخال اسم المستخدم","enter":"تغيير خط آخر","forget_pwd":"نسيت كلمة المرور","more_msg":"انقر لمزيد من الأخبار","history":"...الحصول على الأخبار التاريخية","register":"تسجيل","connect_err":"غير متصل انقر لتسجيل الدخول مرة أخرى","trans":"ترجمة","pwd":"كلمة السر لا يمكن أن يكون فارغا","msg_length":"(1000 طول الرسالة يتجاوز الحد (الحد الأقصى لعدد الحروف ","see":"رؤية","off":"إلغاء","rem_pwd":"تذكر كلمة المرور","hot_set":"إعداد مفتاح التشغيل السريع","del_mdir":"هل أنت متأكد من حذف الحساب من القائمة؟","timeout":"!تتجاوز الشبكة الحد الزمني","hotSet":"اضغط على لوحة المفاتيح مباشرة لإعداد","change_lan":"تعديل"}
+module.exports = {"IM_username":"اسم المستخدم","IM_network_error":"!هناك مشكلة في الشبكة","IM_login":"ادخل الآن ","IM_send":"إرسال الرسالة","IM_no_more":"لا مزيد من الأخبار التاريخية","IM_username_error":"اسم المستخدم أو كلمة المرور غير صحيحة","IM_password":"كلمة المرور","IM_try_again":"الرجاء النقر على إعادة المحاولة","IM_get_more":"انقر لمشاهدة المزيد من الرسائل","update":"التحقق من التحديثات","send":"إرسال","new_guid":":دليل المبتدئين","set":"إعداد ","send_img":"إرسال الصور","check_network":"لا يوجد اتصال بالشبكة، يرجى التحقق من إعدادات الشبكة","username_hd":"ادخل اسم المستتخدم","16chat":"16Chat 1.0","friendchat":"لم يتم اختيار الأصدقاء للدردشة","network":"الشبكة هي مشكلة بعض الشيء! من فضلك","version":":معلومات الإصدار","username":"اسم المستخدم لا يمكن أن يكون فارغا","retry_Click":"انقر للمحاولة مرة أخرى","pwd_hd":"فضلك إدخال كلمة المرور","sys_lan":":لغة النظام","no_friend":"لم تحدد أصدقاء بعد، لا يمكنك الدردشة الآن","trans_err":"هناك خطأ في الترجمة","notice":"الإخطار دون اتصال","pwd_err":"تخطىءفي إدخال كلمة السر","copy":"نسخة","sure":"تأكيد","send_msg":"!لا يمكن أن تكون الرسالة المرسلة فارغة","screenshot":"قطة شاشة","trans_lan":"اللغة المترجمة","username_err":"خطأ في إدخال اسم المستخدم","enter":"تغيير خط آخر","forget_pwd":"نسيت كلمة المرور","more_msg":"انقر لمزيد من الأخبار","history":"...الحصول على الأخبار التاريخية","register":"تسجيل","connect_err":"غير متصل انقر لتسجيل الدخول مرة أخرى","trans":"ترجمة","pwd":"كلمة السر لا يمكن أن يكون فارغا","msg_length":"(n طول الرسالة يتجاوز الحد (الحد الأقصى لعدد الحروف ","see":"رؤية","off":"إلغاء","rem_pwd":"تذكر كلمة المرور","hot_set":"إعداد مفتاح التشغيل السريع","del_mdir":"هل أنت متأكد من حذف الحساب من القائمة؟","timeout":"!تتجاوز الشبكة الحد الزمني","hotSet":"اضغط على لوحة المفاتيح مباشرة لإعداد","change_lan":"تعديل","business_model":"نموذج العمل","search":"بحث","cellphone":"هاتف","enterprise_address":"عنوان الشركة","telephone":"الهاتف الثابت","supply_level":"درجة التوريد","product_more":"أكثر","shop_recommend":"توصيات متجرنا","rt_tansLan":"يمكنك أن تنقر بزر الماوس الأيمن لترجمة النص إلى لغة الهدف المحددة","search_user":"البحث عن جهات الاتصال","click_translan":"انقر لتحديد لغة الترجمة","set_sysLan":"انقر لتحديد لغة الترجمة والإعدادات الأخرى","enter_search":"أدخل للبحث","know":"قد عرفت","new_version":"حاليا هو أحدث إصدار","isUpdate":"تم اكتشاف إصدار أجد، ما إذا كان التحديث","reSend":"إعادة إرسال","sendErr":"إرسال الفشل","del_friend":"هل أنت متأكد من أنك تريد حذف هذا الصديق؟","limit_size":"!قيد","you_this_one":"لكم هذا","enough_attachments_uploaded":"!تم تحميل ما يكفي من الملحق","up_fail_try_again":"فشل التحميل، يرجى المحاولة مرة أخرى","too_big_file":"ملف {0} الذي تم تحميله كبير جدًا","confirm_uploaded_file":"تأكيد تحميل الملف","select_none":".0B قد اختر 0 ملفات، إجمالي ","file_format_incorrect":"تنسيق غير صحيح لملف {0} الذي تم تحميله","file":"ملف","number_of_uploads_exceeds":"！{يتجاوز عدد التحميل حد {0","upload_failure":"فشل تحميل","drag_file_here":"أو اسحب الملفات هنا","click_add_file":"انقر لإضافة ملف","select_file_click_upload":"يرجى تحديد الملف أولا وثم النقر للتحميل","paste":"لصق"}
 
 /***/ }),
 /* 33 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"Benutzername","IM_network_error":"Es ist Problem mit Ihrem Netzwerk! ","IM_login":"Sorfort anmelden","IM_send":"Die Nachricht senden","IM_no_more":"Es gibt keine mehr historischen Nachrichten","IM_username_error":"Benutzername oder Passwort ist falsch.","IM_password":"Passwort","IM_try_again":"Klicken nochmal bitte","IM_get_more":"Klicken und sehen mehr Infos","update":"Aktualisieren","send":"Senden","new_guid":"Anfängeranleitung","set":"Einstellung","send_img":"Bild senden","check_network":"Keine Netzwerkverbindung, überprüfen Sie bitte Ihre Netzwerkeinstellungen","username_hd":"Bitte geben Sie den Benutzernamen ein","16chat":"16-Chat 1.0","friendchat":"Keine Freunde zum Chatten ausgewählt","network":"Das Netzwerk ist ein bisschen problematisch! Bitte","version":"Info ","username":"Der Benutzername darf nicht leer sein","retry_Click":"Klicken und erneut versuchen","pwd_hd":"Bitte geben Sie das Passwort ein.","sys_lan":"Systemsprache","no_friend":"Sie haben noch keine Freunde ausgewählt und können gerade nicht chatten","trans_err":"Übersetzungsfehler","notice":"Offline-Benachrichtigung","pwd_err":"Passworteingabefehler","copy":"Nachahmen","sure":"OK","send_msg":"Die gesendete Nachricht darf nicht leer sein!","screenshot":"Screenshots","trans_lan":"Übersetzungssprache","username_err":"Benutzername Eingabefehler","enter":"Zeilenumbruch","forget_pwd":"Passwort vergessen","more_msg":"Klicken Sie für weitere Informationen","history":"Historische Nachrichten bekommen","register":"Registrieren","connect_err":"Verbindung wird getrennt. Klicken und erneut anmelden","trans":"Übersetzen","pwd":"Das Passwort darf nicht leer sein","msg_length":"Nachrichtenlänge überschreitet Limit (maximal 1000 Zeichen)","see":"Nachsehen","off":"Abbrechen","rem_pwd":"Passwort speichern","hot_set":"Hotkey-Einstellungen","del_mdir":"Möchten Sie das Konto wirklich aus der Liste löschen?","timeout":"Netzwerk-Timeout!","hotSet":"Benutzerdefinierter Hotkey","change_lan":"Ändern"}
+module.exports = {"IM_username":"Benutzername","IM_network_error":"Es ist Problem mit Ihrem Netzwerk! ","IM_login":"Sorfort anmelden","IM_send":"Die Nachricht senden","IM_no_more":"Es gibt keine mehr historischen Nachrichten","IM_username_error":"Benutzername oder Passwort ist falsch.","IM_password":"Passwort","IM_try_again":"Klicken nochmal bitte","IM_get_more":"Klicken und sehen mehr Infos","update":"Aktualisieren","send":"Senden","new_guid":"Anfängeranleitung","set":"Einstellung","send_img":"Bild senden","check_network":"Keine Netzwerkverbindung, überprüfen Sie bitte Ihre Netzwerkeinstellungen","username_hd":"Bitte geben Sie den Benutzernamen ein","16chat":"16-Chat 1.0","friendchat":"Keine Freunde zum Chatten ausgewählt","network":"Das Netzwerk ist ein bisschen problematisch! Bitte","version":"Info ","username":"Der Benutzername darf nicht leer sein","retry_Click":"Klicken und erneut versuchen","pwd_hd":"Bitte geben Sie das Passwort ein.","sys_lan":"Systemsprache","no_friend":"Sie haben noch keine Freunde ausgewählt und können gerade nicht chatten","trans_err":"Übersetzungsfehler","notice":"Offline-Benachrichtigung","pwd_err":"Passworteingabefehler","copy":"Nachahmen","sure":"OK","send_msg":"Die gesendete Nachricht darf nicht leer sein!","screenshot":"Screenshots","trans_lan":"Übersetzungssprache","username_err":"Benutzername Eingabefehler","enter":"Zeilenumbruch","forget_pwd":"Passwort vergessen","more_msg":"Klicken Sie für weitere Informationen","history":"Historische Nachrichten bekommen","register":"Registrieren","connect_err":"Verbindung wird getrennt. Klicken und erneut anmelden","trans":"Übersetzen","pwd":"Das Passwort darf nicht leer sein","msg_length":"Nachrichtenlänge überschreitet Limit (maximal n Zeichen)","see":"Nachsehen","off":"Abbrechen","rem_pwd":"Passwort speichern","hot_set":"Hotkey-Einstellungen","del_mdir":"Möchten Sie das Konto wirklich aus der Liste löschen?","timeout":"Netzwerk-Timeout!","hotSet":"Benutzerdefinierter Hotkey","change_lan":"Ändern","business_model":"Geschäftsmodell","search":"Suchen","cellphone":"Handy","enterprise_address":"Unternehmensadresse","telephone":"Festnetztelefon","supply_level":"Versorgungsgrad","product_more":"Mehr","shop_recommend":"Empfehlung","rt_tansLan":"Klicken Sie mit der rechten Maustaste, um den Text in die ausgewählte Zielsprache zu übersetzen","search_user":"Kontakte suchen","click_translan":"Klicken Sie, um eine Übersetzungssprache auszuwählen","set_sysLan":"Klicken Sie, um eine Übersetzungssprache und andern Einstellungen auszuwählen","enter_search":"Eingeben und suchen","know":"gewußt haben","new_version":"Derzeit ist die neueste Version","isUpdate":"Neue Version erkannt, aktualisiert jetzt?","reSend":"Erneut senden","sendErr":"gescheitert gesendet","del_friend":"Möchten Sie diesen Freund wirklich löschen?","limit_size":"Beschränken! ","you_this_one":"Ihre ","enough_attachments_uploaded":"Die hochgeladete Anlagen sind genüg!","up_fail_try_again":"Der Upload ist fehlgeschlagen. Bitte versuchen Sie es erneut","too_big_file":"Die hochgeladene Datei, {0}, ist zu groß ","confirm_uploaded_file":"Bestätige die Upload-Datei","select_none":"0 Dateien gewählt, insgesamt 0B.","file_format_incorrect":"Die Format der hochgeladenen Datei, {0}, ist falsch","file":"Datei","number_of_uploads_exceeds":"Die Anzahl der Uploads überschreitet dieses Limit von {0}!","upload_failure":"gescheitert hochgeladen","drag_file_here":"Oder Dateien hier ziehen","click_add_file":"Klicken und Dateien hinzuzufügen","select_file_click_upload":"Bitte wählen Sie die Datei zuerst und klicken Sie um hochzuladen","paste":"Kleben"}
 
 /***/ }),
 /* 34 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"User Name","IM_network_error":"There may have a network connection problem!","IM_login":"Login","IM_send":"Send Message","IM_no_more":"No more history messages.","IM_username_error":"Incorrect User Name or Password","IM_password":"Password","IM_try_again":"Retry","IM_get_more":"More messages.","update":"Check New Version Updating","send":"Send","new_guid":"Newcomer's Guide:","set":"Setting","send_img":"Send Image","check_network":"No network connection, please check the network settings","username_hd":"Please input username","16chat":"16Chat V1.0","friendchat":"Haven't selected friends to chat","network":"There may have a network connection problem! Please","version":"Version","username":"Username must not be null.","retry_Click":"Retry","pwd_hd":"Please enter your password.","sys_lan":"System Language:","no_friend":"You can't chat before selecting your friends","trans_err":"Incorrect Translation","notice":"Offline Notification","pwd_err":"Password error","copy":"Copy","sure":"Confirm","send_msg":"Message must not be null！","screenshot":"Screenshot","trans_lan":"Translated Language","username_err":"Incorrect User Name","enter":"Line Feed","forget_pwd":"Forgot your password?","more_msg":"Click to get more messages","history":"Getting history messages...","register":"Register","connect_err":"Connect disconnected, click to log in again","trans":"Translation","pwd":"Password must not be null.","msg_length":"Message is beyond length limit (1000 Chinese characters at most)","see":"View","off":"Cancel","rem_pwd":"remember the password","hot_set":"Shortcut key settings:","del_mdir":"Are you sure to delete the account from the list?","timeout":"network overtime!","hotSet":"create a shortcut by one-key","change_lan":"Modify"}
+module.exports = {"IM_username":"User Name","IM_network_error":"There may have a network connection problem!","IM_login":"Login","IM_send":"Send Message","IM_no_more":"No more history messages.","IM_username_error":"Incorrect User Name or Password","IM_password":"Password","IM_try_again":"Retry","IM_get_more":"More messages.","update":"Check New Version Updating","send":"Send","new_guid":"Newcomer's Guide:","set":"Setting","send_img":"Send Image","check_network":"No network connection, please check the network settings","username_hd":"Please input username","16chat":"16Chat V1.0","friendchat":"Haven't selected friends to chat","network":"There may have a network connection problem! Please","version":"Version:","username":"Username must not be null.","retry_Click":"Retry","pwd_hd":"Please enter your password.","sys_lan":"System Language:","no_friend":"You can't chat before selecting your friends","trans_err":"Incorrect Translation","notice":"Offline Notification","pwd_err":"Password error","copy":"Copy","sure":"Confirm","send_msg":"Message must not be null！","screenshot":"Screenshot","trans_lan":"Translated Language","username_err":"Incorrect User Name","enter":"Line Feed","forget_pwd":"Forgot your password?","more_msg":"Click to get more messages","history":"Getting history messages...","register":"Register","connect_err":"Connect disconnected, click to log in again","trans":"Translation","pwd":"Password must not be null.","msg_length":"Message is beyond length limit (n Chinese characters at most)","see":"View","off":"Cancel","rem_pwd":"remember the password","hot_set":"Shortcut key settings:","del_mdir":"Are you sure to delete the account from the list?","timeout":"network overtime!","hotSet":"create a shortcut by one-key","change_lan":"Modify","business_model":"Business Model","search":"Search","cellphone":"Mobile Phone","enterprise_address":"Company Address ","telephone":"Fixed-line number","supply_level":"Supply Grade","product_more":"More","shop_recommend":"Our shop recommended","rt_tansLan":"You can translate the words into selected target language with right key","search_user":"Search contacts","click_translan":"Click to select the translation language","set_sysLan":"Click to select the translation language and other settings","enter_search":"Input to search","know":"Down got it","new_version":"The current version is the latest version","isUpdate":"Detect new version, is it updated","reSend":"Resend","sendErr":"Fail to send ","del_friend":"Sure to delete the friend？","limit_size":"Limit","you_this_one":"Your","enough_attachments_uploaded":"Enough attachments have been uploaded!","up_fail_try_again":"Failed to upload,  please retry","too_big_file":"Uploaded {0} is too large","confirm_uploaded_file":"Confirm uploading the file","select_none":"Select 0 files, a total of 0B.","file_format_incorrect":"Format of your uploaded {0} differs from specified format","file":"File","number_of_uploads_exceeds":"The number of uploads exceeds the limit of {0}","upload_failure":"Failed to upload ","drag_file_here":"Or drag the file here","click_add_file":"Click to add file","select_file_click_upload":"Please select the file and click to upload","paste":"Paste"}
 
 /***/ }),
 /* 35 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"Nombre","IM_network_error":"Su red está anormal！","IM_login":"Iniciar sesión ahora","IM_send":"Envia informaciones","IM_no_more":"No hay más historiales","IM_username_error":"Error del  nombre o contraseña","IM_password":"Contraseña","IM_try_again":"Haga clic a intentar de nuevo","IM_get_more":"Ver más informaciones","update":"Examinar y actualizar","send":"Enviar","new_guid":"Orientación para principiante:","set":"Ajuste","send_img":"Enviar imagenes","check_network":"Sin conexión de red, verifique la configuración de red","username_hd":"Introduzca el nombre del  usuario","16chat":"16Chat 1.0","friendchat":"No hay amigos seleccionados para el chat","network":"¡La red es un poco problemática!","version":"Información de la versión:","username":"Nombre de usuario no puede estar vacío","retry_Click":"Haga clic para volver a intentarlo","pwd_hd":"Introduzca la contraseña","sys_lan":"Lenguaje del sistema:","no_friend":"Aún no has seleccionado amigos. No puedes chatear en este momento","trans_err":"Error de traducción","notice":"Notificación de fuera de línea","pwd_err":"Contraseña incorrecta","copy":"Copiar","sure":"Confirmar","send_msg":"¡Mensaje para enviar no puede estar vacío!","screenshot":"Capturas de pantalla","trans_lan":"Lenguaje de traducción","username_err":"Error de introducción del nombre de usuario","enter":"Cambiar fila","forget_pwd":"Olvide la contraseña","more_msg":"Haga clic para más información","history":"Obteniendo informaciones históricas...","register":"Registrarse","connect_err":"Desconectado  Haga clic para iniciar sesión de nuevo","trans":"Traducir","pwd":"No se puede dejar en blanco la contraseña","msg_length":"La longitud del mensaje excede el límite (máximo 1000 caracteres)","see":"Ver","off":"Cancelar","rem_pwd":"Memorizar la contraseña","hot_set":"Configuración de teclas rápidas:","del_mdir":"¿Está seguro de eliminar la cuenta de la lista?","timeout":"¡Tiempo expirado de red!","hotSet":"Configuración de teclas directas","change_lan":"Cambia"}
+module.exports = {"IM_username":"Nombre","IM_network_error":"Su red está anormal！","IM_login":"Iniciar sesión ahora","IM_send":"Envia informaciones","IM_no_more":"No hay más historiales","IM_username_error":"Error del  nombre o contraseña","IM_password":"Contraseña","IM_try_again":"Haga clic a intentar de nuevo","IM_get_more":"Ver más informaciones","update":"Examinar y actualizar","send":"Enviar","new_guid":"Orientación para principiante:","set":"Ajuste","send_img":"Enviar imagenes","check_network":"Sin conexión de red, verifique la configuración de red","username_hd":"Introduzca el nombre del  usuario","16chat":"16Chat 1.0","friendchat":"No hay amigos seleccionados para el chat","network":"¡La red es un poco problemática!","version":"Información de la versión:","username":"Nombre de usuario no puede estar vacío","retry_Click":"Haga clic para volver a intentarlo","pwd_hd":"Introduzca la contraseña","sys_lan":"Lenguaje del sistema:","no_friend":"Aún no has seleccionado amigos. No puedes chatear en este momento","trans_err":"Error de traducción","notice":"Notificación de fuera de línea","pwd_err":"Contraseña incorrecta","copy":"Copiar","sure":"Confirmar","send_msg":"¡Mensaje para enviar no puede estar vacío!","screenshot":"Capturas de pantalla","trans_lan":"Lenguaje de traducción","username_err":"Error de introducción del nombre de usuario","enter":"Cambiar fila","forget_pwd":"Olvide la contraseña","more_msg":"Haga clic para más información","history":"Obteniendo informaciones históricas...","register":"Registrarse","connect_err":"Desconectado  Haga clic para iniciar sesión de nuevo","trans":"Traducir","pwd":"No se puede dejar en blanco la contraseña","msg_length":"La longitud del mensaje excede el límite (máximo n caracteres)","see":"Ver","off":"Cancelar","rem_pwd":"Memorizar la contraseña","hot_set":"Configuración de teclas rápidas:","del_mdir":"¿Está seguro de eliminar la cuenta de la lista?","timeout":"¡Tiempo expirado de red!","hotSet":"Configuración de teclas directas","change_lan":"Cambia","business_model":"Modelo de operación negocial","search":"Búsqueda","cellphone":"Móvil","enterprise_address":"Dirección de empresa","telephone":"Télefono fijo","supply_level":"Grado de suministro","product_more":"Más","shop_recommend":"Recomendación de tienda","rt_tansLan":"Haga clic derecho para traducir el texto al idioma seleccionado","search_user":"Buscar contactos","click_translan":"Haga clic para seleccionar el idioma de traducción","set_sysLan":"Haga clic para seleccionar el idioma de traducción y otras configuraciones","enter_search":"Introducir para buscar","know":"Ya ha sabido","new_version":"Ya es la última versión","isUpdate":"Nueva versión detectada, actualice o no","reSend":"Reenviar","sendErr":"No se ha enviado","del_friend":"¿Seguro que quiere eliminar a este amigo?","limit_size":"¡Límite!","you_this_one":"Esto","enough_attachments_uploaded":"Ya ha subido bastantes anexos！","up_fail_try_again":"Carga fallida, intente de nuevo por favor","too_big_file":"El archivo cargado {0} es demasiado grande","confirm_uploaded_file":"Confirmar a cargar archivo ","select_none":"0 archivo seleccionado, total 0B.","file_format_incorrect":"Formato de archivo cargado {0} es incorrecto","file":"Archivo","number_of_uploads_exceeds":"El número de cargas excedido","upload_failure":"Error de subir","drag_file_here":"O arrastre archivos por aquí","click_add_file":"Haga clic para agregar archivo","select_file_click_upload":"Seleccione el archivo primero y haga clic para cargar","paste":"Pegar"}
 
 /***/ }),
 /* 36 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"Nom d'utilisateur ","IM_network_error":"Réseau indisponible!","IM_login":"Connectez-vous maintenant","IM_send":"Envoyer","IM_no_more":"Il n'y a plus de messages historiques","IM_username_error":"Erreur du nom d'utilisateur ou mot de passe","IM_password":"Mot de passe","IM_try_again":"Toucher pour charger à nouveau ","IM_get_more":"Charger plus","update":"Examiner le renouvellement ","send":"Envoyer","new_guid":"Guide de novice:","set":"Réglages","send_img":"Envoyer des photos","check_network":"Réseau indisponible, vérifiez votre réseau","username_hd":"Veuillez entrer le nom d'utilisateur","16chat":"16Chat1.0","friendchat":"Aucun ami sélectionné pour le chat","network":"Réseau indisponible! Veuillez","version":"Informations de version","username":"Il est nécessaire pour vous d'entrer le nom de l'utilisateur.","retry_Click":"Cliquez pour réessayer","pwd_hd":"Veuillez entrer le mot de passe","sys_lan":"Langue:","no_friend":"Vous n'avez pas choisi l'ami, ne pouvez pas envoyer le message maintenant","trans_err":"Erreur de traduction","notice":"Notification hors ligne","pwd_err":"Le mot de passe est faux.","copy":"Copier","sure":"OK","send_msg":"Impossible d'envoyer un message vide","screenshot":"Scan","trans_lan":"Langue de traduction","username_err":"Erreur d'entrée du nom d'utilisateur","enter":"Nouvelle ligne","forget_pwd":"Oublier le mot de passe","more_msg":"Charger plus","history":"Chargement des information historiques","register":"Inscription","connect_err":"Réseau indisponible, cliquez pour inscrire ","trans":"Traduction","pwd":"Le mot de passe ne peut pas être vide","msg_length":"La longueur du message dépasse la limite (Jusqu'à 1000 caractère chinois)","see":"Voir ","off":"Annuler","rem_pwd":"Retenir le mot de passe","hot_set":"Remettre un raccourci clavier :","del_mdir":"Êtes-vous sûr de supprimer le compte de la liste?","timeout":"Délai d'attente du réseau de !","hotSet":"Créer un bouton directement ","change_lan":"changement"}
+module.exports = {"IM_username":"Nom d'utilisateur ","IM_network_error":"Réseau indisponible!","IM_login":"Connectez-vous maintenant","IM_send":"Envoyer","IM_no_more":"Il n'y a plus de messages historiques","IM_username_error":"Erreur du nom d'utilisateur ou mot de passe","IM_password":"Mot de passe","IM_try_again":"Toucher pour charger à nouveau ","IM_get_more":"Charger plus","update":"Examiner le renouvellement ","send":"Envoyer","new_guid":"Guide de novice:","set":"Réglages","send_img":"Envoyer des photos","check_network":"Réseau indisponible, vérifiez votre réseau","username_hd":"Veuillez entrer le nom d'utilisateur","16chat":"16Chat1.0","friendchat":"Aucun ami sélectionné pour le chat","network":"Réseau indisponible! Veuillez","version":"Informations de version","username":"Il est nécessaire pour vous d'entrer le nom de l'utilisateur.","retry_Click":"Cliquez pour réessayer","pwd_hd":"Veuillez entrer le mot de passe","sys_lan":"Langue:","no_friend":"Vous n'avez pas choisi l'ami, ne pouvez pas envoyer le message maintenant","trans_err":"Erreur de traduction","notice":"Notification hors ligne","pwd_err":"Le mot de passe est faux.","copy":"Copier","sure":"OK","send_msg":"Impossible d'envoyer un message vide","screenshot":"Scan","trans_lan":"Langue de traduction","username_err":"Erreur d'entrée du nom d'utilisateur","enter":"Nouvelle ligne","forget_pwd":"Oublier le mot de passe","more_msg":"Charger plus","history":"Chargement des information historiques","register":"Inscription","connect_err":"Réseau indisponible, cliquez pour inscrire ","trans":"Traduction","pwd":"Le mot de passe ne peut pas être vide","msg_length":"La longueur du message dépasse la limite (Jusqu'à n caractère chinois)","see":"Voir ","off":"Annuler","rem_pwd":"Retenir le mot de passe","hot_set":"Remettre un raccourci clavier :","del_mdir":"Êtes-vous sûr de supprimer le compte de la liste?","timeout":"Délai d'attente du réseau de !","hotSet":"Créer un bouton directement ","change_lan":"changement","business_model":"Mode d'opération","search":"Recherche","cellphone":"Téléphone","enterprise_address":"Adresse de l'entreprise","telephone":"Téléphone fixe","supply_level":"Grade d'approvisionnement","product_more":"Plus","shop_recommend":"Recommander du magasin","rt_tansLan":"Faites un clic droit pour traduire le texte dans la langue cible sélectionnée","search_user":"Chercher correspondant","click_translan":"Cliquer pour choisir la langue","set_sysLan":"Cliquez pour sélectionner la langue de traduction et d'autres paramètres","enter_search":"Remplir pour chercher","know":"D'accord ","new_version":"Maintenant, c'est la nouvelle version détectée","isUpdate":"Nouvelle version détectée, mise à jour","reSend":"Envoyer de nouveau","sendErr":"Echec d'envoi ","del_friend":"Confirmez supprimer cet ami?","limit_size":"Limite!","you_this_one":"Vous ceci","enough_attachments_uploaded":"Vous avez téléchargé suffisamment de pièces jointes!","up_fail_try_again":"Le téléchargement a échoué. Veuillez réessayer.","too_big_file":"Le {0} fichier importé est trop volumineux","confirm_uploaded_file":"Confirmer le document de téléchargement","select_none":"Sélectionnez 0 fichiers, total 0B","file_format_incorrect":"Le format de {0} fichier téléchargé est incorrect","file":"Documents","number_of_uploads_exceeds":"Le nombre de téléchargements dépassé {0}!","upload_failure":"Echec du téléchargement ","drag_file_here":"Ou faites glisser des fichiers ici","click_add_file":"Cliquez pour ajouter un fichier","select_file_click_upload":"Veuillez sélectionner le fichier et cliquez sur Télécharger","paste":"Coller"}
 
 /***/ }),
 /* 37 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"Nama pengguna","IM_network_error":"Jaringan Anda ada masalah!","IM_login":"Login sekarang","IM_send":"Kirim pesan","IM_no_more":"Tidak ada pesan riwayat lagi","IM_username_error":"Nama pengguna atau kata sandi salah","IM_password":"Kata sandi","IM_try_again":"Silakan klik coba lagi","IM_get_more":"Klik untuk melihat pesan lainnya","update":"Periksa pembaruan","send":"Kirim","new_guid":"Panduan pemula:","set":"Pengaturan","send_img":"Kirim gambar","check_network":"Tidak ada koneksi jaringan, periksa pengaturan jaringan Anda","username_hd":"Silakan masukkan nama pengguna","16chat":"16Chat 1.0","friendchat":"Tidak ada teman yang dipilih untuk obrolan","network":"Jaringan agak bermasalah! Silakan","version":"Informasi versi:","username":"Nama pengguna tidak boleh dikosongkan","retry_Click":"Klik untuk mencoba lagi","pwd_hd":"Silakan masukan kata sandi","sys_lan":"Bahasa sistem:","no_friend":"Anda belum memilih teman. Tidak bisa mengobrol sekarang","trans_err":"Kesalahan terjemahan","notice":"Notifikasi offline","pwd_err":"Masukkan sandi salah","copy":"Salin","sure":"Pasti","send_msg":"Pesan yang dikirim tidak bisa kosong!","screenshot":"Tangkapan layar","trans_lan":"Bahasa terjemahan","username_err":"Kesalahan masukan nama pengguna","enter":"Baris baru","forget_pwd":"Lupakah kata sandi","more_msg":"Klik untuk pesan lebih lanjut","history":"Mendapatkan pesan riwayat ...","register":"Daftar","connect_err":"Koneksi terputus, klik untuk masuk lagi","trans":"Terjemahan","pwd":"Kata sandi tidak bisa kosong","msg_length":"Panjang pesan melebihi batas (maksimum 1000 karakter)","see":"Lihat","off":"Batal","rem_pwd":"Ingat kata sandi","hot_set":"Pengaturan hotkey:","del_mdir":"Apakah Anda yakin untuk menghapus akun dari daftar?","timeout":"waktu tunggu jaringan!","hotSet":"Pengaturan tombol kustom","change_lan":"Ubah"}
+module.exports = {"IM_username":"Nama pengguna","IM_network_error":"Jaringan Anda ada masalah!","IM_login":"Login sekarang","IM_send":"Kirim pesan","IM_no_more":"Tidak ada pesan riwayat lagi","IM_username_error":"Nama pengguna atau kata sandi salah","IM_password":"Kata sandi","IM_try_again":"Silakan klik coba lagi","IM_get_more":"Klik untuk melihat pesan lainnya","update":"Periksa pembaruan","send":"Kirim","new_guid":"Panduan pemula:","set":"Pengaturan","send_img":"Kirim gambar","check_network":"Tidak ada koneksi jaringan, periksa pengaturan jaringan Anda","username_hd":"Silakan masukkan nama pengguna","16chat":"16Chat 1.0","friendchat":"Tidak ada teman yang dipilih untuk obrolan","network":"Jaringan agak bermasalah! Silakan","version":"Informasi versi:","username":"Nama pengguna tidak boleh dikosongkan","retry_Click":"Klik untuk mencoba lagi","pwd_hd":"Silakan masukan kata sandi","sys_lan":"Bahasa sistem:","no_friend":"Anda belum memilih teman, tidak bisa mengobrol sekarang","trans_err":"Kesalahan terjemahan","notice":"Notifikasi offline","pwd_err":"Masukkan sandi salah","copy":"Salin","sure":"Pasti","send_msg":"Pesan yang dikirim tidak bisa kosong!","screenshot":"Tangkapan layar","trans_lan":"Bahasa terjemahan","username_err":"Kesalahan masukan nama pengguna","enter":"Baris baru","forget_pwd":"Lupakah kata sandi","more_msg":"Klik untuk pesan lebih lanjut","history":"Mendapatkan pesan riwayat ...","register":"Daftar","connect_err":"Koneksi terputus, klik untuk masuk lagi","trans":"Terjemahan","pwd":"Kata sandi tidak bisa kosong","msg_length":"Panjang pesan melebihi batas (maksimum n karakter)","see":"Lihat","off":"Batal","rem_pwd":"Ingat kata sandi","hot_set":"Pengaturan hotkey:","del_mdir":"Apakah Anda yakin untuk menghapus akun dari daftar?","timeout":"waktu tunggu jaringan!","hotSet":"Pengaturan tombol kustom","change_lan":"Ubah","business_model":"Model bisnis","search":"Cari","cellphone":"Ponsel","enterprise_address":"Alamat perusahaan ","telephone":"Telepon tetap","supply_level":"Supply grade","product_more":"Lainnya","shop_recommend":"Rekomendasi toko","rt_tansLan":"Klik kanan untuk menerjemahkan teks ke bahasa target yang dipilih","search_user":"Cari kontak","click_translan":"Klik untuk memilih bahasa terjemahan","set_sysLan":"Klik untuk memilih bahasa terjemahan dan pengaturan lainnya","enter_search":"Masukkan untuk mencari","know":"Tahulah","new_version":"Saat ini adalah versi terbaru","isUpdate":"Versi baru terdeteksi, apakah pembaruan","reSend":"Kirim ulang","sendErr":"Kirim gagal","del_friend":"Apakah Anda yakin ingin menghapus teman ini?","limit_size":"Batasi!","you_this_one":"xx ini Anda","enough_attachments_uploaded":"Diupload cukup lampiran!","up_fail_try_again":"Pengunggahan gagal, silakan coba lagi","too_big_file":"File {0} yang diunggah terlalu besar","confirm_uploaded_file":"Konfirmasikan untuk mengunggah file","select_none":"Pilih 0 file, total 0B.","file_format_incorrect":"Format file {0} yang diunggah salah","file":"File","number_of_uploads_exceeds":"Jumlah unggahan melebihi batas {0}!","upload_failure":"Unggah gagal","drag_file_here":"Atau seret file ke sini","click_add_file":"Klik untuk menambahkan file","select_file_click_upload":"Silakan pilih file dan klik untuk unggah","paste":"Tempel"}
 
 /***/ }),
 /* 38 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"Nome utente","IM_network_error":"C'è un problema con la tua rete!","IM_login":"Login immediatamente","IM_send":"Invia un messaggio","IM_no_more":"Non informazioni storiche di più","IM_username_error":"Nome utente o password non sono corretti","IM_password":"Password","IM_try_again":"Si prega di cliccare per riprovare","IM_get_more":"Clicca per vedere altri messaggi","update":"Verifica aggiornamenti","send":"Invia","new_guid":"Principianti guida:","set":"Impostazione","send_img":"Invia foto","check_network":"Nessuna connessione di rete, si prega di controllare le impostazioni di rete","username_hd":"Inserisci il nome d'utente","16chat":"16Chat 1.0","friendchat":"Nessun amico selezionato per la chat","network":"La rete è un po 'problematica! Si prega di","version":"Informazioni sulla versione:","username":"Nome utente non può essere vuoto","retry_Click":"Clicca per riprovare","pwd_hd":"Inserisci password","sys_lan":"Linguaggio di sistema:","no_friend":"Non hai ancora selezionato degli amici. Non puoi chattare adesso","trans_err":"Errore di traduzione","notice":"Notificazione di offline","pwd_err":"La password è inserito erroneamente","copy":"Copia","sure":"Sì","send_msg":"Il messaggio inviato non può essere vuoto!","screenshot":"Screenshot","trans_lan":"Lingua di traduzione","username_err":"Il nome d'utente è inserito erroneamente","enter":"Cambia la riga","forget_pwd":"Dimentica la password","more_msg":"Clicca per maggiori notizie","history":"In ottenendo le notizie storiche ...","register":"Registrazione","connect_err":"Disconnesso, fare clic per accedere di nuovo","trans":"Traduzione","pwd":"La password non può essere vuoto","msg_length":"La lunghezza del messaggio supera il limite (massimo 1000 caratteri cinesi)","see":"Visualizza","off":"Cancella","rem_pwd":"Salva password","hot_set":"Impostazioni di Hotkey:","del_mdir":"Sei sicuro di cancellare l'account dalla lista?","timeout":"Timeout della rete !","hotSet":"Impostazione di pulsante direttamente","change_lan":"Modifica"}
+module.exports = {"IM_username":"Nome utente","IM_network_error":"C'è un problema con la tua rete!","IM_login":"Login immediatamente","IM_send":"Invia un messaggio","IM_no_more":"Non informazioni storiche di più","IM_username_error":"Nome utente o password non sono corretti","IM_password":"Password","IM_try_again":"Si prega di cliccare per riprovare","IM_get_more":"Clicca per vedere altri messaggi","update":"Verifica aggiornamenti","send":"Invia","new_guid":"Principianti guida:","set":"Impostazione","send_img":"Invia foto","check_network":"Nessuna connessione di rete, si prega di controllare le impostazioni di rete","username_hd":"Inserisci il nome d'utente","16chat":"16Chat 1.0","friendchat":"Nessun amico selezionato per la chat","network":"La rete è un po 'problematica! Si prega di","version":"Informazioni sulla versione:","username":"Nome utente non può essere vuoto","retry_Click":"Clicca per riprovare","pwd_hd":"Inserisci password","sys_lan":"Linguaggio di sistema:","no_friend":"Non hai ancora selezionato degli amici. Non puoi chattare adesso","trans_err":"Errore di traduzione","notice":"Notificazione di offline","pwd_err":"La password è inserito erroneamente","copy":"Copia","sure":"Sì","send_msg":"Il messaggio inviato non può essere vuoto!","screenshot":"Screenshot","trans_lan":"Lingua di traduzione","username_err":"Il nome d'utente è inserito erroneamente","enter":"Cambia la riga","forget_pwd":"Dimentica la password","more_msg":"Clicca per maggiori notizie","history":"In ottenendo le notizie storiche ...","register":"Registrazione","connect_err":"Disconnesso, fare clic per accedere di nuovo","trans":"Traduzione","pwd":"La password non può essere vuoto","msg_length":"La lunghezza del messaggio supera il limite (massimo n caratteri cinesi)","see":"Visualizza","off":"Cancella","rem_pwd":"Salva password","hot_set":"Impostazioni di Hotkey:","del_mdir":"Sei sicuro di cancellare l'account dalla lista?","timeout":"Timeout della rete !","hotSet":"Impostazione di pulsante direttamente","change_lan":"Modifica","business_model":"Modello di business","search":"Cerca","cellphone":"Cellulare","enterprise_address":"Indirizzo","telephone":"Telefono fisso","supply_level":"Grado di fornitura","product_more":"Di più","shop_recommend":"La nostra raccomandazione","rt_tansLan":"Fai clic con il pulsante destro del mouse per tradurre il testo nella lingua di destinazione selezionata","search_user":"Cerca contatti","click_translan":"Fare clic per selezionare la lingua di traduzione","set_sysLan":"Fare clic per selezionare la lingua di traduzione e altre impostazioni","enter_search":"Inserisci per cercare","know":"Lo sappiamo","new_version":"Attualmente è l'ultima versione","isUpdate":"Rilevata nuova versione, vuoi aggiornare","reSend":"Invia di nuovo","sendErr":"Inciata al fallimento","del_friend":"Sei sicuro di voler eliminare questo amico?","limit_size":"Limitare!","you_this_one":"Questa tua","enough_attachments_uploaded":"Aggiunti allegati sufficienti!","up_fail_try_again":"Impossibile caricare, si prega di riprovare","too_big_file":"Il file {0} caricato è troppo grande","confirm_uploaded_file":"Conferma di caricare il file","select_none":"Seleziona 0 file, totale 0B.","file_format_incorrect":"Il formato del file {0} caricato non è corretto","file":"file","number_of_uploads_exceeds":"Il numero di caricamento supera il limite di {0}!","upload_failure":"Caricamento fallito","drag_file_here":"Oppure trascina il file qui","click_add_file":"Clicca per aggiungere il file","select_file_click_upload":"Si prega di selezionare il file,  e poi fa clic per caricare","paste":"Attacca"}
 
 /***/ }),
 /* 39 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"ユーザー名","IM_network_error":"ネットエラー！","IM_login":"今すぐログイン","IM_send":"発信","IM_no_more":"過去のメッセージがありません","IM_username_error":"ユーザー名またはパスワードがエラー","IM_password":"パスワード","IM_try_again":"再クリックしてください","IM_get_more":"クリックでもっとメッセージを見る","update":"新しいバージョンの確認","send":"送信","new_guid":"親米ガイド","set":"設定","send_img":"画像を発信","check_network":"ネットなし、ネット設定をチェックしてください","username_hd":"ユーザー名を入力してください","16chat":"16Chat1.0","friendchat":"友達会話を未選択","network":"ネットに問題がある！","version":"バージョン情報：","username":"ユーザー名は空欄にできません","retry_Click":"再クリック","pwd_hd":"パスワードを入力してください","sys_lan":"システム言語：","no_friend":"まだ友達を選択していないので、暫く会話できない","trans_err":"翻訳エラー","notice":"オフライン通知","pwd_err":"パスワードは正しくありません","copy":"コピー","sure":"確認","send_msg":"発信情報が空欄にできない！","screenshot":"スクリーンショット","trans_lan":"翻訳の言語","username_err":"ユーザー名入力エラー","enter":"改行","forget_pwd":"パスワードを忘れた","more_msg":"クリックしてもっと情報を獲得","history":"履歴情報を読み込み中...","register":"新規登録","connect_err":"リンクオフ　クリックして再ログイン","trans":"翻訳","pwd":"パスワードは空欄にできない","msg_length":"情報長さは制限を超える（1000個文字以下）","see":"チェック","off":"キャンセル","rem_pwd":"パスワードを覚える","hot_set":"ホットキー設定：","del_mdir":"リストから該アカウントを削除するか？","timeout":"ネットタイムアウト！","hotSet":"ショートカットキーをカスタマイズ","change_lan":"変更"}
+module.exports = {"IM_username":"ユーザー名","IM_network_error":"ネットエラー！","IM_login":"今すぐログイン","IM_send":"発信","IM_no_more":"過去のメッセージがありません","IM_username_error":"ユーザー名またはパスワードがエラー","IM_password":"パスワード","IM_try_again":"再クリックしてください","IM_get_more":"クリックでもっとメッセージを見る","update":"新しいバージョンの確認","send":"送信","new_guid":"親米ガイド","set":"設定","send_img":"画像を発信","check_network":"ネットなし、ネット設定をチェックしてください","username_hd":"ユーザー名を入力してください","16chat":"16Chat1.0","friendchat":"友達会話を未選択","network":"ネットに問題がある！","version":"バージョン情報：","username":"ユーザー名は空欄にできません","retry_Click":"再クリック","pwd_hd":"パスワードを入力してください","sys_lan":"システム言語：","no_friend":"まだ友達を選択していないので、暫く会話できない","trans_err":"翻訳エラー","notice":"オフライン通知","pwd_err":"パスワードは正しくありません","copy":"コピー","sure":"確認","send_msg":"発信情報が空欄にできない！","screenshot":"スクリーンショット","trans_lan":"翻訳の言語","username_err":"ユーザー名入力エラー","enter":"改行","forget_pwd":"パスワードを忘れた","more_msg":"クリックしてもっと情報を獲得","history":"履歴情報を読み込み中...","register":"新規登録","connect_err":"リンクオフ　クリックして再ログイン","trans":"翻訳","pwd":"パスワードは空欄にできない","msg_length":"情報長さは制限を超える（n個文字以下）","see":"チェック","off":"キャンセル","rem_pwd":"パスワードを覚える","hot_set":"ホットキー設定：","del_mdir":"リストから該アカウントを削除するか？","timeout":"ネットタイムアウト！","hotSet":"ショートカットキーをカスタマイズ","change_lan":"変更","business_model":"営業モード","search":"検索","cellphone":"携帯","enterprise_address":"企業住所","telephone":"固定電話","supply_level":"供給源レベル","product_more":"もっと","shop_recommend":"店舗オススメ","rt_tansLan":"右クリックで文字を選択された目標言語に翻訳できる","search_user":"連絡人を検索","click_translan":"クリックで翻訳言語を選択","set_sysLan":"クリックで翻訳言語を選択と他の設定操作","enter_search":"入力して検索","know":"わかりました","new_version":"現在は最新バージョン","isUpdate":"新バージョンがあり、更新するか？","reSend":"再送信する","sendErr":"送信失敗","del_friend":"本当に友達を削除するか","limit_size":"制限！","you_this_one":"この","enough_attachments_uploaded":"アップロード添付ファイルが最大です！","up_fail_try_again":"アップロード失敗、後でお試し下さい","too_big_file":"アップロードする{0}ファイルが大きすぎる","confirm_uploaded_file":"ファイルアップロードを確認","select_none":"0個ファイルを選択され、共0B。","file_format_incorrect":"アップロードする{0}ファイル形式が正しくない","file":"ファイル","number_of_uploads_exceeds":"アップロードする数量が{0}制限を超える！","upload_failure":"アップロードに失敗しました","drag_file_here":"またファイルをここにドラッグ","click_add_file":"ファイル追加をクリック","select_file_click_upload":"先にファイルを選択してアップロードをクリックしてください","paste":"貼り付ける"}
 
 /***/ }),
 /* 40 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"사용자 아이디 ","IM_network_error":"네트워크 문제가 생겼습니다.","IM_login":"로그인 바로가기 ","IM_send":"소식을 전송합니다.","IM_no_more":"더 많은 히스토리 기록이 없습니다.","IM_username_error":"아이디 또는 비밀번호를 다시 확인하세요.","IM_password":"비밀번호","IM_try_again":"다시 시도하기를 클릭하십시오.","IM_get_more":"많은 소식 더보기","update":"업데이트 체크","send":"전송","new_guid":"초보자 가이드:   ","set":"설정","send_img":"사진 보내기 ","check_network":"네트워크 연결이 없으니 네트워크 설정을 체크하세요.","username_hd":"사용자ID를 입력하세요.","16chat":"16Chat 1.0","friendchat":"채팅 대상 친구를 선택하지 않습니다.","network":"네트워크가 문제 있습니다! ","version":"버전 정보: ","username":"사용자이름은 비어 둘 수 없습니다. ","retry_Click":"클릭하여 다시 시도하세요.","pwd_hd":"비밀번호를 입력해주세요.","sys_lan":"시스템 언어 ","no_friend":"친구를 선택하지 않아서 채팅을 할 수 없습니다.","trans_err":"번역이 잘못됩니다.","notice":"오프라인 알림 ","pwd_err":"비밀번호를 잘못 입력하였습니다.","copy":"복제","sure":"확인","send_msg":"보낸 메시지가 비어 있을 수 없다!","screenshot":"화면캡쳐","trans_lan":"번역된 언어 ","username_err":"아이디를 다시 확인하세요.","enter":"줄바꿈","forget_pwd":"비밀번호를 잊었습니다.","more_msg":"더보기 ","history":"역사소식을 획득하는 중...","register":"회원가입","connect_err":"접속이 끊겨서 다시 클릭하여 로그인하세요.","trans":"번역","pwd":"필수 정보입니다.","msg_length":"소식 길이가 제한을 넘었습니다(최다 1000 개 글자)","see":"보기 ","off":"닫기","rem_pwd":"비밀번호를 기억하세요.","hot_set":"핫키 설정 ","del_mdir":"본 계정을 리스트에서 삭제하겠습니까?","timeout":"네트워크 타임아웃!","hotSet":"단축키 설정 ","change_lan":"변경"}
+module.exports = {"IM_username":"사용자 아이디 ","IM_network_error":"네트워크 문제가 생겼습니다.","IM_login":"로그인 바로가기 ","IM_send":"소식을 전송합니다.","IM_no_more":"더 많은 히스토리 기록이 없습니다.","IM_username_error":"아이디 또는 비밀번호를 다시 확인하세요.","IM_password":"비밀번호","IM_try_again":"다시 시도하기를 클릭하십시오.","IM_get_more":"많은 소식 더보기","update":"업데이트 체크","send":"전송","new_guid":"초보자 가이드:   ","set":"설정","send_img":"사진 보내기 ","check_network":"네트워크 연결이 없으니 네트워크 설정을 체크하세요.","username_hd":"사용자ID를 입력하세요.","16chat":"16Chat 1.0","friendchat":"채팅 대상 친구를 선택하지 않습니다.","network":"네트워크가 문제 있습니다! ","version":"버전 정보: ","username":"사용자이름은 비어 둘 수 없습니다. ","retry_Click":"클릭하여 다시 시도하세요.","pwd_hd":"비밀번호를 입력해주세요.","sys_lan":"시스템 언어 ","no_friend":"친구를 선택하지 않아서 채팅을 할 수 없습니다.","trans_err":"번역이 잘못됩니다.","notice":"오프라인 알림 ","pwd_err":"비밀번호를 잘못 입력하였습니다.","copy":"복제","sure":"확인","send_msg":"보낸 메시지가 비어 있을 수 없다!","screenshot":"화면캡쳐","trans_lan":"번역된 언어 ","username_err":"아이디를 다시 확인하세요.","enter":"줄바꿈","forget_pwd":"비밀번호를 잊었습니다.","more_msg":"더보기 ","history":"역사소식을 획득하는 중...","register":"회원가입","connect_err":"접속이 끊겨서 다시 클릭하여 로그인하세요.","trans":"번역","pwd":"필수 정보입니다.","msg_length":"소식 길이가 제한을 넘었습니다(최다 n개 글자)","see":"보기 ","off":"닫기","rem_pwd":"비밀번호를 기억하세요.","hot_set":"핫키 설정 ","del_mdir":"본 계정을 리스트에서 삭제하겠습니까?","timeout":"네트워크 타임아웃!","hotSet":"단축키 설정 ","change_lan":"변경","business_model":"경영 방식 ","search":"검색","cellphone":"휴대폰","enterprise_address":"회사주소","telephone":"전화번호","supply_level":"공급등급","product_more":"더보기","shop_recommend":"점포추천 ","rt_tansLan":"오른쪽 버튼을 클릭해서 문자를 선택하신 목표언어를 번역할 수 있습니다.","search_user":"연락인을 검색하기","click_translan":"번역 언어 선택을 클릭하기","set_sysLan":"번역 언어 선택과 기타 설치 조작을 클릭합니다.","enter_search":"입력해서 검색하기","know":"알겠습니다.","new_version":"최신 버전입니다.","isUpdate":"최신 버전이 있습니다. 업데이트하시겠습니까?","reSend":"다시 전송하기","sendErr":"메시지전송을 할 수 없습니다","del_friend":"친구를 삭제하시겠습니까?","limit_size":"제한!","you_this_one":"이라는 ","enough_attachments_uploaded":"첨부파일이 충분합니다.","up_fail_try_again":"업로드 실패, 다시 시도하세요.","too_big_file":"{0}파일이 너무 큽니다.","confirm_uploaded_file":"파일 업로드하기를 확인합니다.","select_none":"파일 0개를 선택했습니다. 총 0B입니다.","file_format_incorrect":"{0}파일의 격식이 정확하지 않습니다.","file":"파일 ","number_of_uploads_exceeds":"업로드 수량이 {0} 제한을 넘었습니다!","upload_failure":"업로드 실패 ","drag_file_here":"아니면 파일을 여기로 끌어옵니다.","click_add_file":"파일 첨가를 클릭하기","select_file_click_upload":"먼저 파일을 선택하고 나서 업로드를 클릭하세요.","paste":"붙여넣기"}
 
 /***/ }),
 /* 41 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"Nama pengguna","IM_network_error":"Sambungan rangkaian tidak berjaya!","IM_login":"Login segera","IM_send":"Hantar mesej","IM_no_more":"Tiada berita sejarah lagi","IM_username_error":"Nama pengguna atau kata laluan salah","IM_password":"Kata laluan","IM_try_again":"Sila klik semula","IM_get_more":"Klik untuk maklumat lanjut","update":"Semak kemas kini","send":"Hantar","new_guid":"Panduan pemula:","set":"Tetapan","send_img":"Hantar gambar","check_network":"Tiada sambungan rangkaian, sila periksa tetapan rangkaian anda","username_hd":"Sila isikan nama pengguna","16chat":"16Chat1.0","friendchat":"Tiada kawan yang dipilih untuk berbual","network":"Ada yang salah dengan Internet! sila","version":"Maklumat versi:","username":"Nama pengguna tidak boleh kosong","retry_Click":"Klik semula","pwd_hd":"Sila masukkan kata laluan","sys_lan":"Bahasa sistem:","no_friend":"Anda belum memilih rakan lagi, tidak dapat berbual sekarang","trans_err":"Terjemahan itu salah","notice":"Notis luar talian","pwd_err":"Masukksn kata laluan salah","copy":"Salinan","sure":"Pasti","send_msg":"Mesej yang dihantar tidak boleh kosong!","screenshot":"Tangkapan skrin","trans_lan":"Bahasa diterjemahkan","username_err":"Kesalahan input nama pengguna","enter":"Line feed","forget_pwd":"Terlupa kata laluan","more_msg":"Klik untuk maklumat lanjut","history":"Sedang mendapatkan berita sejarah ...","register":"Daftar","connect_err":"Sambungan tidak berjaya Klik untuk log masuk sekali lagi","trans":"Terjemahan","pwd":"Kata laluan tidak boleh kosong","msg_length":"Panjang mesej melebihi had (maksimum 1000 aksara)","see":"Lihat","off":"Batal","rem_pwd":"Ingat kata laluan","hot_set":"Tepatan kunci panas:","del_mdir":"Anda mengesahkan untuk memadamkan akaun dari senarai?","timeout":"Masa tamat rangkaian!","hotSet":"Tetapkan kekunci pintas","change_lan":"Tukar"}
+module.exports = {"IM_username":"Nama pengguna","IM_network_error":"Sambungan rangkaian tidak berjaya!","IM_login":"Login segera","IM_send":"Hantar mesej","IM_no_more":"Tiada berita sejarah lagi","IM_username_error":"Nama pengguna atau kata laluan salah","IM_password":"Kata laluan","IM_try_again":"Sila klik semula","IM_get_more":"Klik untuk maklumat lanjut","update":"Semak kemas kini","send":"Hantar","new_guid":"Panduan pemula:","set":"Tetapan","send_img":"Hantar gambar","check_network":"Tiada sambungan rangkaian, sila periksa tetapan rangkaian anda","username_hd":"Sila isikan nama pengguna","16chat":"16Chat1.0","friendchat":"Tiada kawan yang dipilih untuk berbual","network":"Ada yang salah dengan Internet! sila","version":"Maklumat versi:","username":"Nama pengguna tidak boleh kosong","retry_Click":"Klik semula","pwd_hd":"Sila masukkan kata laluan","sys_lan":"Bahasa sistem:","no_friend":"Anda belum memilih rakan lagi, tidak dapat berbual sekarang","trans_err":"Terjemahan itu salah","notice":"Notis luar talian","pwd_err":"Masukksn kata laluan salah","copy":"Salinan","sure":"Pasti","send_msg":"Mesej yang dihantar tidak boleh kosong!","screenshot":"Tangkapan skrin","trans_lan":"Bahasa diterjemahkan","username_err":"Kesalahan input nama pengguna","enter":"Line feed","forget_pwd":"Terlupa kata laluan","more_msg":"Klik untuk maklumat lanjut","history":"Sedang mendapatkan berita sejarah ...","register":"Daftar","connect_err":"Sambungan tidak berjaya Klik untuk log masuk sekali lagi","trans":"Terjemahan","pwd":"Kata laluan tidak boleh kosong","msg_length":"Panjang mesej melebihi had (maksimum n aksara)","see":"Lihat","off":"Batal","rem_pwd":"Ingat kata laluan","hot_set":"Tepatan kunci panas:","del_mdir":"Anda mengesahkan untuk memadamkan akaun dari senarai?","timeout":"Masa tamat rangkaian!","hotSet":"Tetapkan kekunci pintas","change_lan":"Tukar","business_model":"Model perniagaan","search":"Carian","cellphone":"Telefon bimbit","enterprise_address":"Alamat perusahaan","telephone":"Telefon","supply_level":"Tahap bekalan","product_more":"Lebih","shop_recommend":"Disyorkan","rt_tansLan":"Selepas klik butang kanan, teks akan diterjemahkan bahasa sasaran yang dipilih","search_user":"Cari kenalan","click_translan":"Klik untuk memilih bahasa terjemahan","set_sysLan":"Klik untuk memilih bahasa terjemahan dan tetapan lain","enter_search":"Masukkan untuk carian","know":"Saya sudah tahu itu","new_version":"Versi terkini semasa","isUpdate":"Mengesan versi baru, sama ada mengemas kininya atau tidak","reSend":"Hantar semula","sendErr":"Hantar gagal","del_friend":"Adakah anda pasti memadam rakan ini?","limit_size":"Terhad!","you_this_one":"Anda","enough_attachments_uploaded":"Telah muat naik lampiran yang mencukupi!","up_fail_try_again":"Muat naik gagal, sila cuba lagi","too_big_file":"Fail {0} yang dimuatkan terlalu besar","confirm_uploaded_file":"Sahkan muat naik fail","select_none":"Pilih 0 fail, jumlah 0B.","file_format_incorrect":"Format fail {0} yang dimuatkan tidak betul","file":"Fail","number_of_uploads_exceeds":"Jumlah yang dimuatkan melebihi {0} akan terhad!","upload_failure":"Muat naik gagal","drag_file_here":"Atau menyeret fail di sini","click_add_file":"Klik tambah fail","select_file_click_upload":"Sila pilih fail sebelum mengklik muat naik","paste":"Tampal"}
 
 /***/ }),
 /* 42 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"Nome de usuário","IM_network_error":"Existe um problema com a sua rede!","IM_login":"Entrar agora","IM_send":"Enviar uma mensagem","IM_no_more":"Não há mais notícias históricas","IM_username_error":"Nome de usuário ou senha está incorreta","IM_password":"Senha","IM_try_again":"Clique para tentar novamente","IM_get_more":"Clique para ver mais mensagens","update":"Atualizar","send":"Enviar","new_guid":"Guia de novatos:","set":"Definição","send_img":"Enviar imagem","check_network":"Nenhuma conexão de rede, por favor, verifique suas configurações de rede","username_hd":"Digite o nome de usuário","16chat":"16Chat 1.0","friendchat":"Nenhum amigo selecionado para bate-papo","network":"Existe um problema com a rede! Por favor","version":"Informação da versão:","username":"Nome de usuário não pode ser vazio","retry_Click":"Clique para tentar novamente","pwd_hd":"Digite a senha","sys_lan":"Idioma do sistema:","no_friend":"Você ainda não selecionou amigos, não é possível bater papo agora","trans_err":"Erro de tradução","notice":"Notificação Offline","pwd_err":"Senha incorreta","copy":"Copiar","sure":"OK","send_msg":"A mensagem enviada não pode estar vazia!","screenshot":"Screenshots","trans_lan":"Idioma de tradução","username_err":"Erro de entrada do nome do usuário","enter":"Nova linha","forget_pwd":"Esquce a senha","more_msg":"Clique para mais notícias","history":"Obtendo notícias históricas ...","register":"Registar","connect_err":"Desconectado, clique para efetuar login novamente","trans":"Tradução","pwd":"A senha não pode ser vazio","msg_length":"Comprimento da mensagem excede o limite (máximo 1000 caracteres)","see":"Ver","off":"Cancelar","rem_pwd":"Lembrar-se a senha","hot_set":"Configurações de teclas de atalho","del_mdir":"Tem certeza de excluir a conta da lista?","timeout":"Tempo limite da rede!","hotSet":"Configurações de atalho direta","change_lan":"Mudar"}
+module.exports = {"IM_username":"Nome de usuário","IM_network_error":"Existe um problema com a sua rede!","IM_login":"Entrar agora","IM_send":"Enviar uma mensagem","IM_no_more":"Não há mais notícias históricas","IM_username_error":"Nome de usuário ou senha está incorreta","IM_password":"Senha","IM_try_again":"Clique para tentar novamente","IM_get_more":"Clique para ver mais mensagens","update":"Atualizar","send":"Enviar","new_guid":"Guia de novatos:","set":"Definição","send_img":"Enviar imagem","check_network":"Nenhuma conexão de rede, por favor, verifique suas configurações de rede","username_hd":"Digite o nome de usuário","16chat":"16Chat 1.0","friendchat":"Nenhum amigo selecionado para bate-papo","network":"Existe um problema com a rede! Por favor","version":"Informação da versão:","username":"Nome de usuário não pode ser vazio","retry_Click":"Clique para tentar novamente","pwd_hd":"Digite a senha","sys_lan":"Idioma do sistema:","no_friend":"Você ainda não selecionou amigos, não é possível bater papo agora","trans_err":"Erro de tradução","notice":"Notificação Offline","pwd_err":"Senha incorreta","copy":"Copiar","sure":"OK","send_msg":"A mensagem enviada não pode estar vazia!","screenshot":"Screenshots","trans_lan":"Idioma de tradução","username_err":"Erro de entrada do nome do usuário","enter":"Nova linha","forget_pwd":"Esquce a senha","more_msg":"Clique para mais notícias","history":"Obtendo notícias históricas ...","register":"Registar","connect_err":"Desconectado, clique para efetuar login novamente","trans":"Tradução","pwd":"A senha não pode ser vazio","msg_length":"Comprimento da mensagem excede o limite (máximo n caracteres)","see":"Ver","off":"Cancelar","rem_pwd":"Lembrar-se a senha","hot_set":"Configurações de teclas de atalho","del_mdir":"Tem certeza de excluir a conta da lista?","timeout":"Tempo limite da rede!","hotSet":"Configurações de atalho direta","change_lan":"Mudar","business_model":"Modelo de  negócio","search":"Pesquisar","cellphone":"Celular","enterprise_address":"Endereço de empresa ","telephone":"Telefone fixo ","supply_level":"Leve de fornecimento","product_more":"Mais","shop_recommend":"Recomendado","rt_tansLan":"Clique com o botão direito para traduzir o texto no idioma de destino selecionado","search_user":"Pesquisar contatos","click_translan":"Clique para selecionar o idioma de tradução","set_sysLan":"Clique para selecionar o idioma de tradução e outras configurações","enter_search":"Digite para pesquisar","know":"Entendi","new_version":"Atualmente é a última versão","isUpdate":"Nova versão detectada, se deseja atualizar？","reSend":"Envie novamente","sendErr":"Falha ao enviar","del_friend":"Tem certeza de que deseja deletar este amigo?","limit_size":"Limite!","you_this_one":"Seu","enough_attachments_uploaded":"Carregou anexos suficientes!","up_fail_try_again":"Falha no envio, por favor, tente novamente","too_big_file":"O arquivo {0} carregado é muito grande","confirm_uploaded_file":"Confirme o arquivo de upload","select_none":"Selecione 0 arquivos, total 0B.","file_format_incorrect":"Formato incorreto do arquivo {0} enviado","file":"Arquivo","number_of_uploads_exceeds":"O número de uploads excede o limite {0}!","upload_failure":"Falha de enviar","drag_file_here":"Ou arraste arquivos aqui","click_add_file":"Clique para adicionar o arquivo","select_file_click_upload":"Por favor selecione o arquivo e clique em upload","paste":"Colar"}
 
 /***/ }),
 /* 43 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"Логин","IM_network_error":"Произошла сетевая ошибка","IM_login":"Войти сейчас","IM_send":"Отправить","IM_no_more":"Истории больше нет","IM_username_error":"Неверный логин или пароль","IM_password":"Пароль","IM_try_again":"Нажмите, чтобы повторить","IM_get_more":"Нажмите, чтобы просмотреть больше","update":"Проверить обновление","send":"Отправить","new_guid":"Справка для новичка","set":"Настройка","send_img":"Отправлять картину","check_network":"Подключение к интернету ошибка, проверьте настройки соединения с интернетом.","username_hd":"Пожалуйста, введите логин","16chat":"16Chat1.0","friendchat":"Чтобы начать чат, выберите друзей","network":"Ошибка сети! Пожалуйста","version":"Информация версия: ","username":"Имя пользователя не может быть пустым","retry_Click":"Нажмите, чтобы повторить","pwd_hd":"Вводите пароль ","sys_lan":"Системный язык","no_friend":"Вы ещё не выберите друзей  и не можете начать чат","trans_err":"Ошибка появилась в переводе","notice":"сообщение офлайн","pwd_err":"Неправильный пароль","copy":"Копировать","sure":"Да","send_msg":"Отправлены сообщения не может быть пустым","screenshot":"Скриншот","trans_lan":"Переводной язык ","username_err":"Неверный логин","enter":"Перевод строки","forget_pwd":"Забыли пароль","more_msg":"Нажмите, чтобы получить более сообщения","history":"Получающий историческое сообщение","register":"Регистрация","connect_err":"Соединение недоступен, нажмите чтобы войти снова","trans":"Перевод","pwd":"Пароль не должно быть пустым","msg_length":"Символ сообщения превышать предел ( не более 1000 символов )","see":"Осмотр","off":"Отменить","rem_pwd":"Запомнить пароль ","hot_set":"Настройка горячей клавиши","del_mdir":"Вы уверены чтобы удалять данный  аккаунт?","timeout":"Сеть истечение времени ожидания","hotSet":"Настройка быстрых клавиш","change_lan":"Изменять"}
+module.exports = {"IM_username":"Логин","IM_network_error":"Произошла сетевая ошибка","IM_login":"Войти сейчас","IM_send":"Отправить","IM_no_more":"Истории больше нет","IM_username_error":"Неверный логин или пароль","IM_password":"Пароль","IM_try_again":"Нажмите, чтобы повторить","IM_get_more":"Нажмите, чтобы просмотреть больше","update":"Проверить обновление","send":"Отправить","new_guid":"Справка для новичка","set":"Настройка","send_img":"Отправлять картину","check_network":"Подключение к интернету ошибка, проверьте настройки соединения с интернетом.","username_hd":"Пожалуйста, введите логин","16chat":"16Chat1.0","friendchat":"Чтобы начать чат, выберите друзей","network":"Ошибка сети! Пожалуйста","version":"Информация версия: ","username":"Имя пользователя не может быть пустым","retry_Click":"Нажмите, чтобы повторить","pwd_hd":"Вводите пароль ","sys_lan":"Системный язык","no_friend":"Вы ещё не выберите друзей  и не можете начать чат","trans_err":"Ошибка появилась в переводе","notice":"сообщение офлайн","pwd_err":"Неправильный пароль","copy":"Копировать","sure":"Да","send_msg":"Отправлены сообщения не может быть пустым","screenshot":"Скриншот","trans_lan":"Переводной язык ","username_err":"Неверный логин","enter":"Перевод строки","forget_pwd":"Забыли пароль","more_msg":"Нажмите, чтобы получить более сообщения","history":"Получающий историческое сообщение","register":"Регистрация","connect_err":"Соединение недоступен, нажмите чтобы войти снова","trans":"Перевод","pwd":"Пароль не должно быть пустым","msg_length":"Символ сообщения превышать предел ( не более n символов )","see":"Осмотр","off":"Отменить","rem_pwd":"Запомнить пароль ","hot_set":"Настройка горячей клавиши","del_mdir":"Вы уверены чтобы удалять данный  аккаунт?","timeout":"Сеть истечение времени ожидания","hotSet":"Настройка быстрых клавиш","change_lan":"Изменять","business_model":"Модель хозяйства","search":"Поиск","cellphone":"Мобильный телефон","enterprise_address":"Адрес предприятия","telephone":"Городской телефон","supply_level":"Категория снабжения","product_more":"Более","shop_recommend":"Рекомендации в магазине","rt_tansLan":"Правая клавиша переводит на целевой язык, который выбрали.","search_user":"Поиск контактов","click_translan":"Нажмите на выбор язык перевода","set_sysLan":"Нажмите на выбор язык перевода и другие настройки","enter_search":"Введите поиск","know":"Понял","new_version":"В настоящее время это последняя версия","isUpdate":"Обнаружена новая версия, обновлять ли","reSend":"Отправлять снова","sendErr":"Не удалось отправить","del_friend":"Вы действительно хотите удалить этого друга","limit_size":"ограничение！","you_this_one":"Ваш это ","enough_attachments_uploaded":"Закачивали достаточные прилодения!","up_fail_try_again":"Не удалось загружать, повторите пожалуйста ","too_big_file":"Файл {0} слишком велик","confirm_uploaded_file":"Загружать этот файл","select_none":"Выбрать 0 файл, всего 0B.","file_format_incorrect":"Формат файла {0} не прав","file":"Файл","number_of_uploads_exceeds":"Количество загрузки превышенное {0}","upload_failure":"Неуспешно закачивать","drag_file_here":"Или перетащите файл сюда","click_add_file":"Нажать для добавления файла","select_file_click_upload":"Пожалуйста выбирайте файл, потом нажмите на загрузку","paste":"вставить"}
 
 /***/ }),
 /* 44 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"ชื่อผู้ใช้","IM_network_error":"เครื่องข่ายผิดพลาด","IM_login":"เข้าสู่ระบบ","IM_send":"ส่งข้อความ","IM_no_more":"ไม่มีประวัติอีกแล้ว","IM_username_error":"ชื่อผู้ใช้หรือรหัสผ่านผิดพลาด","IM_password":"รหัสผ่าน","IM_try_again":"คลิกลงอีกครั้ง","IM_get_more":"คลิกดูข้อความเพิ่มเติม","update":"ตรวจสอบการอัปเดท","send":"ส่ง","new_guid":"คู่มือสำรับมือใหม่","set":"ตั้งค่า","send_img":"ส่งรูปภาพ","check_network":"ไม่ได้เชื่อมต่อเครื่อข่าย กรุณาไปตรวจที่การตั้งค่าเครื่อข่าย","username_hd":"กรุณากรอกชื่อผู้ใช้","16chat":"16Chat1.0","friendchat":"ยังไม่แชทกับเพื่อน ๆ ","network":"เครื่อข่ายผิดปกติ","version":"เวอร์ชั่น：","username":"ชื่อผู้ใช้ไม่ได้เป็นที่ว่าง","retry_Click":"คลิกเพื่อลองอีกครั้ง","pwd_hd":"กรุณากรอกรหัสผ่าน","sys_lan":"ภาษา：","no_friend":"ยังไม่เลือกเพื่อนแชท ไม่สามารถแชมได้","trans_err":"การแปลเกิดข้อผิดพลาด ","notice":"การแจ้งเตือนออฟไลน์","pwd_err":"ป้อนรหัสผ่านเป็นผิด","copy":"คัดลอง","sure":"ตกลง","send_msg":"กรุณากรอกข้อความ","screenshot":"ตัดภาพหน้าจอ","trans_lan":"ภาษาที่แปล","username_err":"ชื่อผู้ใช้กรอกผิด","enter":"เปลี่ยนแถว","forget_pwd":"ลืมรหัสผ่าน","more_msg":"คลิกเพื่อรับเพิ่มเติม","history":"กำลังรับประวัติ...","register":"สมัครสมาชิก ","connect_err":"การเชื่อมต่อขาด  คลิกเพื่อเข้าสู่ใหม่","trans":"แปล","pwd":"กรุณากรอกรหัสผ่าน","msg_length":"จำนวนอักษรเกินกว่าจำนวนนำหนด(ตัวอักษรมากสุดnตัว 1000)","see":"เช็คดู","off":"ยกเลิก","rem_pwd":"จำรหัสผ่าน","hot_set":"แป้นพิมพ์ลัด：","del_mdir":"ตกลงจะลบบัญชีนี้？","timeout":"เวลาเชื่อมต่อเครื่อข่ายเกินกว่าเวลากำหนด","hotSet":"ตั้งค่าแป้นพิมพ์ลัด","change_lan":"แก้ไข"}
+module.exports = {"IM_username":"ชื่อผู้ใช้","IM_network_error":"เครื่องข่ายผิดพลาด","IM_login":"เข้าสู่ระบบ","IM_send":"ส่งข้อความ","IM_no_more":"ไม่มีประวัติอีกแล้ว","IM_username_error":"ชื่อผู้ใช้หรือรหัสผ่านผิดพลาด","IM_password":"รหัสผ่าน","IM_try_again":"คลิกลงอีกครั้ง","IM_get_more":"คลิกดูข้อความเพิ่มเติม","update":"ตรวจสอบการอัปเดท","send":"ส่ง","new_guid":"คู่มือสำรับมือใหม่","set":"ตั้งค่า","send_img":"ส่งรูปภาพ","check_network":"ไม่ได้เชื่อมต่อเครื่อข่าย กรุณาไปตรวจที่การตั้งค่าเครื่อข่าย","username_hd":"กรุณากรอกชื่อผู้ใช้","16chat":"16Chat1.0","friendchat":"ยังไม่แชทกับเพื่อน ๆ ","network":"เครื่อข่ายผิดปกติ","version":"เวอร์ชั่น：","username":"ชื่อผู้ใช้ไม่ได้เป็นที่ว่าง","retry_Click":"คลิกเพื่อลองอีกครั้ง","pwd_hd":"กรุณากรอกรหัสผ่าน","sys_lan":"ภาษา：","no_friend":"ยังไม่เลือกเพื่อนแชท ไม่สามารถแชมได้","trans_err":"การแปลเกิดข้อผิดพลาด ","notice":"การแจ้งเตือนออฟไลน์","pwd_err":"ป้อนรหัสผ่านเป็นผิด","copy":"คัดลอง","sure":"ตกลง","send_msg":"กรุณากรอกข้อความ","screenshot":"ตัดภาพหน้าจอ","trans_lan":"ภาษาที่แปล","username_err":"ชื่อผู้ใช้กรอกผิด","enter":"เปลี่ยนแถว","forget_pwd":"ลืมรหัสผ่าน","more_msg":"คลิกเพื่อรับเพิ่มเติม","history":"กำลังรับประวัติ...","register":"สมัครสมาชิก ","connect_err":"การเชื่อมต่อขาด  คลิกเพื่อเข้าสู่ใหม่","trans":"แปล","pwd":"กรุณากรอกรหัสผ่าน","msg_length":"จำนวนอักษรเกินกว่าจำนวนนำหนด(ตัวอักษรมากสุดnตัว)","see":"เช็คดู","off":"ยกเลิก","rem_pwd":"จำรหัสผ่าน","hot_set":"แป้นพิมพ์ลัด：","del_mdir":"ตกลงจะลบบัญชีนี้？","timeout":"เวลาเชื่อมต่อเครื่อข่ายเกินกว่าเวลากำหนด","hotSet":"ตั้งค่าแป้นพิมพ์ลัด","change_lan":"แก้ไข","business_model":"รูปแบบธุรกิจ","search":"ค้นหา","cellphone":"มือถือ","enterprise_address":"ที่อยู่บริษัท","telephone":"โทรศัพท์บ้าน","supply_level":"ระดับ","product_more":"เพิ่มเติม","shop_recommend":"สินค้าแนะนำ","rt_tansLan":"คลิกขวาสามารถแปลเป็นภาษาที่คุณเลือก","search_user":"ค้นหาผู้ติดต่อ","click_translan":"คลิกเพื่อเลือกภาษาที่ต้องการแปล","set_sysLan":"คลิกเพื่อเลือกภาษาที่ต้องการแปลหรือดำเนินการอื่น ๆ ","enter_search":"กรอกเพื่อค้นหา","know":"ทราบแล้ว","new_version":"ซอฟต์แวร์ของคุณเป็ณรุ่นล่าสุด","isUpdate":"ตรวจสอบมีรายการอัพเดทใหม่ จะอัพเดทหรือไม่","reSend":"ลองส่งใหม่อีกครั้ง","sendErr":"การส่งล้มเหลว","del_friend":"ตกลงจะลบเเพื่อนคนนี้หรือไม่","limit_size":"จำกัด","you_this_one":"null","enough_attachments_uploaded":"ได้อัปโหลดเอกสารแนบมากพอ!","up_fail_try_again":"อัปโหลดล้มเหลว กรุณาลองอีกครั้ง","too_big_file":"{0}ใหญ่เกินไป","confirm_uploaded_file":"ตกลงอัปโหลดไฟล์","select_none":"ได้เลือกไฟล์0 รวมทั้ง0B","file_format_incorrect":"รูปแบบ{0}ไม่ถูกต้อง","file":"ไฟล์","number_of_uploads_exceeds":"จำนวนอัปโหลดเกินกว่า{0}แล้ว","upload_failure":"การอัปโหลดล้มเหลว","drag_file_here":"หรือลากไฟล์ไปถึงที่นี้","click_add_file":"คลิกเพื่อเพิ่มไฟล์","select_file_click_upload":"เลีอกไฟล์ก่อนแล้วคลิกอัปฟดโหลดอีก","paste":"วาง"}
 
 /***/ }),
 /* 45 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"Tên người dùng","IM_network_error":"Mạng lưới bị lỗi!","IM_login":"Đăng nhập ngay","IM_send":"Nhắn tin","IM_no_more":"Không có thông tin khác","IM_username_error":"Tên người dùng hoặc mật mã sai","IM_password":"Mật khẩu","IM_try_again":"Xin bạn click lại","IM_get_more":"Click để xem nhiều thông tin hơn","update":"Kiểm tra cập nhật","send":"Gửi","new_guid":"Hướng dẫn sử dụng:","set":"Cài đặt","send_img":"Gửi ảnh","check_network":"Không có mạng lưới xin bạn kiểm tra lại","username_hd":"Xin nhập tên đăng nhập","16chat":"16Chat 1.0","friendchat":"Bạn chưa chọn bạn bè để buôn chuyện","network":"Mạng lưới có lỗi! Xin","version":"Thông tin phiên bản:","username":"Tên người dùng không thể để trống","retry_Click":"Click để thử lại","pwd_hd":"Xin nhập mật khẩu","sys_lan":"Ngôn ngữ hệ thống:","no_friend":"Bạn chưa chọn bạn bè, tạm không thể buôn chuyện","trans_err":"Phiên dịch bị sai rồi","notice":"Thông báo off-line","pwd_err":"Nhập sai mật khẩu","copy":"Copy","sure":"Xác định","send_msg":"Tin nhắn không thể để trống!","screenshot":"Ảnh màn hình","trans_lan":"Ngôn ngữ phiên dịch","username_err":"Nhập sai tên người dùng","enter":"Đổi dòng","forget_pwd":"Quên mật khẩu","more_msg":"Click để xem nhiều thông tin hơn","history":"Đang nhận thông tin lịch sử...","register":"Đăng ký","connect_err":"Sự liên kết bị cắt đứt, xin bạn click để đăng nhập lại","trans":"Phiên dịch","pwd":"Mật khẩu không được để trống","msg_length":"Ký tự tin nhắn vượt qua số lượng hạn chế (Tối đa là 1000 ký tự)","see":"Xem","off":"Hủy","rem_pwd":"Ghi nhớ mật khẩu","hot_set":"Cài đặt phím tắt:","del_mdir":"Bạn có xác thực xóa tài khoản này từ danh bạ?","timeout":"Liên kết mạng lưới quá lâu!","hotSet":"Tự định nghĩa cài đặt phím tắt","change_lan":"Sửa đổi"}
+module.exports = {"IM_username":"Tên người dùng","IM_network_error":"Mạng lưới bị lỗi!","IM_login":"Đăng nhập ngay","IM_send":"Nhắn tin","IM_no_more":"Không có thông tin khác","IM_username_error":"Tên người dùng hoặc mật mã sai","IM_password":"Mật khẩu","IM_try_again":"Xin bạn click lại","IM_get_more":"Click để xem nhiều thông tin hơn","update":"Kiểm tra cập nhật","send":"Gửi","new_guid":"Hướng dẫn sử dụng:","set":"Cài đặt","send_img":"Gửi ảnh","check_network":"Không có mạng lưới xin bạn kiểm tra lại","username_hd":"Xin nhập tên đăng nhập","16chat":"16Chat 1.0","friendchat":"Bạn chưa chọn bạn bè để buôn chuyện","network":"Mạng lưới có lỗi! Xin","version":"Thông tin phiên bản:","username":"Tên người dùng không thể để trống","retry_Click":"Click để thử lại","pwd_hd":"Xin nhập mật khẩu","sys_lan":"Ngôn ngữ hệ thống:","no_friend":"Bạn chưa chọn bạn bè, tạm không thể buôn chuyện","trans_err":"Phiên dịch bị sai rồi","notice":"Thông báo off-line","pwd_err":"Nhập sai mật khẩu","copy":"Copy","sure":"Xác định","send_msg":"Tin nhắn không thể để trống!","screenshot":"Ảnh màn hình","trans_lan":"Ngôn ngữ phiên dịch","username_err":"Nhập sai tên người dùng","enter":"Đổi dòng","forget_pwd":"Quên mật khẩu","more_msg":"Click để xem nhiều thông tin hơn","history":"Đang nhận thông tin lịch sử...","register":"Đăng ký","connect_err":"Sự liên kết bị cắt đứt, xin bạn click để đăng nhập lại","trans":"Phiên dịch","pwd":"Mật khẩu không được để trống","msg_length":"Ký tự tin nhắn vượt qua số lượng hạn chế (Tối đa là n ký tự)","see":"Xem","off":"Hủy","rem_pwd":"Ghi nhớ mật khẩu","hot_set":"Cài đặt phím tắt:","del_mdir":"Bạn có xác thực xóa tài khoản này từ danh bạ?","timeout":"Liên kết mạng lưới quá lâu!","hotSet":"Tự định nghĩa cài đặt phím tắt","change_lan":"Sửa đổi","business_model":"Mô hình kinh doanh","search":"Tìm kiếm","cellphone":"Phone","enterprise_address":"Địa chỉ doanh nghiệp","telephone":"ĐT cố định","supply_level":"Cấp bậc cung ứng hàng hóa","product_more":"Xem thêm","shop_recommend":"Đầu hàng của cửa hàng","rt_tansLan":"Click nút bấm chuột bên phải thì có thể phiên dịch văn bản","search_user":"Tìm kiếm người liên hệ","click_translan":"Click để chọn ngôn ngữ phiên dịch","set_sysLan":"Click để chọn ngôn ngữ phiên dịch và những sự cài đặt khác","enter_search":"Nhập vào để tìm kiếm","know":"Tôi biết rồi","new_version":"Đã là phiên bản mới nhất","isUpdate":"Kiểm tra đến phiên bản mới, bạn có muốn cập nhật không?","reSend":"Gửi lại","sendErr":"Gửi không thành công","del_friend":"Bạn có xác thực xóa bạn thân này không?","limit_size":"Hạn chế!","you_this_one":"XX của bạn","enough_attachments_uploaded":"Đã tải lên file đính kèm quá nhiều!","up_fail_try_again":"Tải lên thất bại, xin bạn thử lại","too_big_file":"File {0} do bạn tải lên quá lớn","confirm_uploaded_file":"Xác thực tải lên file","select_none":"Đã chọn 0 cái file, cộng 0 B.","file_format_incorrect":"Cách thức của File {0} không chính xác","file":"File","number_of_uploads_exceeds":"Số lượng tải lên đã vượt quá sự hạn chế {0}!","upload_failure":"Tải lên thất bại","drag_file_here":"Hoặc là kéo file sang nơi đây","click_add_file":"Click để thêm file","select_file_click_upload":"Xin bạn chọn file trước rồi click tải lên","paste":"null"}
 
 /***/ }),
 /* 46 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"用户名","IM_network_error":"您的网络有问题！","IM_login":"立即登录","IM_send":"发送消息","IM_no_more":"没有更多历史消息","IM_username_error":"用户名或密码错误","IM_password":"密码","IM_try_again":"请点击重试","IM_get_more":"点击查看更多消息","update":"检查更新","send":"发送","new_guid":"新手引导：","set":"设置","send_img":"发送图片","check_network":"无网络连接请您检查网络设置","username_hd":"请输入用户名","16chat":"一路聊1.0","friendchat":"未选择好友进行聊天","network":"网络有点问题！请","version":"版本信息：","username":"用户名不能为空","retry_Click":"点击重试","pwd_hd":"请输入密码","sys_lan":"系统语言：","no_friend":"你还没有选中好友，暂不能聊天","trans_err":"翻译出错了","notice":"离线通知","pwd_err":"密码输入错误","copy":"复制","sure":"确定","send_msg":"发送的消息不能为空！","screenshot":"截图","trans_lan":"翻译的语言","username_err":"用户名输入错误","enter":"换行","forget_pwd":"忘记密码","more_msg":"点击获取更多消息","history":"正在获取历史消息...","register":"注册","connect_err":"连接断开 点击重新登录","trans":"翻译","pwd":"密码不能为空","msg_length":"消息长度超出限制（最多1000个汉字）","see":"查看","off":"取消","rem_pwd":"记住密码","hot_set":"热键设置：","del_mdir":"确定从列表删除该账号？","timeout":"网络超时！","hotSet":"直接按键设置","change_lan":"更改"}
+module.exports = {"IM_username":"用户名","IM_network_error":"您的网络有问题！","IM_login":"立即登录","IM_send":"发送消息","IM_no_more":"没有更多历史消息","IM_username_error":"用户名或密码错误","IM_password":"密码","IM_try_again":"请点击重试","IM_get_more":"点击查看更多消息","update":"检查更新","send":"发送","new_guid":"新手引导：","set":"设置","send_img":"发送图片","check_network":"无网络连接请您检查网络设置","username_hd":"请输入用户名","16chat":"一路聊1.0","friendchat":"未选择好友进行聊天","network":"网络有点问题！请","version":"版本信息：","username":"用户名不能为空","retry_Click":"点击重试","pwd_hd":"请输入密码","sys_lan":"系统语言：","no_friend":"你还没有选中好友，暂不能聊天","trans_err":"翻译出错了","notice":"离线通知","pwd_err":"密码输入错误","copy":"复制","sure":"确定","send_msg":"发送的消息不能为空！","screenshot":"截图","trans_lan":"翻译的语言","username_err":"用户名输入错误","enter":"换行","forget_pwd":"忘记密码","more_msg":"点击获取更多消息","history":"正在获取历史消息...","register":"注册","connect_err":"连接断开 点击重新登录","trans":"翻译","pwd":"密码不能为空","msg_length":"消息长度超出限制（最多n个汉字）","see":"查看","off":"取消","rem_pwd":"记住密码","hot_set":"热键设置：","del_mdir":"确定从列表删除该账号？","timeout":"网络超时！","hotSet":"直接按键设置","change_lan":"更改","business_model":"经营模式","search":"搜索","cellphone":"手机","enterprise_address":"企业地址","telephone":"固定电话","supply_level":"供货等级","product_more":"更多","shop_recommend":"本店推荐","rt_tansLan":"右键即可将文字翻译成选择的目标语","search_user":"搜索联系人","click_translan":"点击选择翻译语言","set_sysLan":"点击选择翻译语言与其他设置操作","enter_search":"输入进行搜索","know":"知道了","new_version":"当前是最新版本","isUpdate":"检测到新版本，是否更新","reSend":"重新发送","sendErr":"发送失败","del_friend":"确定删除该好友吗","limit_size":"限制！","you_this_one":"您这个","enough_attachments_uploaded":"已上传足够多附件！","up_fail_try_again":"上传失败，请重试","too_big_file":"上传的{0}文件过大","confirm_uploaded_file":"确认上传文件","select_none":"选中0张文件，共0B。","file_format_incorrect":"上传的{0}文件格式不正确","file":"文件","number_of_uploads_exceeds":"上传的数量超过{0}限制！","upload_failure":"上传失败","drag_file_here":"或者将文件拖到此处","click_add_file":"点击添加文件","select_file_click_upload":"请先选中文件再点击上传","paste":"粘贴"}
 
 /***/ }),
 /* 47 */
 /***/ (function(module, exports) {
 
-module.exports = {"IM_username":"用戶名","IM_network_error":"您的網路有問題！","IM_login":"立即登入","IM_send":"發送消息","IM_no_more":"沒有更多歷史消息","IM_username_error":"用戶名或密碼錯誤","IM_password":"密碼","IM_try_again":"請點擊重試","IM_get_more":"點擊查看更多消息","update":"檢查更新","send":"發送","new_guid":"新手引導：","set":"設定","send_img":"發送圖片","check_network":"無網路連接請您檢查網路設定","username_hd":"請輸入用戶名","16chat":"一路聊1.0","friendchat":"未選擇好友進行聊天","network":"網路有點問題！請","version":"版本資訊：","username":"用戶名不能為空","retry_Click":"點擊重試","pwd_hd":"請輸入密碼","sys_lan":"系統語言：","no_friend":"你還沒有選中好友，暫不能聊天","trans_err":"翻譯出錯了","notice":"離線通知","pwd_err":"密碼輸入錯誤","copy":"複製","sure":"確定","send_msg":"發送的消息不能為空！","screenshot":"截圖","trans_lan":"翻譯的語言","username_err":"用戶名輸入錯誤","enter":"換行","forget_pwd":"忘記密碼","more_msg":"點擊獲取更多消息","history":"正在獲取歷史消息...","register":"註冊","connect_err":"連接斷開 點擊重新登入","trans":"翻譯","pwd":"密碼不能為空","msg_length":"消息長度超出限制（最多1000個漢字）","see":"查看","off":"取消","rem_pwd":"記住密碼","hot_set":"熱鍵設定：","del_mdir":"確定從列表刪除該帳號？","timeout":"網路超時！","hotSet":"直接按鍵設定","change_lan":"更改"}
+module.exports = {"IM_username":"用戶名","IM_network_error":"您的網路有問題！","IM_login":"立即登入","IM_send":"發送消息","IM_no_more":"沒有更多歷史消息","IM_username_error":"用戶名或密碼錯誤","IM_password":"密碼","IM_try_again":"請點擊重試","IM_get_more":"點擊查看更多消息","update":"檢查更新","send":"發送","new_guid":"新手引導：","set":"設定","send_img":"發送圖片","check_network":"無網路連接請您檢查網路設定","username_hd":"請輸入用戶名","16chat":"一路聊1.0","friendchat":"未選擇好友進行聊天","network":"網路有點問題！請","version":"版本資訊：","username":"用戶名不能為空","retry_Click":"點擊重試","pwd_hd":"請輸入密碼","sys_lan":"系統語言：","no_friend":"你還沒有選中好友，暫不能聊天","trans_err":"翻譯出錯了","notice":"離線通知","pwd_err":"密碼輸入錯誤","copy":"複製","sure":"確定","send_msg":"發送的消息不能為空！","screenshot":"截圖","trans_lan":"翻譯的語言","username_err":"用戶名輸入錯誤","enter":"換行","forget_pwd":"忘記密碼","more_msg":"點擊獲取更多消息","history":"正在獲取歷史消息...","register":"註冊","connect_err":"連接斷開 點擊重新登入","trans":"翻譯","pwd":"密碼不能為空","msg_length":"消息長度超出限制（最多n個漢字）","see":"查看","off":"取消","rem_pwd":"記住密碼","hot_set":"熱鍵設定：","del_mdir":"確定從列表刪除該帳號？","timeout":"網路超時！","hotSet":"直接按鍵設定","change_lan":"更改","business_model":"經營模式","search":"搜尋","cellphone":"手機","enterprise_address":"企業地址","telephone":"固定電話","supply_level":"供貨等級","product_more":"更多","shop_recommend":"本店推薦","rt_tansLan":"右鍵即可將文字翻譯成選擇的目標語","search_user":"搜尋聯繫人","click_translan":"點擊選擇翻譯語言","set_sysLan":"點擊選擇翻譯語言與其他設定操作","enter_search":"輸入進行搜尋","know":"知道了","new_version":"當前是最新版本","isUpdate":"檢測到新版本，是否更新","reSend":"重新發送","sendErr":"發送失敗","del_friend":"確定刪除該好友嗎","limit_size":"限制！","you_this_one":"您這個","enough_attachments_uploaded":"已上傳足夠多附件！","up_fail_try_again":"上傳失敗，請重試","too_big_file":"上傳的{0}文檔過大","confirm_uploaded_file":"確認上傳文檔","select_none":"選中0張文檔，共0B。","file_format_incorrect":"上傳的{0}文檔格式不正確","file":"文檔","number_of_uploads_exceeds":"上傳的數量超過{0}限制！","upload_failure":"上傳失敗","drag_file_here":"或者將文檔拖到此處","click_add_file":"點擊添加文檔","select_file_click_upload":"請先選中文檔再點擊上傳","paste":"粘貼"}
 
 /***/ }),
 /* 48 */
@@ -17620,7 +18063,10 @@ module.exports = {
     },
     base: '/', //路由根路径
     publicPath: '/', //服务器所在的路径
-    title: '16Chat'
+    title: '16Chat',
+    // 用环境变量来判断右侧模块接口的ip或者域名  development 对应测试环境，test对应单点环境，production对应线上环境
+    rDomain: process.env.NODE_ENV == 'development' ? '10.240.0.34' : process.env.NODE_ENV == 'testing' ? '140.143.48.201' : process.env.NODE_ENV == 'production' ? '140.143.48.201' : ''
+
 }
 
 /***/ }),
@@ -17697,11 +18143,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     obj:__webpack_require__(36),
                 }
             },
-            in:{
-                message:{
-                    obj:__webpack_require__(37),
-                }
-            },
+
             it:{
                 message:{
                     obj:__webpack_require__(38),
@@ -17712,19 +18154,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     obj:__webpack_require__(39),
                 }
             },
-            ko:{
-                message:{
-                    obj:__webpack_require__(40),
-                }
-            },
             ms:{
                 message:{
                     obj:__webpack_require__(41),
-                }
-            },
-            pt:{
-                message:{
-                    obj:__webpack_require__(42),
                 }
             },
             ru:{
@@ -17742,6 +18174,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     obj:__webpack_require__(45),
                 }
             },
+            pt:{
+                message:{
+                    obj:__webpack_require__(42),
+                }
+            },
             'zh-CN':{
                 message:{
                     obj:__webpack_require__(46),
@@ -17751,7 +18188,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 message:{
                     obj:__webpack_require__(47),
                 }
-            }
+            },
+            ko:{
+                message:{
+                    obj:__webpack_require__(40),
+                }
+            },
+            in:{
+                 message:{
+                     obj:__webpack_require__(37),
+                 }
+             }
         }
     })
 //console.log('i18n======',i18n.messages,i18n.locale);
@@ -17791,7 +18238,6 @@ const getters = {
         return '/images/1.jpg';
       }
     },
-    getNeedTalk: state => state.friendList.needTalk,
     getSelToID: state=>state.friendList.selToID,
     getMsg: (state)=>state.messageList.currentMsg,
     getMsgTrigger:(state)=>state.messageList.msgtrigger,
@@ -17815,7 +18261,8 @@ const getters = {
       return state.transOption.setLan
     },
     getFriendName:(state)=>state.friendList.friendName,
-    getProductId:(state)=>state.friendList.productId
+    getProductId:(state)=>state.friendList.productId,
+    set_scrolltop:state=>state.messageList.scrollTop
   };
   /* harmony default export */ __webpack_exports__["a"] = (getters);
 
@@ -17915,11 +18362,24 @@ const friendList = {
         if(i !== -1){
           var oldInfo = state.friends[i];
           oldInfo.unRead = obj.unRead;
-          state.friends.splice(i,1,oldInfo)
+          //state.friends.splice(i,1,oldInfo)
+            state.friends.splice(i,1);
+            state.friends.unshift(oldInfo);
         }else{
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__util_wrapsdk_js__["applyaddfriend"])(obj.selToID,true)
         }
       },
+        //更新好友列表顺序
+        UPDATE_FRIEND_ORDER:(state, obj)=>{
+            //console.log('state.friends=====',state.friends);
+            //console.log('obj.selToID=====',obj.selToID);
+            var i = state.friends.findIndex(item=>item.selToID === obj.selToID);
+            if(i !== -1){
+                var oldInfo = state.friends[i];
+                state.friends.splice(i,1);
+                state.friends.unshift(oldInfo);
+            }
+        },
       //更新好友在线状态
       UPDATE_OFFLINE:(state, arr)=>{
         let j = 0, len = arr.length;
@@ -17938,9 +18398,9 @@ const friendList = {
         if(needTalk){
           state.needTalk = needTalk;
         }
-        /* else{
+        else{
           state.needTalk = '';
-        } */
+        }
       },
       //选择好友进行聊天
       SELECT_FRIEND:(state, friendId)=>{
@@ -17956,7 +18416,7 @@ const friendList = {
           if(state.init){
             return;
           }
-          //state.needTalk = ''
+          state.needTalk = ''
         }
       },
       INIT_DONE:(state)=>{
@@ -17981,6 +18441,9 @@ const friendList = {
       },
       update_friend:({ commit },obj)=>{
         commit('UPDATE_FRIEND',obj)
+      },
+       update_friend_order:({commit},obj)=>{
+        commit('UPDATE_FRIEND_ORDER',obj);
       },
       set_needTalk:({ dispatch,commit, state}, needTalk)=>{
           var needTalks = needTalk.split(',')[0];
@@ -18045,7 +18508,8 @@ const messageList = {
       currentMsg:[],
       selToID:"",
       msgTip:g_msgTip[0],
-      transed:new Map()
+      transed:new Map(),
+      scrollTop:0
     },
     mutations: {
       //初始化消息，用于切换好友时重新拉取消息
@@ -18082,7 +18546,11 @@ const messageList = {
       NEED_TALK:(state, selToID)=>{
         state.selToID = selToID;
       },
+      SET_SCROLLTOP:(state,scrollTop)=>{
+        state.scrollTop = scrollTop;
+      },
       TRANS_DONE:(state,obj)=>{
+        console.log(obj,'fanyi')
         state.transed.set(obj.uid, obj.transText);
         for(let i in state.currentMsg){
           if(state.currentMsg[i].uniqueId === obj.uid){
@@ -18122,6 +18590,9 @@ const messageList = {
       },
       trans_done({commit}, obj){
         commit("TRANS_DONE", obj)
+      },
+      set_scrolltop({commit},scrollTop){
+        commit("SET_SCROLLTOP",scrollTop)
       }
     }
   };
@@ -18137,9 +18608,9 @@ const messageList = {
 //import Vue from 'vue'
 const transOption = {
     state: {
-      transLan:'中文',
+      transLan:'中文',//要翻译的语言
       send:'true',
-      setLan:'zh_CN'//系统语言
+      setLan:'zh_TW'//系统语言
     },
     mutations: {
       //设置翻译的目标语言
@@ -18149,8 +18620,8 @@ const transOption = {
       SET_SEND:(state,send) =>{//设置发送快捷键
         state.send = send;
       },
-      SET_LAN:(state, lan) =>{//设置系统语言快捷键
-        state.setLan = null;
+      SET_LAN:(state, lan) =>{
+        //state.setLan = null;
         state.setLan = lan;
       }
     },
@@ -18220,7 +18691,6 @@ function getRemoteVersion(){
 /* harmony export (immutable) */ __webpack_exports__["a"] = getSupportLan;
 function getSupportLan(){
     let url="../../lanList.json";
-    console.log(url)
     return fetch(url) 
     .then(response=>response.json())
     .then(data=>{
@@ -18291,7 +18761,7 @@ function getTranslateMsg(trans){
     url: '/trans/imtrans.action',
     method: 'post',
     mode:'cors',
-    data: formData
+    data: formData  
   }).then(resp=>{
     let respdata= resp.data;
     if(respdata.code === '000000'){
@@ -26793,7 +27263,22 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             lan: this.$store.getters.getLan,
             shotSet: false,
             hotKeys: "Ctrl+Alt+D",
-            guide_show: false,
+            guide_ar_show: false, //阿拉伯语
+            guide_de_show: false, //德语
+            guide_en_show: false, //英语
+            guide_es_show: false, //西班牙语
+            guide_fr_show: false, //法语
+            guide_it_show: false, //意大利语
+            guide_ja_show: false, //日语
+            guide_ms_show: false, //马来语
+            guide_ru_show: false, //俄语
+            guide_th_show: false, //泰语
+            guide_vi_show: false, //越南语
+            guide_pt_show: false, //葡萄牙语
+            guide_show: false, //中文简
+            guide_zh_show: false, //中文繁
+            guide_ko_show: false, //韩语
+            guide_in_show: false, //印尼语
             textShow: false,
             lanArr: [],
             curLan: '',
@@ -26803,29 +27288,54 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         return data;
     },
     created: function created() {
-        var _this2 = this;
-
-        __WEBPACK_IMPORTED_MODULE_5_electron__["ipcRenderer"].on('localLang1', function (event, arg) {
-            _this2.localeL = arg;
-            console.log('主进程传过来的arg===', arg);
-            _this2.$i18n.locale = arg;
-        });
+        console.log('this.$i18n.locale=====', this.$i18n.locale);
         var isFirst = localStorage.getItem('isFirst');
         if (!isFirst) {
-            this.guide_show = true;
+            if (this.$i18n.locale == 'ar') {
+                this.guide_ar_show = true;
+            } else if (this.$i18n.locale == 'de') {
+                this.guide_de_show = true;
+            } else if (this.$i18n.locale == 'en-US') {
+                this.guide_en_show = true;
+            } else if (this.$i18n.locale == 'es') {
+                this.guide_es_show = true;
+            } else if (this.$i18n.locale == 'fr') {
+                this.guide_fr_show = true;
+            } else if (this.$i18n.locale == 'it') {
+                this.guide_it_show = true;
+            } else if (this.$i18n.locale == 'ja') {
+                this.guide_ja_show = true;
+            } else if (this.$i18n.locale == 'ms') {
+                this.guide_ms_show = true;
+            } else if (this.$i18n.locale == 'ru') {
+                this.guide_ru_show = true;
+            } else if (this.$i18n.locale == 'th') {
+                this.guide_th_show = true;
+            } else if (this.$i18n.locale == 'vi') {
+                this.guide_vi_show = true;
+            } else if (this.$i18n.locale == 'pt') {
+                this.guide_pt_show = true;
+            } else if (this.$i18n.locale == 'zh-CN') {
+                this.guide_show = true;
+            } else if (this.$i18n.locale == 'zh-TW') {
+                this.guide_zh_show = true;
+            } else if (this.$i18n.locale == 'ko') {
+                this.guide_ko_show = true;
+            } else if (this.$i18n.locale == 'in') {
+                this.guide_in_show = true;
+            }
             localStorage.setItem('isFirst', 'true');
         }
     },
     mounted: function mounted() {
-        var _this3 = this;
+        var _this2 = this;
 
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util_getSystemLan__["a" /* default */])().then(function (data) {
-            _this3.lanArr = data;
+            _this2.lanArr = data;
             //console.log('this.$i18n.locale=====',this.$i18n.locale);
-            for (var i = 0; i < _this3.lanArr.length; i++) {
-                if (_this3.$i18n.locale == _this3.lanArr[i].shortname) {
-                    _this3.curLan = _this3.lanArr[i].lang;
-                    //console.log('this.lanArr[i].lang=====',this.lanArr[i].lang);
+            for (var i = 0; i < _this2.lanArr.length; i++) {
+                if (_this2.$i18n.locale == _this2.lanArr[i].shortname) {
+                    _this2.curLan = _this2.lanArr[i].lang;
                 }
             }
         });
@@ -26919,15 +27429,63 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                         send = false;
                     }
                     self.$store.dispatch('setSend', send);
-                    self.open_set();
                 }
             });
         },
         closeGuide: function closeGuide() {
+            this.guide_ar_show = false;
+            this.guide_de_show = false;
+            this.guide_en_show = false;
+            this.guide_es_show = false;
+            this.guide_fr_show = false;
+            this.guide_it_show = false;
+            this.guide_ja_show = false;
+            this.guide_ms_show = false;
+            this.guide_ru_show = false;
+            this.guide_th_show = false;
+            this.guide_vi_show = false;
+            this.guide_pt_show = false;
             this.guide_show = false;
+            this.guide_zh_show = false;
+            this.guide_ko_show = false;
+            this.guide_in_show = false;
         },
         guideShow: function guideShow() {
-            this.guide_show = true;
+            if (this.$i18n.locale == 'zh-CN') {
+                this.guide_show = true;
+            } else if (this.$i18n.locale == 'en-US') {
+                this.guide_en_show = true;
+            } else if (this.$i18n.locale == 'zh-TW') {
+                this.guide_zh_show = true;
+            } else if (this.$i18n.locale == 'ar') {
+                this.guide_ar_show = true;
+            } else if (this.$i18n.locale == 'de') {
+                this.guide_de_show = true;
+            } else if (this.$i18n.locale == 'es') {
+                this.guide_es_show = true;
+            } else if (this.$i18n.locale == 'fr') {
+                this.guide_fr_show = true;
+            } else if (this.$i18n.locale == 'it') {
+                this.guide_it_show = true;
+            } else if (this.$i18n.locale == 'ja') {
+                this.guide_ja_show = true;
+            } else if (this.$i18n.locale == 'ru') {
+                this.guide_ru_show = true;
+            } else if (this.$i18n.locale == 'th') {
+                this.guide_th_show = true;
+            } else if (this.$i18n.locale == 'vi') {
+                this.guide_vi_show = true;
+            } else if (this.$i18n.locale == 'ms') {
+                this.guide_ms_show = true;
+            } else if (this.$i18n.locale == 'pt') {
+                this.guide_pt_show = true;
+            } else if (this.$i18n.locale == 'ko') {
+                this.guide_ko_show = true;
+            } else if (this.$i18n.locale == 'in') {
+                this.guide_in_show = true;
+            }
+
+            //this.guide_show = true;
             this.set_show = false;
             this.textShow = false;
         },
@@ -26947,6 +27505,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                     // 按第三次以上包括第三次，判断是不是连续按了ctrl、alt
                     if (e.keyCode !== 17 && e.keyCode !== 18) {
                         var temp = e.key.length == 1 ? e.key.toUpperCase() : e.key;
+                        console.log(e.key, '33333', process.platform);
                         other = temp.replace(/\s/g, 'Space').replace(/Meta/g, process.platform !== 'darwin' ? 'Super' : 'Cmd');
                         _this.hotKeys = ctrl + '+' + shift + '+' + other;
                         var data = {
@@ -27023,10 +27582,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             this.lanList = false;
         },
         _getSystemLan: function _getSystemLan() {
-            var _this4 = this;
+            var _this3 = this;
 
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util_getSystemLan__["a" /* default */])().then(function (data) {
-                _this4.lanArr = data;
+                _this3.lanArr = data;
                 //this.lanArr.concat(data);
             });
         },
@@ -27045,34 +27604,35 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }
             this.objArr.push(obj);
             localStorage.setItem('userLan', JSON.stringify(this.objArr));
+            this.$store.dispatch('setLan', shortname);
         },
         checkVersion: function checkVersion() {
-            var _this5 = this;
+            var _this4 = this;
 
             var _this = this;
             this.get_remoteversion().then(function (res) {
-                if (_this5.$store.state.card.remoteVersion > +__WEBPACK_IMPORTED_MODULE_2__package__["versionCode"]) {
-                    _this5.$refs.version.init({
-                        content: '检测到新版本，是否更新',
+                if (_this4.$store.state.card.remoteVersion > +__WEBPACK_IMPORTED_MODULE_2__package__["versionCode"]) {
+                    _this4.$refs.version.init({
+                        content: _this.$t("message.obj.isUpdate"),
                         btns: {
                             ok: {
-                                txt: '确定',
+                                txt: _this.$t("message.obj.sure"),
                                 cb: function cb() {
                                     _this.download();
                                     return false;
                                 }
                             },
                             cancle: {
-                                txt: '取消'
+                                txt: _this.$t("message.obj.off")
                             }
                         }
                     });
                 } else {
-                    _this5.$refs.version.init({
-                        content: '当前是最新版本',
+                    _this4.$refs.version.init({
+                        content: _this.$t("message.obj.new_version"),
                         btns: {
                             cancle: {
-                                txt: '确定'
+                                txt: _this.$t("message.obj.sure")
                             }
                         }
                     });
@@ -27294,6 +27854,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        //点击某个好友显示对应的聊天记录
         selectFriend: function selectFriend(member, friendHeadimg, friendName) {
             if (member == '' || member == undefined) return;
             if (this.selToID == member) {
@@ -27316,8 +27877,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }, 300);
         },
         changeLan: function changeLan(lan) {
-            //var strings = this.$store.getters.GetStrings;
-            //strings.setLocale(lan);
             this.$store.dispatch('setTransLan', lan);
         },
         _getSupportLan: function _getSupportLan() {
@@ -27351,6 +27910,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             });
         },
+
+        //显示或隐藏翻译语言列表
         clickLanlist: function clickLanlist() {
             var self = this;
             document.body.addEventListener('click', function (e) {
@@ -27362,6 +27923,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 e.stopPropagation();
             });
         },
+
+        //打开翻译语言列表
         openLans: function openLans() {
             if (this.showLan) {
                 this.showLan = false;
@@ -27373,6 +27936,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             }
         },
+
+        //删除好友
         closedFriend: function closedFriend(index) {
             var selToID = this.filterFriends[index].selToID;
             var friendNum = this.filterFriends.length - 1;
@@ -27499,47 +28064,92 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var _require = __webpack_require__(4),
     shell = _require.shell;
 
-var menu = new window.Electron.Menu();
-
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         var data = {
             selToID: this.$store.getters.getSelToID,
-            currentMsg: []
+            currentMsg: [],
+            mScrollTop: 0,
+            uid: '',
+            tranLan: ''
         };
         return data;
     },
 
     methods: {
+        /*
+        *获取更多历史消息
+        */
         getMoreHistorymsg: function getMoreHistorymsg() {
             this.$store.dispatch("set_msgtip", 2);
             var selToID = this.$store.getters.getSelToID;
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__util_wrapsdk_js__["getPrePageHistorymsg"])(selToID);
+            var scrollTop = document.getElementById('msg_show').scrollTop;
+            this.$store.dispatch("set_scrolltop", scrollTop);
+            console.log('点击获取更过scrollTop=======', scrollTop);
         },
         imgFilter: function imgFilter(data) {
+            var selToID = this.$store.getters.getSelToID;
+            var sub = data.content.substring(data.content.length - 4, data.content.length);
             var transText = this.$store.getters.getMsgTransed(data.uniqueId);
             if (transText === undefined) {
-                return '<span data-uid="' + data.uniqueId + '">' + this.emojiFilter(data.content) + '</span>';
+                if (sub == 'fail') {
+                    var str = data.content.substring(0, data.content.length - 4);
+                    return '<img id="reSend" src="images/refresh.png"><span id="err">发送失败</span><span data-uid="' + data.uniqueId + '">' + this.emojiFilter(str) + '</span>';
+                } else if (sub == 'succ') {
+                    var str = data.content.substring(0, data.content.length - 4);
+                    return '<span data-uid="' + data.uniqueId + '">' + this.emojiFilter(str) + '</span>';
+                } else {
+                    return '<span data-uid="' + data.uniqueId + '">' + this.emojiFilter(data.content) + '</span>';
+                }
             } else {
-                return '<span data-uid="' + data.uniqueId + '">' + this.emojiFilter(data.content) + '<br>' + transText + '</span>';
+                //var str = data.content.substring(0,data.content.length-4);
+                //console.log('翻译的str====',data.content);
+                if (sub == 'fail') {
+                    var str = data.content.substring(0, data.content.length - 4);
+                    return '<img id="reSend" src="images/refresh.png"><span id="err">发送失败</span><span data-uid="' + data.uniqueId + '">' + this.emojiFilter(str) + '<br>' + transText + '</span>';
+                } else if (sub == 'succ') {
+                    var str = data.content.substring(0, data.content.length - 4);
+                    //console.log('翻译成功截取=====',sub,str);
+                    return '<span data-uid="' + data.uniqueId + '">' + this.emojiFilter(str) + '<br>' + transText + '</span>';
+                } else {
+                    return '<span data-uid="' + data.uniqueId + '">' + this.emojiFilter(data.content) + '<br>' + transText + '</span>';
+                }
             }
         },
         emojiFilter: function emojiFilter(data) {
             return data;
         },
+
+        /*
+        *翻译
+        */
         trans: function trans() {
             var transLan = this.$store.getters.getTransLan;
             var ele = window.getSelection().focusNode.parentElement;
             if (ele.dataset.uid === undefined) {
-                ele = window.getSelection().focusNode;
+                ele = window.getSelection().focusNode.parentElement.parentElement;
             }
+            var str1 = window.getSelection().toString().replace(/\s+/g, "");
+            //console.log('翻译的内容str====',str1);
             var tran = {
-                text: window.getSelection().toString(),
+                text: window.getSelection().toString().replace(/\s+/g, "").replace(/[\r\n]/g, ""),
                 from: 'auto',
                 to: transLan,
                 uid: ele.dataset.uid
             };
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util_getTranslateMsg__["a" /* getTranslateMsg */])(tran);
+            console.log('翻译的内容111', tran.text);
+            if (this.uid != tran.uid) {
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util_getTranslateMsg__["a" /* getTranslateMsg */])(tran);
+                this.uid = tran.uid;
+            } else if (this.tranLan != tran.to) {
+                //console.log('翻译的内容222',window.getSelection().toString().split(/[\r\n]/g)[0]);
+                tran.text = window.getSelection().toString().split(/[\r\n]/g)[0];
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util_getTranslateMsg__["a" /* getTranslateMsg */])(tran);
+                this.tranLan = tran.to;
+            } else {
+                return;
+            }
         },
         imageClick: function imageClick() {
             var self = this;
@@ -27556,13 +28166,30 @@ var menu = new window.Electron.Menu();
             });
         }
     },
+    //自定义指令
     directives: {
         // 发送消息后滚动到底部
         'scroll-bottom': {
-            update: function update(el) {
-                setTimeout(function () {
-                    el.scrollTop = el.scrollHeight - el.clientHeight;
-                }, 300);
+            //el:指令绑定的元素，可以用来直接操作dom
+            //binding 一个对象  包含name、value、oldValue等属性
+            update: function update(el, binding) {
+                console.log('binding======', binding.value.len, binding.oldValue.len);
+                console.log('binding.value.scrollTop======', binding.value.scrollTop, binding.oldValue.scrollTop);
+                if (binding.value.len != binding.oldValue.len) {
+                    if (binding.value.len - binding.oldValue.len == 1 || binding.oldValue.len == 0) {
+                        setTimeout(function () {
+                            el.scrollTop = el.scrollHeight - el.clientHeight;
+                            console.log('if el.scrollTop======', el.scrollTop);
+                            console.log('if el.scrollHeight======', el.scrollHeight);
+                        }, 300);
+                    } else if (binding.value.len - binding.oldValue.len > 1) {
+                        setTimeout(function () {
+                            el.scrollTop = 0;
+                            console.log('else el.scrollTop======', el.scrollTop);
+                            console.log('else el.scrollHeight======', el.scrollHeight);
+                        }, 300);
+                    }
+                }
             }
         }
     },
@@ -27571,6 +28198,9 @@ var menu = new window.Electron.Menu();
             var msgTrigger = this.$store.getters.getMsgTrigger;
             var current = this.$store.getters.getMsg;
             this.currentMsg = current;
+            var scrollTop = this.$store.getters.set_scrolltop;
+            console.log('计算属性中的scrollTop===', scrollTop);
+            this.mScrollTop = scrollTop;
             return msgTrigger;
         },
         msgTip: function msgTip() {
@@ -27613,22 +28243,42 @@ var menu = new window.Electron.Menu();
             }
             return true;
         }
-
+        /*
+        *右键复制或翻译
+        * */
         div_message.oncontextmenu = function (e) {
             e.preventDefault();
+            var menu = new window.Electron.Menu();
+            var reSend = document.getElementById('reSend');
             if (e.target.nodeName === 'SPAN') {
                 if (selText(e.target)) {
                     setTimeout(function () {
                         menu.popup(window.Electron.remote.getCurrentWindow());
                     }, 200);
+                    menu.items = [];
+                    menu.append(new window.Electron.MenuItem({ label: self.$t("message.obj.copy"), click: function click() {
+                            window.Electron.clipboard.writeText(window.getSelection().toString());
+                        } }));
+                    menu.append(new window.Electron.MenuItem({ type: 'separator' }));
+                    menu.append(new window.Electron.MenuItem({ label: self.$t("message.obj.trans"), click: self.trans }));
                 }
             }
         };
-        menu.append(new window.Electron.MenuItem({ label: '复制', click: function click() {
-                window.Electron.clipboard.writeText(window.getSelection().toString());
-            } }));
-        menu.append(new window.Electron.MenuItem({ type: 'separator' }));
-        menu.append(new window.Electron.MenuItem({ label: '翻译', click: self.trans }));
+    },
+    updated: function updated() {
+        var reSend = document.getElementById('reSend');
+        if (reSend != null) {
+            var _this = this;
+            reSend.addEventListener('click', function (e) {
+                console.log('id===', this.parentElement.children[2].innerHTML);
+                var selToID = _this.$store.getters.getSelToID;
+                var text = this.parentElement.children[2].innerHTML.split('<br>')[0];
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__util_wrapsdk_js__["sendMsg"])(text, selToID);
+                this.parentElement.parentElement.parentElement.remove();
+            });
+        } else {
+            //console.log('updated reSend为null');
+        }
     }
 });
 
@@ -27644,7 +28294,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         picDialogClosed: function picDialogClosed() {
             this.$emit('picDialogClosed', false);
+            var oDiv = document.getElementById("picScale");
+            oDiv.style.left = "50%";
+            oDiv.style.top = "50%";
+        },
+        bigimg: function bigimg(i) {
+            var zoom = parseInt(i.style.zoom, 10) || 100;
+            zoom += event.wheelDelta / 12;
+            if (zoom > 0) i.style.zoom = zoom + '%';
+            return false;
         }
+    },
+    mounted: function mounted() {
+        var self = this;
+        var oDiv = document.getElementById("picScale");
+        oDiv.addEventListener('mousewheel', function (e) {
+            self.bigimg(e.target);
+        });
+        oDiv.onmousedown = function (e) {
+            //鼠标按下，计算当前元素距离可视区的距离
+            var disX = e.clientX - oDiv.offsetLeft;
+            var disY = e.clientY - oDiv.offsetTop;
+            e.preventDefault();
+            document.onmousemove = function (e) {
+                e.preventDefault();
+                //通过事件委托，计算移动的距离 
+                var l = e.clientX - disX;
+                var t = e.clientY - disY;
+                //移动当前元素  
+                oDiv.style.left = l + 'px';
+                oDiv.style.top = t + 'px';
+            };
+            document.onmouseup = function (e) {
+
+                document.onmousemove = null;
+                document.onmouseup = null;
+            };
+        };
     }
 });
 
@@ -27664,52 +28350,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vuex__ = __webpack_require__(5);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 
@@ -27754,10 +28394,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
             var data = {
                 "method": 'queryAllInfo',
-                "dataSourceId": dataSourceId || this.getLan,
+                "dataSourceId": dataSourceId.replace(/\-/g, '_') || this.getLan.replace(/\-/g, '_'),
                 "tbMemberId": tbMemberId.match(/([^UID]+)/g)[0] || this.getSelToID.match(/([^UID]+)/g)[0]
             };
-            var url = 'http://10.240.0.130/leading/imProductAction.aspx';
+            var url = 'http://' + __WEBPACK_IMPORTED_MODULE_2__configs___default.a.rDomain + '/leading/imProductAction.aspx';
             var proxyUrl = '/api/ws/v1/imProductServiceWs/queryAllInfo';
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__util_fetch__["a" /* default */])({
                 url: url,
@@ -27817,7 +28457,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             this.getData(val, this.getSelToID);
         },
         getSelToID: function getSelToID(val, oldVal) {
-            this.getData(this.getLan, val);
+            var lan = this.$store.getters.getLan;
+            this.getData(lan, val);
         }
     }
 });
@@ -27845,22 +28486,8 @@ var url = __webpack_require__(8);
 var path = __webpack_require__(13);
 var BrowserWindow = __WEBPACK_IMPORTED_MODULE_3_electron__["remote"].BrowserWindow,
     ipc = __WEBPACK_IMPORTED_MODULE_3_electron__["ipcRenderer"];
-var globalShort = __WEBPACK_IMPORTED_MODULE_3_electron__["remote"].globalShortcut;
 
 var clipboard = __webpack_require__(4).clipboard;
-var menu = new window.Electron.Menu();
-menu.append(new window.Electron.MenuItem({ label: '粘贴', click: function click() {
-        var pasttext = clipboard.readText();
-        if (pasttext) {
-            clipboard.writeText(pasttext);
-        } else {
-            return;
-        }
-        var iframe = document.getElementById('editor');
-        var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-        iframe.focus();
-        iframeDocument.execCommand('paste');
-    } }));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -27869,10 +28496,10 @@ menu.append(new window.Electron.MenuItem({ label: '粘贴', click: function clic
             Emotions: null,
             send: this.$store.getters.getSend, //发送快捷键
             user: this.$store.getters.getSelfname, //自己的用户名
-            talk: this.$store.getters.getNeedTalk,
             msg: "",
             makeSure: false,
-            win: null
+            win: null,
+            screenshotItem: false
         };
     },
 
@@ -27906,16 +28533,23 @@ menu.append(new window.Electron.MenuItem({ label: '粘贴', click: function clic
                 content.body.focus();
             }
         },
+
+        //发送消息
         onSendMsg: function onSendMsg(event) {
-            //发送消息
             var iframe = document.getElementById('editor'),
                 content = iframe.contentDocument || iframe.contentWindow.document,
                 msgtosend = content.body.innerHTML; //改变之前的消息
             content.body.innerHTML = "";
             var selToID = this.$store.getters.getSelToID;
-            msgtosend = msgtosend.replace(/<br>/ig, '\n').replace(/<div>/ig, '\n').replace(/<\/div>/ig, '');
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util_wrapsdk_js__["sendMsg"])(msgtosend, selToID);
+            msgtosend = msgtosend.replace(/<br>/ig, '\n').replace(/<div>/ig, '\n').replace(/<\/div>/ig, '').replace(/<span[^>]*\bstyle\b\s*=\s*[\'|\"]{1}\bwhite-space:pre\b[^>\/]*[\'|\"]>\t+<\/span>/gim, function (word) {
+                return word.match(/\t+/gim)[0];
+            });
+
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util_wrapsdk_js__["addCustomMsg"])(msgtosend, selToID);
+            //sendMsg(msgtosend,selToID);
         },
+
+        //发送本地图片
         onFileChange: function onFileChange(e) {
             var files = e.target.files || e.dataTransfer.files;
             var selToID = this.$store.getters.getSelToID;
@@ -27932,13 +28566,10 @@ menu.append(new window.Electron.MenuItem({ label: '粘贴', click: function clic
                 return false;
             }
         },
-        screenshot: function screenshot() {
-            // this.$nextTick(function(){
-            //     window.Electron.ipc.send('screenshot');
-            // })
+        screenshot: function screenshot(appHide) {
             var _this = this;
             if (!this.win) {
-                this.capturer().then(function (data) {
+                this.capturer(appHide).then(function (data) {
                     _this.win = _this.createChildWin('/index.html', { fullscreen: true, width: 900, height: 800, alwaysOnTop: true, skipTaskbar: false, autoHideMenuBar: true, show: false });
                     // _this.win.webContents.openDevTools()
                 });
@@ -27949,14 +28580,18 @@ menu.append(new window.Electron.MenuItem({ label: '粘贴', click: function clic
         /**
          * 截取屏幕资源到本地
          */
-        capturer: function capturer() {
+        capturer: function capturer(appHide) {
             var w = screen.width,
-                h = screen.height;
+                h = screen.height,
+                self = this;
 
+            var parentWin = __WEBPACK_IMPORTED_MODULE_3_electron__["remote"].getCurrentWindow();
+            if (appHide) {
+                parentWin.hide();
+            }
             return new Promise(function (resolve, reject) {
                 __WEBPACK_IMPORTED_MODULE_3_electron__["desktopCapturer"].getSources({ types: ['window', 'screen'], thumbnailSize: { width: w, height: h } }, function (error, sources) {
                     if (error) console.error(error);
-                    // localStorage['image'] = sources[0].thumbnail.toDataURL();
                     __WEBPACK_IMPORTED_MODULE_3_electron__["remote"].getGlobal('def').screenShot = sources[0].thumbnail.toDataURL();
                     resolve(sources[0].thumbnail.toDataURL());
                 });
@@ -27993,7 +28628,7 @@ menu.append(new window.Electron.MenuItem({ label: '粘贴', click: function clic
             var _this = this;
             // 快捷键触发截屏
             __WEBPACK_IMPORTED_MODULE_3_electron__["ipcRenderer"].on('global-shortcut-capture', function () {
-                _this.capturer().then(function (data) {
+                _this.capturer(false).then(function (data) {
                     _this.win = _this.createChildWin('/index.html', { fullscreen: true, width: 900, height: 800, alwaysOnTop: true, skipTaskbar: false, autoHideMenuBar: true, show: false });
                     // _this.win.webContents.openDevTools()
                 });
@@ -28003,12 +28638,22 @@ menu.append(new window.Electron.MenuItem({ label: '粘贴', click: function clic
                 _this.win && _this.clearWindow(_this.win);
                 _this.win = null;
             });
+            // 接受截图完成后直接粘贴事件
+            __WEBPACK_IMPORTED_MODULE_3_electron__["ipcRenderer"].on('direct-paste', function () {
+                var iframe = document.getElementById('editor');
+                var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+                iframe.focus();
+                iframeDocument.execCommand('paste');
+            });
         },
         clearWindow: function clearWindow(_win) {
+            var parentWin = __WEBPACK_IMPORTED_MODULE_3_electron__["remote"].getCurrentWindow();
+            parentWin && parentWin.show();
             _win && _win.close();
         },
         hotSendMsg: function hotSendMsg(iframeDocument) {
             var self = this;
+            var iframeWindow = document.getElementById('editor').contentWindow;
             iframeDocument.body.onkeypress = function (e) {
                 //快捷键发送消息
                 var data2 = JSON.parse(localStorage.getItem(self.user + 'send'));
@@ -28046,27 +28691,190 @@ menu.append(new window.Electron.MenuItem({ label: '粘贴', click: function clic
                     }
                 }, 0);
             };
+
+            // 监听拖拽事件
+            iframeDocument.body.addEventListener('drop', function (e) {
+                e.preventDefault();
+                console.log(e, '暂不支持拖拽');
+            });
+            var lastEditRange = void 0;
+            iframeDocument.body.onclick = function () {
+                var selection = iframeWindow.getSelection();
+                lastEditRange = selection.getRangeAt(0);
+            };
+            iframeDocument.body.onkeyup = function () {
+                var selection = iframeWindow.getSelection();
+                lastEditRange = selection.getRangeAt(0);
+            };
             iframeDocument.body.addEventListener('paste', function (e) {
-                var pastedText;
-                if (window.clipboardData && window.clipboardData.getData) {
-                    // IE
-                    pastedText = window.clipboardData.getData('Text');
-                } else {
-                    pastedText = e.clipboardData.getData('Text'); //e.clipboardData.getData('text/plain');
+                e.preventDefault();
+                var selection = iframeWindow.getSelection();
+                var bodyChildNodes = iframeDocument.body.childNodes,
+                    len = bodyChildNodes.length;
+                if (lastEditRange) {
+                    // 存在最后光标对象，选定对象清除所有光标并添加最后光标还原之前的状态
+                    selection.removeAllRanges();
+                    selection.addRange(lastEditRange);
                 }
-                return pastedText;
-                function TransferString(content) {
-                    var string = content;
-                    try {
-                        string = string.replace(/\r\n/g, "<br>");
-                        string = string.replace(/\n/g, "<br>");
-                    } catch (e) {
-                        alert(e.message);
+
+                var pastedObject = e.clipboardData.items[0];
+
+                // 判断光标所在节点对象的类型
+                if (selection.anchorNode.nodeName != '#text') {
+                    if (pastedObject.type === 'text/plain') {
+                        pastedObject.getAsString(function (str) {
+                            var txtNode = document.createTextNode(str);
+                            if (len > 0) {
+                                for (var i = 0; i < len; i++) {
+                                    if (i == selection.anchorOffset - 1) {
+                                        self.insertAfter(txtNode, bodyChildNodes[i]);
+                                    }
+                                }
+                            } else {
+                                iframeDocument.body.appendChild(txtNode);
+                            }
+                            //  创建一个文档片段
+                            var range = iframeDocument.createRange();
+                            //  界定片段范围为body
+                            range.selectNode(txtNode);
+                            range.setStart(txtNode, txtNode.length);
+                            //  使光标开始和光标结束重叠
+                            range.collapse(true);
+                            selection.removeAllRanges();
+                            //  插入新的光标对象
+                            selection.addRange(range);
+                            lastEditRange = selection.getRangeAt(0);
+                        });
+                    } else if (pastedObject.type === 'text/html') {
+                        // pastedObject.getAsString(function(str){
+                        //     console.log(str);
+                        // });
+                        console.log('暂不支持.');
+                        return false;
+                    } else if (pastedObject.type.includes('image')) {
+                        var pasted = pastedObject.getAsFile();
+                        var reader = new FileReader();
+                        reader.onload = function () {
+                            return function (e) {
+                                var imgNode = document.createElement('img');
+                                //  标记图片为图片信息
+                                imgNode.dataset.format = 'image';
+                                imgNode.src = e.target.result;
+                                if (len > 0) {
+                                    for (var i = 0; i < len; i++) {
+                                        if (i == selection.anchorOffset - 1) {
+                                            self.insertAfter(imgNode, bodyChildNodes[i]);
+                                        }
+                                    }
+                                } else {
+                                    iframeDocument.body.appendChild(imgNode);
+                                }
+                                //  创建一个文档片段
+                                var range = iframeDocument.createRange();
+                                //  界定片段范围为imgnode
+                                range.selectNode(imgNode);
+                                range.setStart(range.startContainer, range.endOffset);
+                                //  使光标开始和光标结束重叠
+                                range.collapse(true);
+                                selection.removeAllRanges();
+                                //  插入新的光标对象
+                                selection.addRange(range);
+                                lastEditRange = selection.getRangeAt(0);
+                            };
+                        }();
+                        reader.readAsDataURL(pasted);
                     }
-                    return string;
+                } else {
+                    if (pastedObject.type === 'text/plain') {
+                        pastedObject.getAsString(function (str) {
+                            var range = selection.getRangeAt(0
+                            // 获取光标对象的范围界定对象，一般就是textNode对象
+                            );var textNode = range.startContainer;
+                            // 获取光标位置
+                            var rangeStartOffset = range.startOffset;
+                            textNode.insertData(rangeStartOffset, str
+                            // 光标移动到到原来的位置加上新内容的长度
+                            );range.setStart(textNode, rangeStartOffset + str.length);
+                            range.collapse(true
+                            // 清除选定对象的所有光标对象
+                            );selection.removeAllRanges
+                            // 插入新的光标对象
+                            ();selection.addRange(range);
+                            lastEditRange = selection.getRangeAt(0);
+                        });
+                    } else if (pastedObject.type === 'text/html') {
+                        // pastedObject.getAsString(function(str){
+                        //     console.log(str);
+                        // });
+                        console.log('暂不支持.');
+                        return false;
+                    } else if (pastedObject.type.includes('image')) {
+                        var _pasted = pastedObject.getAsFile();
+                        var _reader = new FileReader();
+                        _reader.onload = function () {
+                            return function (e) {
+                                var imgNode = document.createElement('img');
+                                //  标记图片为图片信息
+                                imgNode.dataset.format = 'image';
+                                imgNode.src = e.target.result;
+                                //  如果body里有其他节点，在最后一个节点后添加文本节点，否则直接添加
+
+                                var tempRange = selection.getRangeAt(0
+                                // 获取光标对象的范围界定对象，一般就是textNode对象
+                                );var textNode = tempRange.startContainer;
+                                // 获取光标位置
+                                var rangeStartOffset = tempRange.startOffset;
+                                var restNode = textNode.splitText(rangeStartOffset); // 分割文本节点
+                                if (len > 0) {
+                                    self.insertAfter(imgNode, textNode);
+                                } else {
+                                    iframeDocument.body.appendChild(imgNode);
+                                }
+                                tempRange.setStart(restNode, 0);
+                                //  使光标开始和光标结束重叠
+                                tempRange.collapse(true);
+                                selection.removeAllRanges();
+                                //  插入新的光标对象
+                                selection.addRange(tempRange);
+                                lastEditRange = selection.getRangeAt(0);
+                            };
+                        }();
+                        _reader.readAsDataURL(_pasted);
+                    }
                 }
             });
+            //    var pastedText;
+            //    if (window.clipboardData && window.clipboardData.getData) { // IE
+            //         pastedText = window.clipboardData.getData('Text');
+            //     } else {
+            //         pastedText = e.clipboardData.getData('Text');//e.clipboardData.getData('text/plain');
+            //     }
+            //     return pastedText;
+            //     function TransferString(content){
+            //         var string = content;
+            //         try{
+            //             string=string.replace(/\r\n/g,"<br>")
+            //             string=string.replace(/\n/g,"<br>");
+            //         }catch(e) {
+            //             alert(e.message);
+            //         }
+            //         return string;
+            //     }
+            // })
             iframeDocument.body.oncontextmenu = function () {
+                var menu = new window.Electron.Menu();
+                menu.append(new window.Electron.MenuItem({ label: self.$t("message.obj.paste"), click: function click() {
+                        var pasttext = clipboard.readText();
+                        if (pasttext) {
+                            clipboard.writeText(pasttext);
+                        } else {
+                            return;
+                        }
+                        var iframe = document.getElementById('editor');
+                        var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+                        iframe.focus();
+                        iframeDocument.execCommand('paste');
+                    } }));
                 menu.popup(window.Electron.remote.getCurrentWindow());
             };
             iframeDocument.body.addEventListener('keyup', function (e) {
@@ -28082,6 +28890,7 @@ menu.append(new window.Electron.MenuItem({ label: '粘贴', click: function clic
                     if (e.altKey) keyValue.push("Alt");
                     if (e.shiftKey) keyValue.push("Shift");
                     var keyCodeMap = { "48": "0", "49": "1", "50": "2", "51": "3", "52": "4", "53": "5", "54": "6", "55": "7", "56": "8", "57": "9", "65": "A", "66": "B", "67": "C", "68": "D", "69": "E", "70": "F", "71": "G", "72": "H", "73": "I", "74": "J", "75": "K", "76": "L", "77": "M", "78": "N", "79": "O", "80": "P", "81": "Q", "82": "R", "83": "S", "84": "T", "85": "U", "86": "V", "87": "W", "88": "X", "89": "Y", "90": "Z" };
+
                     if (keyCodeMap[e.keyCode]) {
                         keyValue.push(keyCodeMap[e.keyCode]);
                     } else {
@@ -28091,15 +28900,15 @@ menu.append(new window.Electron.MenuItem({ label: '粘贴', click: function clic
                     if (e.keyCode > 15 && e.keyCode < 19) {
                         return "无";
                     }
-                    if (!hotkey) {
-                        if (keyName == "Ctrl+Alt+A") {
-                            self.screenshot();
-                            return;
-                        }
-                    }
-                    if (keyName == hotkey) {
-                        self.screenshot();
-                    }
+                    // if(!hotkey){
+                    //     if(keyName == "Ctrl+Alt+A"){
+                    //         self.screenshot();
+                    //         return;
+                    //     }
+                    // }
+                    // if(keyName == hotkey){
+                    //     self.screenshot();
+                    // }
                 }
             }, false);
         },
@@ -28107,7 +28916,6 @@ menu.append(new window.Electron.MenuItem({ label: '粘贴', click: function clic
         //自定义消息
         _getCustom: function _getCustom() {
             //58823251,6336440860
-            var needTalk = this.$store.getters.getNeedTalk;
             var lan = this.$store.getters.getTransLan;
             var productId = this.$store.getters.getProductId;
 
@@ -28135,6 +28943,22 @@ menu.append(new window.Electron.MenuItem({ label: '粘贴', click: function clic
             }
             this.makeSure = false;
             this.msg = "";
+        },
+        insertAfter: function insertAfter(newEl, targetEl) {
+            var parentEl = targetEl.parentNode;
+            if (parentEl.lastChild == targetEl) {
+                parentEl.appendChild(newEl);
+            } else {
+                parentEl.insertBefore(newEl, targetEl.nextSibling);
+            }
+        },
+        selectScreenShot: function selectScreenShot(e) {
+            e.stopPropagation();
+            this.screenshotItem = true;
+        },
+        screenShotFn: function screenShotFn(appHide) {
+            this.screenshotItem = false;
+            this.screenshot(appHide);
         }
     },
     mounted: function mounted() {
@@ -28156,11 +28980,13 @@ menu.append(new window.Electron.MenuItem({ label: '粘贴', click: function clic
             if (_this.isShow) {
                 _this.isShow = false;
             }
+            _this.screenshotItem = false;
         });
         document.getElementById('editor').contentWindow.document.addEventListener('click', function () {
             if (_this.isShow) {
                 _this.isShow = false;
             }
+            _this.screenshotItem = false;
         });
     }
 });
@@ -28271,14 +29097,13 @@ var path = __webpack_require__(13);
     mounted: function mounted() {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util_wrapsdk_js__["getI18n"])(this);
 
-        this.checkVersion();
-
         //将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新。
         this.$nextTick(function () {
             var _this2 = this;
 
             document.getElementById('main').addEventListener('click', this.blur);
             //console.log(JSON.parse(localStorage.getItem('userInfo')));
+
             var userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
             //console.log(typeof userInfo);
@@ -28295,16 +29120,19 @@ var path = __webpack_require__(13);
                     //console.log(item.pwd);
                 });
             }
-
             var userLan = JSON.parse(localStorage.getItem('userLan'));
             ipc.on('localLang', function (event, arg) {
                 //console.log('主进程传过来的语言', arg);
                 //var _this = this;
                 if (userLan && userLan.length > 0) {
                     _this2.$i18n.locale = userLan[userLan.length - 1].language;
+                    _this2.$store.dispatch('setLan', userLan[userLan.length - 1].language);
                 } else {
                     _this2.$i18n.locale = arg;
+                    _this2.$store.dispatch('setLan', arg);
                 }
+                console.log('localstorage中的语言', _this2.$i18n.locale);
+                _this2.checkVersion();
             });
         });
     },
@@ -28334,12 +29162,16 @@ var path = __webpack_require__(13);
             } else {
                 this.blur();
             }
-            console.log('this.isShow++++', this.isShow);
+            //console.log('this.isShow++++', this.isShow);
         },
         nameSelect: function nameSelect(str) {
             var _this = this;
             _this.username = str.name;
-            _this.userpassword = str.pwd;
+            if (str.isRem) {
+                _this.userpassword = str.pwd;
+            } else {
+                _this.userpassword = '';
+            }
             _this.isRemeber = str.isRem;
             console.log('str====', str);
             this.blur();
@@ -28422,6 +29254,7 @@ var path = __webpack_require__(13);
                     var data = res.data;
                     console.log('data', data);
                     if (data.ret == -1) {
+                        _this.userpassword = '';
                         _this.errorInfo = _this.$t("message.obj.pwd_err");
                     } else if (data.ret == -2) {
                         _this.errorInfo = _this.$t("message.obj.username_err");
@@ -28444,7 +29277,7 @@ var path = __webpack_require__(13);
                                 if (name == _this.username) {
                                     temp = _this.userArr.splice(i, 1)[0];
                                     temp.isRem = _this.isRemeber;
-                                    console.log('temp=====', temp);
+                                    temp.pwd = _this.userpassword;
                                 }
                             }
                             // 更新不重建
@@ -28479,30 +29312,31 @@ var path = __webpack_require__(13);
         checkVersion: function checkVersion() {
             var _this3 = this;
 
+            console.log('this.$i18n.locale======', this.$i18n.locale);
             var _this = this;
             this.get_remoteversion().then(function (res) {
                 if (_this3.$store.state.card.remoteVersion > +__WEBPACK_IMPORTED_MODULE_5__package__["versionCode"]) {
                     _this3.$refs.version.init({
-                        content: '检测到新版本，是否更新',
+                        content: _this3.$t("message.obj.isUpdate"),
                         btns: {
                             ok: {
-                                txt: '确定',
+                                txt: _this.$t("message.obj.sure"),
                                 cb: function cb() {
                                     _this.download();
                                     return false;
                                 }
                             },
                             cancle: {
-                                txt: '取消'
+                                txt: _this.$t("message.obj.off")
                             }
                         }
                     });
                 } else {
                     _this3.$refs.version.init({
-                        content: '当前是最新版本',
+                        content: _this.$t("message.obj.new_version"),
                         btns: {
                             cancle: {
-                                txt: '确定'
+                                txt: _this.$t("message.obj.sure")
                             }
                         }
                     });
@@ -28513,6 +29347,14 @@ var path = __webpack_require__(13);
         },
         download: function download() {
             shell.openExternal('http://chat.16lao.com/');
+        },
+        nameValue: function nameValue(val) {
+            console.log('val=====', val);
+            if (val != this.username) {
+                this.username = val;
+                this.userpassword = '';
+                this.isRemeber = false;
+            }
         }
     })
 });
@@ -28526,7 +29368,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".closed_friend{\r\n    display: inline-block;\r\n    width: 14px;\r\n    height: 14px;\r\n    position: absolute;\r\n    top: 21px;\r\n    right: 10px;\r\n    background:url(" + __webpack_require__(115) + ")no-repeat;\r\n    display: none;\r\n}\r\n.closed_friend:hover{\r\n    display:inline-block;\r\n}\r\n.lan_icon{\r\n    position: absolute;\r\n    right: 1px;\r\n    top:1px;\r\n    display: inline-block;\r\n    width: 18px;\r\n    height: 24px;\r\n    background:url(" + __webpack_require__(118) + ")no-repeat;\r\n    cursor: pointer;\r\n}\r\n#sel_lan{\r\n    color: #58B7FF;\r\n    float: right;\r\n    line-height: 26px;\r\n    width: 120px;\r\n    height: 26px;\r\n    margin-right: 18px;\r\n    text-align: center;\r\n    background: #e5eeff;\r\n    border: 1px solid #2799ea;\r\n}\r\n.lanList{\r\n    width: 180px;\r\n    height: 26px;\r\n    position: relative;\r\n    margin: 0 auto;\r\n}\r\n.lanList>span{\r\n    display: inline-block;\r\n    height: 26px;\r\n}\r\n.lanBox{\r\n    overflow: hidden;\r\n}\r\n.lanBox ul,lanBox li{\r\n    list-style: none;\r\n    float:left;\r\n    margin:0;\r\n    padding:0;\r\n}\r\n\r\n.box{\r\n    width: 469px;\r\n    height: 387px;\r\n    position: absolute;\r\n    top:-380px;\r\n    left:50px;\r\n    z-index: 10;\r\n    border:1px solid #aaa;\r\n    box-shadow: 2px 2px 4px #ccc;\r\n    background:#fff;\r\n}\r\n\r\n.lanBox>ul{\r\n    padding:10px 0 0 0;\r\n    height: 384px;\r\n    width:100%;\r\n    overflow-y: auto;\r\n}\r\n.lanBox>ul::-webkit-scrollbar-track{\r\n    border-radius: 10px;\r\n}\r\n.lanBox>ul::-webkit-scrollbar{\r\n    width: 12px;\r\n    height: 12px;\r\n    background-color: #f5f5f5;\r\n}\r\n.lanBox>ul::-webkit-scrollbar-thumb{\r\n    border-radius: 10px;\r\n    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);\r\n    background-color: #999;\r\n}\r\n\r\n.lanBox ul li{\r\n    width: 33.3%;\r\n    float:left;\r\n    text-align: center;\r\n    padding:3px 0px;\r\n    margin:1px 0;\r\n    line-height: 14px;\r\n    overflow:hidden;\r\n    text-overflow:ellipsis;\r\n    white-space: nowrap;\r\n    cursor: pointer;\r\n    color:#000;\r\n}\r\n\r\n.list{\r\n    height: inherit;\r\n}\r\n\r\n.list footer{\r\n    margin-bottom:10px;\r\n}\r\n.list .search {\r\n    padding: 0 10px;\r\n    width:143px;\r\n    font-size: 12px;\r\n    color: #fff;\r\n    height: 30px;\r\n    line-height: 30px;\r\n    border-radius: 4px;\r\n    outline: none;\r\n    border: solid 1px #48a8f1;\r\n    background:none;\r\n    margin-left: 10px;\r\n}\r\n.set_btn{\r\n    display: inline;\r\n    width:16px;\r\n    height: 16px;\r\n    background: url(" + __webpack_require__(125) + ")\r\n}\r\n\r\n.list .mList{\r\n    height: calc(100% - 150px);\r\n}\r\n.list .mList>ul{\r\n    height:100%;\r\n    overflow-y:auto;\r\n}\r\n.list .mList>ul::-webkit-scrollbar-track{\r\n    border-radius: 10px;\r\n}\r\n.list .mList>ul::-webkit-scrollbar{\r\n    width: 12px;\r\n}\r\n.list .mList>ul::-webkit-scrollbar-thumb{\r\n    border-radius: 10px;\r\n    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);\r\n    background-color: #999;\r\n}\r\n\r\n.list .mList>ul li {\r\n    padding: 12px 15px;\r\n    cursor: pointer;\r\n    transition: background-color .1s;\r\n    position:relative;\r\n}\r\n.list .mList>ul li em.closed_friend{\r\n    display: none;\r\n}\r\n.list .mList>ul li:hover {\r\n    background-color: #48a8f1;\r\n}\r\n.list .mList>ul li:hover em.closed_friend{\r\n    display: inline-block;\r\n}\r\n\r\n.list .mList>ul li.active {\r\n    background-color: rgba(255, 255, 255, 0.2);\r\n}\r\n.list .mList>ul li.active>span{\r\n    display:none;\r\n}\r\n.list .avatar,\r\n.name {\r\n    vertical-align: middle;\r\n}\r\n\r\n.list .avatar {\r\n    border-radius: 2px;\r\n}\r\n\r\n.list .name {\r\n    display: inline-block;\r\n    margin: 0 0 0 5px;\r\n    overflow: hidden;\r\n    width: 106px;\r\n    text-overflow:ellipsis;\r\n    white-space: nowrap;\r\n}\r\n\r\n.list lanList{\r\n    width:180px;\r\n    height: 26px;\r\n    position:relative;\r\n}\r\n.msg_hint{\r\n    position:absolute;\r\n    top:12px;\r\n    right:7px;\r\n    width:12px;\r\n    height:12px;\r\n    border-radius:6px;\r\n    background:red;\r\n    z-index: 0;\r\n}\r\n.showmsg{\r\n    display:inline-block;\r\n}\r\n.masking{\r\n    filter: grayscale(100%);\r\n    -webkit-filter: grayscale(100%);\r\n    -moz-filter: grayscale(100%);\r\n    -ms-filter: grayscale(100%);\r\n    -o-filter: grayscale(100%);\r\n}", ""]);
+exports.push([module.i, ".closed_friend{\r\n    display: inline-block;\r\n    width: 14px;\r\n    height: 14px;\r\n    position: absolute;\r\n    top: 21px;\r\n    right: 10px;\r\n    background:url(" + __webpack_require__(115) + ")no-repeat;\r\n    display: none;\r\n}\r\n.closed_friend:hover{\r\n    display:inline-block;\r\n}\r\n.lan_icon{\r\n    position: absolute;\r\n    right: 1px;\r\n    top:1px;\r\n    display: inline-block;\r\n    width: 18px;\r\n    height: 24px;\r\n    background:url(" + __webpack_require__(118) + ")no-repeat;\r\n    cursor: pointer;\r\n}\r\n#sel_lan{\r\n    color: #58B7FF;\r\n    float: right;\r\n    line-height: 26px;\r\n    width: 120px;\r\n    height: 26px;\r\n    margin-right: 18px;\r\n    text-align: center;\r\n    background: #e5eeff;\r\n    border: 1px solid #2799ea;\r\n    overflow: hidden;\r\n    text-overflow: ellipsis;\r\n    white-space: nowrap;\r\n}\r\n.lanList{\r\n    width: 180px;\r\n    height: 26px;\r\n    position: relative;\r\n    margin: 0 auto;\r\n}\r\n.lanList>span{\r\n    display: inline-block;\r\n    height: 26px;\r\n}\r\n.lanBox{\r\n    overflow: hidden;\r\n}\r\n.lanBox ul,lanBox li{\r\n    list-style: none;\r\n    float:left;\r\n    margin:0;\r\n    padding:0;\r\n}\r\n\r\n.box{\r\n    width: 469px;\r\n    height: 387px;\r\n    position: absolute;\r\n    top:-380px;\r\n    left:50px;\r\n    z-index: 10;\r\n    border:1px solid #aaa;\r\n    box-shadow: 0 0 12px 2px rgba(0, 0, 0, .5);\r\n    background:#fff;\r\n}\r\n\r\n.lanBox>ul{\r\n    padding:10px 0 0 0;\r\n    height: 384px;\r\n    width:100%;\r\n    overflow-y: auto;\r\n}\r\n.lanBox>ul::-webkit-scrollbar-track{\r\n    border-radius: 10px;\r\n}\r\n.lanBox>ul::-webkit-scrollbar{\r\n    width: 6px;\r\n    height: 12px;\r\n    background-color: #f5f5f5;\r\n}\r\n.lanBox>ul::-webkit-scrollbar-thumb{\r\n    border-radius: 10px;\r\n    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);\r\n    background-color: #2799ea;\r\n}\r\n\r\n.lanBox ul li{\r\n    width: 33.3%;\r\n    float:left;\r\n    text-align: left;\r\n    padding:3px 0px;\r\n    margin:1px 0;\r\n    line-height: 16px;\r\n    overflow:hidden;\r\n    text-overflow:ellipsis;\r\n    white-space: nowrap;\r\n    cursor: pointer;\r\n    color:#000;\r\n    padding-left: 8px;\r\n}\r\n\r\n.lanBox ul li:hover{\r\n    background-color: #2799ea;\r\n    color: #fff;\r\n    border-radius: 3px;\r\n}\r\n\r\n.list{\r\n    height: inherit;\r\n}\r\n\r\n.list footer{\r\n    margin-bottom:10px;\r\n}\r\n.list .search {\r\n    padding: 0 10px;\r\n    width:143px;\r\n    font-size: 12px;\r\n    color: #fff;\r\n    height: 30px;\r\n    line-height: 30px;\r\n    border-radius: 4px;\r\n    outline: none;\r\n    border: solid 1px #48a8f1;\r\n    background:none;\r\n    margin-left: 10px;\r\n}\r\n.set_btn{\r\n    display: inline;\r\n    width:16px;\r\n    height: 16px;\r\n    background: url(" + __webpack_require__(125) + ")\r\n}\r\n\r\n.list .mList{\r\n    height: calc(100% - 150px);\r\n}\r\n.list .mList>ul{\r\n    height:100%;\r\n    overflow-y:auto;\r\n}\r\n.list .mList>ul::-webkit-scrollbar-track{\r\n    border-radius: 10px;\r\n}\r\n.list .mList>ul::-webkit-scrollbar{\r\n    width: 12px;\r\n}\r\n.list .mList>ul::-webkit-scrollbar-thumb{\r\n    border-radius: 10px;\r\n    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);\r\n    background-color: #999;\r\n}\r\n\r\n.list .mList>ul li {\r\n    padding: 12px 15px;\r\n    cursor: pointer;\r\n    transition: background-color .1s;\r\n    position:relative;\r\n}\r\n.list .mList>ul li em.closed_friend{\r\n    display: none;\r\n}\r\n.list .mList>ul li:hover {\r\n    background-color: #48a8f1;\r\n}\r\n.list .mList>ul li:hover em.closed_friend{\r\n    display: inline-block;\r\n}\r\n\r\n.list .mList>ul li.active {\r\n    background-color: rgba(255, 255, 255, 0.2);\r\n}\r\n.list .mList>ul li.active>span{\r\n    display:none;\r\n}\r\n.list .avatar,\r\n.name {\r\n    vertical-align: middle;\r\n}\r\n\r\n.list .avatar {\r\n    border-radius: 2px;\r\n}\r\n\r\n.list .name {\r\n    display: inline-block;\r\n    margin: 0 0 0 5px;\r\n    overflow: hidden;\r\n    width: 106px;\r\n    text-overflow:ellipsis;\r\n    white-space: nowrap;\r\n}\r\n\r\n.list lanList{\r\n    width:180px;\r\n    height: 26px;\r\n    position:relative;\r\n}\r\n.msg_hint{\r\n    position:absolute;\r\n    top:12px;\r\n    right:7px;\r\n    width:12px;\r\n    height:12px;\r\n    border-radius:6px;\r\n    background:red;\r\n    z-index: 0;\r\n}\r\n.showmsg{\r\n    display:inline-block;\r\n}\r\n.masking{\r\n    filter: grayscale(100%);\r\n    -webkit-filter: grayscale(100%);\r\n    -moz-filter: grayscale(100%);\r\n    -ms-filter: grayscale(100%);\r\n    -o-filter: grayscale(100%);\r\n}", ""]);
 
 // exports
 
@@ -28554,7 +29396,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".text {\r\n    height: 160px;\r\n    border-top: solid 1px #ddd;\r\n}\r\n.xf_config{\r\n    height:30px;\r\n    position:relative;\r\n}\r\n.xf_config ul{\r\n    float:left;\r\n}\r\n.xf_config ul li{\r\n    float:left;\r\n    padding:5px 10px;\r\n    margin-left:20px;\r\n    line-height:20px;\r\n}\r\n.xf_config ul li img{\r\n   vertical-align: middle;\r\n}\r\n.xf_face{\r\n    position:absolute;\r\n    top:-72px;\r\n    left:3px;\r\n    border: 1px solid #ccc;\r\n    width: 274px;\r\n    padding: 3px;\r\n    z-index:10;\r\n    box-shadow: 1px 1px 2px;\r\n    background:#fff;\r\n}\r\n.xf_face>a{\r\n    margin-left:2px;\r\n}\r\n.text textarea {\r\n    padding: 10px;\r\n    height:calc(100% - 30px);\r\n    width: 100%;\r\n    border: none;\r\n    outline: none;\r\n    font-family: \"Micrsofot Yahei\";\r\n    resize: none;\r\n}\r\n.xf_send{\r\n    position:absolute;\r\n    right:25px;\r\n    bottom:4px;\r\n    padding:2px 5px;\r\n    cursor:pointer;\r\n    border-radius:3px;\r\n    background:#fff;\r\n    min-width:60px;\r\n    text-align: center;\r\n}\r\n.xf_send:hover{\r\n    background:#58B7FF;\r\n    color:#fff;\r\n}\r\n.product{\r\n    position: fixed;\r\n    width: 100%;\r\n    height: 100%;\r\n    top: 0;\r\n    left: 0;\r\n    background: rgba(0,0,0,0.5);\r\n    z-index: 40;\r\n}\r\n.product_body{\r\n    position: absolute;\r\n    transform: translate(-50%,-50%);\r\n    top:50%;\r\n    left:50%;\r\n    width:422px;\r\n    background: #fff;\r\n}\r\n\r\n   /* 产品链接样式 */\r\n   .customs{\r\n\twidth:400px;\r\n\theight: 80px;\r\n\tposition: relative;\r\n    display: block;\r\n    white-space: normal;\r\n    word-wrap: normal;\r\n    font-size: 20px;\r\n    margin: 10px 10px 0 10px;\r\n}\r\n.custom_pics{\r\n\tdisplay: block;\r\n\twidth:80px;\r\n\theight: 80px;\r\n\tposition: absolute;\r\n\ttop:0px;\r\n    left:0px;\r\n}\r\n.custom_pics>img{\r\n\twidth:80px;\r\n\theight: 80px;\r\n\tvertical-align: bottom;\r\n}\r\n.custom_descs{\r\n\tdisplay: block;\r\n\tmargin-left:90px;\r\n    padding-top:10px;\r\n    font-family: \"\\5FAE\\8F6F\\96C5\\9ED1\";\r\n    font-size: 16px;\r\n}\r\n.custom_descs>a{\r\n\tdisplay: block;\r\n\tmargin-bottom: 10px;\r\n\ttext-decoration: none;\r\n}\r\n.custom_descs>em{\r\n\tcolor:red;\r\n}\r\n.isMakeSure{\r\n    text-align: right;\r\n    margin-top:20px;\r\n    border-top: 1px solid #ddd;\r\n    padding: 10px;\r\n}\r\n.btn{\r\n    padding: 10px 22px;\r\n    border-radius: 8px;\r\n    margin-right: 20px;\r\n    line-height: 37px;\r\n    border: 1px solid #999999;\r\n    font-family: \"\\5FAE\\8F6F\\96C5\\9ED1\";\r\n    font-size: 14px;\r\n}\r\n.btn:hover{\r\n    background: #2799ea;\r\n}\r\n\r\n\r\n", ""]);
+exports.push([module.i, ".text {\r\n    height: 160px;\r\n    border-top: solid 1px #ddd;\r\n}\r\n.xf_config{\r\n    height:30px;\r\n    position:relative;\r\n}\r\n.xf_config ul{\r\n    float:left;\r\n}\r\n.xf_config ul li{\r\n    float:left;\r\n    padding:5px 10px;\r\n    margin-left:20px;\r\n    line-height:20px;\r\n}\r\n.xf_config ul li img{\r\n   vertical-align: middle;\r\n}\r\n.xf_face{\r\n    position:absolute;\r\n    top:-72px;\r\n    left:3px;\r\n    border: 1px solid #ccc;\r\n    width: 274px;\r\n    padding: 3px;\r\n    z-index:10;\r\n    box-shadow: 1px 1px 2px;\r\n    background:#fff;\r\n}\r\n.xf_face>a{\r\n    margin-left:2px;\r\n}\r\n.text textarea {\r\n    padding: 10px;\r\n    height:calc(100% - 30px);\r\n    width: 100%;\r\n    border: none;\r\n    outline: none;\r\n    font-family: \"Micrsofot Yahei\";\r\n    resize: none;\r\n}\r\n.xf_send{\r\n    position:absolute;\r\n    right:25px;\r\n    bottom:4px;\r\n    padding:2px 5px;\r\n    cursor:pointer;\r\n    border-radius:3px;\r\n    background:#fff;\r\n    min-width:60px;\r\n    text-align: center;\r\n}\r\n.xf_send:hover{\r\n    background:#58B7FF;\r\n    color:#fff;\r\n}\r\n.product{\r\n    position: fixed;\r\n    width: 100%;\r\n    height: 100%;\r\n    top: 0;\r\n    left: 0;\r\n    background: rgba(0,0,0,0.5);\r\n    z-index: 40;\r\n}\r\n.product_body{\r\n    position: absolute;\r\n    transform: translate(-50%,-50%);\r\n    top:50%;\r\n    left:50%;\r\n    width:422px;\r\n    background: #fff;\r\n}\r\n\r\n   /* 产品链接样式 */\r\n   .customs{\r\n\twidth:400px;\r\n\theight: 80px;\r\n\tposition: relative;\r\n    display: block;\r\n    white-space: normal;\r\n    word-wrap: normal;\r\n    font-size: 20px;\r\n    margin: 10px 10px 0 10px;\r\n}\r\n.custom_pics{\r\n\tdisplay: block;\r\n\twidth:80px;\r\n\theight: 80px;\r\n\tposition: absolute;\r\n\ttop:0px;\r\n    left:0px;\r\n}\r\n.custom_pics>img{\r\n\twidth:80px;\r\n\theight: 80px;\r\n\tvertical-align: bottom;\r\n}\r\n.custom_descs{\r\n\tdisplay: block;\r\n\tmargin-left:90px;\r\n    padding-top:10px;\r\n    font-family: \"\\5FAE\\8F6F\\96C5\\9ED1\";\r\n    font-size: 16px;\r\n}\r\n.custom_descs>a{\r\n\tdisplay: block;\r\n\tmargin-bottom: 10px;\r\n\ttext-decoration: none;\r\n}\r\n.custom_descs>em{\r\n\tcolor:red;\r\n}\r\n.isMakeSure{\r\n    text-align: right;\r\n    margin-top:20px;\r\n    border-top: 1px solid #ddd;\r\n    padding: 10px;\r\n}\r\n.btn{\r\n    padding: 10px 22px;\r\n    border-radius: 8px;\r\n    margin-right: 20px;\r\n    line-height: 37px;\r\n    border: 1px solid #999999;\r\n    font-family: \"\\5FAE\\8F6F\\96C5\\9ED1\";\r\n    font-size: 14px;\r\n}\r\n.btn:hover{\r\n    background: #2799ea;\r\n}\r\n\r\n/* 截图选项 */\r\n.xf_config .screenshot-box{\r\n    position: relative;\r\n    padding: 0;\r\n}\r\n.screenshot-box span.screenShot-btn{\r\n    display: block;\r\n    padding: 5px 10px;\r\n}\r\n.screenshot-box span.screenShot-btn::after{\r\n    position: absolute;\r\n    right: -1px;\r\n    top: 50%;\r\n    content: '';\r\n    width: 0;\r\n    height: 0;\r\n    border-color: #999 transparent;\r\n    border-style: solid;\r\n    border-width: 5px 4px 0;\r\n    transform: translateY(-50%);\r\n}\r\n.screenshot-box span.screenShot-btn.active::after{\r\n    position: absolute;\r\n    right: -1px;\r\n    top: 50%;\r\n    content: '';\r\n    width: 0;\r\n    height: 0;\r\n    border-color: #999 transparent;\r\n    border-style: solid;\r\n    border-width: 0 4px 5px;\r\n    transform: translateY(-50%);\r\n}\r\n.screenshot-setting{\r\n    position: absolute;\r\n    left: 0;\r\n    top: 30px;\r\n    background-color: #fff;\r\n    margin: 0;\r\n    width: 120px;\r\n    box-shadow: 0 0 2px 1px rgba(0, 0, 0, .1);\r\n    overflow: hidden;\r\n}\r\n.screenshot-setting dd{\r\n    margin: 0;\r\n    padding-left: 14px;\r\n    border: 1px solid #ddd;\r\n    white-space: nowrap;\r\n    line-height: 30px;\r\n    cursor: pointer;\r\n}\r\n.screenshot-setting dd:last-child{\r\n    border-top: 0;\r\n}\r\n.screenshot-setting dd:hover{\r\n    color: #fff;\r\n    border-color: #2799ea;\r\n    background-color: #2799ea;\r\n}\r\n\r\n", ""]);
 
 // exports
 
@@ -28582,7 +29424,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, "\n.xf_fanyi{\n        color:gray;\n}\np{\n        margin:0px;\n        padding:0px;\n}\n.style-hide{\n        display:none\n}\n.message {\n        padding: 10px 15px;\n        overflow-y: scroll;\n}\n.message li {\n        margin-bottom: 15px;\n}\n.message .time {\n        margin: 7px 0;\n        text-align: center;\n}\n.message .class_msgimg{\n        max-width:300px;\n}\n.message>span {\n        display: inline-block;\n        padding: 0 18px;\n        font-size: 12px;\n        color: #fff;\n        border-radius: 2px;\n        background-color: #dcdcdc;\n}\n.message .avatar {\n        float: left;\n        margin: 0 10px 0 0;\n        border-radius: 3px;\n}\n.message .right_btn {\n        position: absolute;\n        top: -16px;\n        right: -11px;\n        font-weight: bold;\n        z-index: 200;\n}\n.message .msgtext:hover .right_btn {\n        cursor: pointer;\n        text-align: right;\n        display: inline-block;\n}\n.message .msgtext {\n        display: inline-block;\n        position: relative;\n        padding:10px;\n        max-width: calc(100% - 40px);\n        min-height: 30px;\n        line-height: 2.5;\n        font-size: 12px;\n        text-align: left;\n        word-break: break-all;\n        background-color: #fafafa;\n        border-radius: 4px;\n}\n.message .msgtext:before {\n        content: \" \";\n        position: absolute;\n        top: 9px;\n        right: 100%;\n        border: 6px solid transparent;\n        border-right-color: #fafafa;\n}\n.message .self {\n        text-align: right;\n}\n.message .self .avatar {\n        float: right;\n        margin: 0 0 0 10px;\n}\n.message .self .right_btn {\n        position: absolute;\n        top: -16px;\n        left: -11px;\n        z-index: 200;\n}\n.message .self .msgtext:hover .right_btn {\n        cursor: pointer;\n        display: inline-block;\n        text-align: left;\n}\n.message .self .msgtext {\n        background-color: #b2e281;\n}\n.message .self .msgtext:before {\n        right: inherit;\n        left: 100%;\n        border-right-color: transparent;\n        border-left-color: #b2e281;\n}\n.xf_fileimg{\n        display:block;\n        max-width:300px;\n}\n.msgtext>span{\n        display:inline-block;\n        vertical-align: bottom;\n        word-break: break-all;\n        word-wrap: break-word;\n        /* white-space: pre-wrap; */\n        overflow:hidden;\n}\n.msgtext img{\n        max-height:300px;\n        vertical-align: bottom;\n}\n.has{\n        width:100%;\n        text-align:center;\n        cursor:pointer;\n        color:blue;\n        display:none;\n}\n\n    /* 产品链接样式 */\n.custom{\n\twidth:322px;\n\theight: 80px;\n\tposition: relative;\n    display: block;\n    white-space: normal;\n    word-wrap: normal;\n}\n.custom_pic{\n\tdisplay: block;\n\twidth:80px;\n\theight: 80px;\n\tposition: absolute;\n\ttop:0px;\n\tleft:0px;\n}\n.custom_pic>img{\n\twidth:80px;\n\theight: 80px;\n\tvertical-align: bottom;\n}\n.custom_desc{\n\tdisplay: block;\n\tmargin-left:90px;\n\tpadding-top:10px;\n}\n.custom_desc>a{\n\tdisplay: block;\n\tmargin-bottom: 10px;\n\ttext-decoration: none;\n}\n.custom_desc>em{\n\tcolor:red;\n}\n", ""]);
+exports.push([module.i, "\n.xf_fanyi{\n        color:gray;\n}\np{\n        margin:0px;\n        padding:0px;\n}\n.style-hide{\n        display:none\n}\n.message {\n        padding: 10px 15px;\n        overflow-y: scroll;\n}\n.message li {\n        margin-bottom: 15px;\n}\n.message .time {\n        margin: 7px 0;\n        text-align: center;\n}\n.message .class_msgimg{\n        max-width:300px;\n}\n.message>span {\n        display: inline-block;\n        padding: 0 18px;\n        font-size: 12px;\n        color: #fff;\n        border-radius: 2px;\n        background-color: #dcdcdc;\n}\n.message .avatar {\n        float: left;\n        margin: 0 10px 0 0;\n        border-radius: 3px;\n}\n.message .right_btn {\n        position: absolute;\n        top: -16px;\n        right: -11px;\n        font-weight: bold;\n        z-index: 200;\n}\n.message .msgtext:hover .right_btn {\n        cursor: pointer;\n        text-align: right;\n        display: inline-block;\n}\n.message .msgtext {\n        display: inline-block;\n        position: relative;\n        padding:10px;\n        max-width: calc(100% - 40px);\n        min-height: 30px;\n        line-height: 2.5;\n        font-size: 12px;\n        text-align: left;\n        word-break: break-all;\n        background-color: #0e64a9;\n        border-radius: 4px;\n}\n.message .msgtext:before {\n        content: \" \";\n        position: absolute;\n        top: 9px;\n        right: 100%;\n        border: 6px solid transparent;\n        border-right-color: #fafafa;\n}\n.message .self {\n        text-align: right;\n}\n.message .self .avatar {\n        float: right;\n        margin: 0 0 0 10px;\n}\n.message .self .right_btn {\n        position: absolute;\n        top: -16px;\n        left: -11px;\n        z-index: 200;\n}\n.message .self .msgtext:hover .right_btn {\n        cursor: pointer;\n        display: inline-block;\n        text-align: left;\n}\n.message .self .msgtext {\n        background-color: #0e64a9;\n}\n.message .self .msgtext #err{\n        color: red;\n        position: absolute;\n        left: -60px;\n}\n.message .self .msgtext #reSend{\n        position: absolute;\n        left: -90px;\n        top: 14px;\n}\n.message .self .msgtext:before {\n        right: inherit;\n        left: 100%;\n        border-right-color: transparent;\n        border-left-color: #0e64a9;\n}\n.xf_fileimg{\n        display:block;\n        max-width:300px;\n}\n.msgtext>span{\n        display:inline-block;\n        vertical-align: bottom;\n        word-break: break-all;\n        word-wrap: break-word;\n        /* white-space: pre-wrap; */\n        overflow:hidden;\n        color: #fff;\n}\n.msgtext img{\n        max-height:300px;\n        max-width:300px;\n        vertical-align: bottom;\n}\n.has{\n        width:100%;\n        text-align:center;\n        cursor:pointer;\n        color:blue;\n        display:none;\n}\n\n    /* 产品链接样式 */\n.custom{\n\twidth:322px;\n\theight: 80px;\n\tposition: relative;\n    display: block;\n    white-space: normal;\n    word-wrap: normal;\n}\n.custom_pic{\n\tdisplay: block;\n\twidth:80px;\n\theight: 80px;\n\tposition: absolute;\n\ttop:0px;\n\tleft:0px;\n}\n.custom_pic>img{\n\twidth:80px;\n\theight: 80px;\n\tvertical-align: bottom;\n}\n.custom_desc{\n\tdisplay: block;\n\tmargin-left:90px;\n\tpadding-top:10px;\n}\n.custom_desc>a{\n\tdisplay: block;\n\tmargin-bottom: 10px;\n\ttext-decoration: none;\n}\n.custom_desc>em{\n\tcolor:red;\n}\n", ""]);
 
 // exports
 
@@ -28652,7 +29494,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, "\n.pic_dialog{\n    width:100%;\n    height:100%;\n    position:absolute;\n    top:0;\n    left:0;\n    z-index:999;\n    background: rgba(0,0,0,0.3);\n}\n.pic_dialog_body{\n    max-width:1200px;\n    min-width:220px;\n    min-height:220px;\n    background: #fff;\n}\n.pic_dialog_header{\n    width:100%;\n    height:25px;\n    line-height:25px;\n    position:relative;\n    background:#fff;\n}\n.pic_dialog_closed{\n    position: absolute;\n    top: 0px;\n    display: inline-block;\n    width: 25px;\n    height: 25px;\n    right:0px;\n    color:#000;\n    text-align: center;\n    cursor:pointer;\n    line-height:25px;\n}\n.pic_dialog_closed:hover{\n    background:red;\n}\n.pic_box{\n    position:fixed;\n    top:50%;\n    left:50%;\n    text-align:center;\n    max-width:1200px;\n    min-width:220px;\n    min-height:220px;\n    transform:translate(-50%,-50%);\n    -ms-transform:translate(-50%,-50%); \t/* IE 9 */\n    -moz-transform:translate(-50%,-50%); \t/* Firefox */\n    -webkit-transform:translate(-50%,-50%); /* Safari 和 Chrome */\n    -o-transform:translate(-50%,-50%);\n}\n.pic_dialog_body>div{\n    margin-bottom:8px;\n    display:block;\n    text-align:center;\n    vertical-align:middle;\n}\n.pic_dialog_body>div>img{\n    max-width:400px;\n}\n", ""]);
+exports.push([module.i, "\n.pic_dialog{\n    width:100%;\n    height:100%;\n    position:absolute;\n    top:0;\n    left:0;\n    z-index:999;\n    background: rgba(0,0,0,0.3);\n}\n.pic_dialog_body{\n    /* max-width:1200px;\n    min-width:220px;\n    min-height:220px;\n    background: #fff; */\n    overflow: auto;\n}\n.pic_dialog_closed{\n    position: absolute;\n    top: 0px;\n    display: inline-block;\n    width: 25px;\n    height: 25px;\n    right:0px;\n    color:#000;\n    text-align: center;\n    cursor:pointer;\n    line-height:25px;\n    z-index: 30;\n}\n.pic_dialog_closed:hover{\n    background:red;\n}\n.pic_box{\n    position:absolute;\n    top:50%;\n    left:50%;\n    text-align:center;\n    width:800px;\n    height: 500px;\n    transform:translate(-50%,-50%);\n    -ms-transform:translate(-50%,-50%); \t/* IE 9 */\n    -moz-transform:translate(-50%,-50%); \t/* Firefox */\n    -webkit-transform:translate(-50%,-50%); /* Safari 和 Chrome */\n    -o-transform:translate(-50%,-50%); \n    overflow: hidden;\n}\n.pic_dialog_body>img{\n    max-width:922px;\n    max-height: 800px;\n    vertical-align: bottom;\n    cursor: move;\n    position: absolute;\n    top:50%;\n    left:50%;\n    transform: translate(-50%,-50%);\n}\n", ""]);
 
 // exports
 
@@ -28680,7 +29522,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, "\n.tip-box[data-v-80d03d68]{\n    position: fixed;\n    left: 0;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    z-index: 20;\n}\n.tip[data-v-80d03d68]{\n    position: absolute;\n    left: 50%;\n    top: 50%;\n    min-width: 256px;\n    transform: translate(-50%, -50%);\n    background-color: #fff;\n    border-radius: 10px;\n    padding: 30px 50px 20px;\n    box-shadow: 0 0 4px 2px rgba(0, 0, 0, .2);\n}\n.tip-content[data-v-80d03d68]{\n    margin-bottom: 20px;\n    color: #333;\n    line-height: 1.5;\n    text-align: center;\n}\n.tip-btn[data-v-80d03d68]{\n    text-align: center;\n}\n.tip-btn a[data-v-80d03d68]{\n    display: inline-block;\n    padding: 6px 16px;\n    border: 1px solid #ccc;\n    border-radius: 6px;\n    font-size: 12px;\n    text-decoration: none;\n    color: #333;\n    line-height: 1;\n    margin: 0 10px;\n}\n.tip-btn a[data-v-80d03d68]:first-child{\n    color: #fff;\n    border-color: #2799ea;\n    background-color: #2799ea;\n}\n", ""]);
+exports.push([module.i, "\n.tip-box[data-v-80d03d68]{\n    position: fixed;\n    left: 0;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    z-index: 20;\n}\n.tip[data-v-80d03d68]{\n    position: absolute;\n    left: 50%;\n    top: 50%;\n    min-width: 256px;\n    max-width: 316px;\n    transform: translate(-50%, -50%);\n    background-color: #fff;\n    border-radius: 10px;\n    padding: 30px 50px 20px;\n    box-shadow: 0 0 4px 2px rgba(0, 0, 0, .2);\n}\n.tip-content[data-v-80d03d68]{\n    margin-bottom: 20px;\n    color: #333;\n    line-height: 1.5;\n    text-align: center;\n}\n.tip-btn[data-v-80d03d68]{\n    text-align: center;\n    white-space: nowrap;\n}\n.tip-btn a[data-v-80d03d68]{\n    display: inline-block;\n    padding: 6px 16px;\n    border: 1px solid #ccc;\n    border-radius: 6px;\n    font-size: 12px;\n    text-decoration: none;\n    color: #333;\n    width: 88px;\n    line-height: 1;\n    height: 26px;\n    margin: 0px 6px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n}\n.tip-btn a[data-v-80d03d68]:first-child{\n    color: #fff;\n    border-color: #2799ea;\n    background-color: #2799ea;\n}\n", ""]);
 
 // exports
 
@@ -28694,7 +29536,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, "\nheader[data-v-a6ff35a2] {\n    position: relative;\n}\n.test[data-v-a6ff35a2] {\n    width: 100px;\n    height: 100px;\n    border: 1px solid red;\n    background: #fff;\n}\n.guides[data-v-a6ff35a2] {\n    position: fixed;\n    left: 0px;\n    top: 0px;\n    width: 100%;\n    height: 100%;\n    z-index: 10;\n}\n.guides img[data-v-a6ff35a2] {\n    width: inherit;\n    height: inherit;\n}\n.setting[data-v-a6ff35a2] {\n    position: fixed;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%;\n    z-index: 10;\n}\n.set[data-v-a6ff35a2] {\n    position: absolute;\n    left: 50%;\n    top: 50%;\n    width: 480px;\n    height: 315px;\n    transform: translate(-50%, -50%);\n    background: #fff;\n    border-radius: 3px;\n    box-shadow: 0 0 12px 2px rgba(0, 0, 0, .5);\n}\n.set_header[data-v-a6ff35a2] {\n    width: inherit;\n    height: 30px;\n    border-top-left-radius: 3px;\n    border-top-right-radius: 3px;\n    background-color: #2799ea;\n    color: #fff;\n    overflow: hidden;\n}\n.set_box[data-v-a6ff35a2] {\n    position: absolute;\n    display: inline-block;\n    width: 16px;\n    height: 16px;\n    left: 154px;\n    top: 58px;\n}\n.title[data-v-a6ff35a2] {\n    display: inline-block;\n    height: inherit;\n    line-height: 30px;\n    margin-left: 20px;\n}\n.set_closed[data-v-a6ff35a2] {\n    display: inline-block;\n    width: 30px;\n    height: 30px;\n    float: right;\n    line-height: 30px;\n    text-align: center;\n}\n.set_body[data-v-a6ff35a2] {\n    color: #333;\n}\n.set_body a[data-v-a6ff35a2] {\n    color: #0066cc;\n    margin-left: 20px;\n}\n.set_body p[data-v-a6ff35a2]:first-child {\n    margin-top: 17px;\n}\n.set_body p[data-v-a6ff35a2] {\n    margin-top: 10px;\n    padding-left: 20px;\n}\n.set_body span[data-v-a6ff35a2] {\n    display: inline-block;\n    text-align: center;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    vertical-align: middle;\n}\n.set_lans[data-v-a6ff35a2] {\n    width: 432px;\n    height: 218px;\n    position: absolute;\n    left: 40px;\n    top: 62px;\n    text-align: center;\n    padding: 5px;\n    border: 1px solid #000;\n    background: #fff;\n}\n.set_lans li[data-v-a6ff35a2] {\n    cursor: pointer;\n    float: left;\n    width: 33.3%;\n    padding: 2px 4px;\n}\n.lansClosed[data-v-a6ff35a2] {\n    position: absolute;\n    z-index: 30;\n    right: 20px;\n    bottom: 10px;\n    display: inline-block;\n    width: 80px;\n    border-radius: 5px;\n    height: 32px;\n    border: 1px solid #888;\n    text-align: center;\n    line-height: 32px;\n}\n.hotSet[data-v-a6ff35a2] {\n    overflow: hidden;\n}\n.hotSet li[data-v-a6ff35a2] {\n    margin-bottom: 5px;\n}\n.hotSet li input[data-v-a6ff35a2] {\n    width: 13px;\n    height: 13px;\n    margin-right: 5px;\n    margin-left: 20px;\n}\n.verson[data-v-a6ff35a2] {\n}\n.verson_btn[data-v-a6ff35a2] {\n}\n.guide[data-v-a6ff35a2] {\n}\n.guide a[data-v-a6ff35a2] {\n    margin-left: 17px;\n    text-decoration: underline;\n}\n.card[data-v-a6ff35a2] {\n    padding: 12px;\n}\n.card .avatar[data-v-a6ff35a2],\n.name[data-v-a6ff35a2] {\n    vertical-align: middle;\n}\n.card .avatar[data-v-a6ff35a2] {\n    border-radius: 2px;\n}\n.card .name[data-v-a6ff35a2] {\n    width: 116px;\n    display: inline-block;\n    margin: 0 0 0 15px;\n    font-size: 16px;\n    overflow: hidden;\n    white-space: nowrap;\n    text-overflow: ellipsis;\n}\n.lanSet[data-v-a6ff35a2] {\n    position: absolute;\n    left: 50%;\n    top: 50%;\n    width: 560px;\n    height: 334px;\n    transform: translate(-50%, -50%);\n    background: #fff;\n    border-radius: 3px;\n    box-shadow: 0 0 12px 2px rgba(0, 0, 0, .5);\n}\n.set_lan_header[data-v-a6ff35a2] {\n    width: inherit;\n    height: 30px;\n    border-top-left-radius: 3px;\n    border-top-right-radius: 3px;\n    background-color: #2799ea;\n    color: #fff;\n    overflow: hidden;\n}\n.set_lan_closed[data-v-a6ff35a2] {\n    display: inline-block;\n    width: 30px;\n    height: 30px;\n    float: right;\n    line-height: 30px;\n    text-align: center;\n}\n.set_lan_list > ul[data-v-a6ff35a2] {\n    overflow: hidden;\n}\n.set_lan_list > ul > li[data-v-a6ff35a2] {\n    float: left;\n    width: 140px;\n    margin-top: 15px;\n}\n.set_lan_list > ul > li[data-v-a6ff35a2]:hover {\n    background-color: #2799ea;\n    border-radius: 3px;\n    cursor: pointer;\n    color: #fff;\n}\n\n", ""]);
+exports.push([module.i, "\nheader[data-v-a6ff35a2] {\n    position: relative;\n}\n.test[data-v-a6ff35a2] {\n    width: 100px;\n    height: 100px;\n    border: 1px solid red;\n    background: #fff;\n}\n.guides[data-v-a6ff35a2] {\n    position: fixed;\n    left: 0px;\n    top: 0px;\n    width: 100%;\n    height: 100%;\n    z-index: 10;\n}\n.guides img[data-v-a6ff35a2] {\n    width: inherit;\n    height: inherit;\n}\n.setting[data-v-a6ff35a2] {\n    position: fixed;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%;\n    z-index: 10;\n}\n.set[data-v-a6ff35a2] {\n    position: absolute;\n    left: 50%;\n    top: 50%;\n    width: 480px;\n    height: 315px;\n    transform: translate(-50%, -50%);\n    background: #fff;\n    border-radius: 3px;\n    box-shadow: 0 0 12px 2px rgba(0, 0, 0, .5);\n}\n.set_header[data-v-a6ff35a2] {\n    width: inherit;\n    height: 30px;\n    border-top-left-radius: 3px;\n    border-top-right-radius: 3px;\n    background-color: #2799ea;\n    color: #fff;\n    overflow: hidden;\n}\n.set_box[data-v-a6ff35a2] {\n    position: absolute;\n    display: inline-block;\n    width: 16px;\n    height: 16px;\n    left: 154px;\n    top: 58px;\n}\n.title[data-v-a6ff35a2] {\n    display: inline-block;\n    height: inherit;\n    line-height: 30px;\n    margin-left: 20px;\n}\n.set_closed[data-v-a6ff35a2] {\n    display: inline-block;\n    width: 30px;\n    height: 30px;\n    float: right;\n    line-height: 30px;\n    text-align: center;\n}\n.set_body[data-v-a6ff35a2] {\n    color: #333;\n}\n.set_body a[data-v-a6ff35a2] {\n    color: #0066cc;\n    margin-left: 20px;\n}\n.set_body p[data-v-a6ff35a2]:first-child {\n    margin-top: 17px;\n}\n.set_body p[data-v-a6ff35a2] {\n    margin-top: 10px;\n    padding-left: 20px;\n}\n.set_body span[data-v-a6ff35a2] {\n    display: inline-block;\n    text-align: center;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    vertical-align: middle;\n}\n.set_lans[data-v-a6ff35a2] {\n    width: 432px;\n    height: 218px;\n    position: absolute;\n    left: 40px;\n    top: 62px;\n    text-align: center;\n    padding: 5px;\n    border: 1px solid #000;\n    background: #fff;\n}\n.set_lans li[data-v-a6ff35a2] {\n    cursor: pointer;\n    float: left;\n    width: 33.3%;\n    padding: 2px 4px;\n}\n.lansClosed[data-v-a6ff35a2] {\n    position: absolute;\n    z-index: 30;\n    right: 20px;\n    bottom: 10px;\n    display: inline-block;\n    width: 80px;\n    border-radius: 5px;\n    height: 32px;\n    border: 1px solid #888;\n    text-align: center;\n    line-height: 32px;\n}\n.hotSet[data-v-a6ff35a2] {\n    overflow: hidden;\n}\n.hotSet li[data-v-a6ff35a2] {\n    margin-bottom: 5px;\n}\n.hotSet li input[data-v-a6ff35a2] {\n    width: 13px;\n    height: 13px;\n    margin-right: 5px;\n    margin-left: 20px;\n}\n.verson[data-v-a6ff35a2] {\n}\n.verson_btn[data-v-a6ff35a2] {\n}\n.guide[data-v-a6ff35a2] {\n}\n.guide a[data-v-a6ff35a2] {\n    margin-left: 17px;\n    text-decoration: underline;\n}\n.card[data-v-a6ff35a2] {\n    padding: 12px;\n}\n.card .avatar[data-v-a6ff35a2],\n.name[data-v-a6ff35a2] {\n    vertical-align: middle;\n}\n.card .avatar[data-v-a6ff35a2] {\n    border-radius: 2px;\n}\n.card .name[data-v-a6ff35a2] {\n    width: 116px;\n    display: inline-block;\n    margin: 0 0 0 15px;\n    font-size: 16px;\n    overflow: hidden;\n    white-space: nowrap;\n    text-overflow: ellipsis;\n}\n.lanSet[data-v-a6ff35a2] {\n    position: absolute;\n    left: 50%;\n    top: 50%;\n    width: 560px;\n    height: 334px;\n    transform: translate(-50%, -50%);\n    background: #fff;\n    border-radius: 3px;\n    box-shadow: 0 0 12px 2px rgba(0, 0, 0, .5);\n}\n.set_lan_header[data-v-a6ff35a2] {\n    width: inherit;\n    height: 30px;\n    border-top-left-radius: 3px;\n    border-top-right-radius: 3px;\n    background-color: #2799ea;\n    color: #fff;\n    overflow: hidden;\n}\n.set_lan_closed[data-v-a6ff35a2] {\n    display: inline-block;\n    width: 30px;\n    height: 30px;\n    float: right;\n    line-height: 30px;\n    text-align: center;\n}\n.set_lan_list > ul[data-v-a6ff35a2] {\n    overflow: hidden;\n}\n.set_lan_list > ul > li[data-v-a6ff35a2] {\n    float: left;\n    width: 140px;\n    margin-top: 15px;\n    padding-left: 10px;\n}\n.set_lan_list > ul > li[data-v-a6ff35a2]:hover {\n    background-color: #2799ea;\n    border-radius: 3px;\n    cursor: pointer;\n    color: #fff;\n}\n\n", ""]);
 
 // exports
 
@@ -28708,7 +29550,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, "\n.mainHeader[data-v-e4bad8f6] {\n    width: 100%;\n    height: 49px;\n    border-bottom: 1px solid #ddd;\n    background: #f5f8fc;\n    -webkit-app-region: drag;\n}\n.mainHeader > span[data-v-e4bad8f6] {\n    font-size: 17px;\n    float: left;\n    width: 50%;\n    padding-left: 22px;\n    line-height: 49px;\n}\n.mainHeader > em[data-v-e4bad8f6] {\n    float: right;\n    width: 50%;\n    text-align: right;\n    -webkit-app-region: no-drag;\n}\n", ""]);
+exports.push([module.i, "\n.mainHeader[data-v-e4bad8f6] {\n    width: 100%;\n    height: 49px;\n    border-bottom: 1px solid #ddd;\n    background: #f5f8fc;\n    -webkit-app-region: drag;\n}\n.mainHeader > span[data-v-e4bad8f6] {\n    font-size: 17px;\n    float: left;\n    padding-left: 22px;\n    line-height: 49px;\n}\n.mainHeader > em[data-v-e4bad8f6] {\n    float: right;\n    text-align: right;\n    -webkit-app-region: no-drag;\n}\n", ""]);
 
 // exports
 
@@ -29999,7 +30841,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "search",
     attrs: {
       "type": "text",
-      "placeholder": "搜索"
+      "placeholder": _vm.$t('message.obj.search')
     },
     on: {
       "keyup": _vm.onKeyup
@@ -30044,6 +30886,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "closed_friend",
       on: {
         "click": function($event) {
+          $event.stopPropagation();
           _vm.closedFriend(index)
         }
       }
@@ -30101,8 +30944,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "scroll-bottom",
       rawName: "v-scroll-bottom",
-      value: (_vm.messages),
-      expression: "messages"
+      value: ({
+        len: _vm.currentMsg.length,
+        scrollTop: _vm.mScrollTop
+      }),
+      expression: "{len:currentMsg.length,scrollTop:mScrollTop}"
     }],
     staticClass: "message",
     attrs: {
@@ -30190,23 +31036,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         background: ("url(" + (v.identifyFlag) + ")")
       })
     })
-  }))])]), _vm._v(" "), _c('p', [_vm._v("供货等级："), _c('span', {
+  }))])]), _vm._v(" "), (_vm.rsData.packageItemStart > 0) ? _c('p', [_vm._v(_vm._s(_vm.$t("message.obj.supply_level")) + "："), _c('span', {
     staticClass: "level"
   }, _vm._l((new Array(_vm.rsData.packageItemStart || 0)), function(v, k) {
     return _c('i', {
       key: k,
       staticClass: "highlight"
     })
-  }))]), _vm._v(" "), _c('p', [_vm._v("经营模式："), _c('em', [_vm._v(_vm._s(_vm.rsData.businessModel))])]), _vm._v(" "), _c('p', [_vm._v("企业地址："), _c('em', [_vm._v(_vm._s(_vm.rsData.thAddress))])]), _vm._v(" "), _c('p', [_vm._v("手机："), _c('em', [_vm._v(_vm._s(_vm.rsData.contactTel))])]), _vm._v(" "), _c('p', [_vm._v("固定电话："), _c('em', [_vm._v(_vm._s(_vm.rsData.contactPhone))])])]), _vm._v(" "), _c('div', {
+  }))]) : _vm._e(), _vm._v(" "), (_vm.rsData.businessModel) ? _c('p', [_vm._v(_vm._s(_vm.$t("message.obj.business_model")) + "："), _c('em', [_vm._v(_vm._s(_vm.rsData.businessModel))])]) : _vm._e(), _vm._v(" "), (_vm.rsData.thAddress) ? _c('p', [_vm._v(_vm._s(_vm.$t("message.obj.enterprise_address")) + "："), _c('em', [_vm._v(_vm._s(_vm.rsData.thAddress))])]) : _vm._e(), _vm._v(" "), (_vm.rsData.contactTel) ? _c('p', [_vm._v(_vm._s(_vm.$t("message.obj.cellphone")) + "："), _c('em', [_vm._v(_vm._s(_vm.rsData.contactTel))])]) : _vm._e(), _vm._v(" "), (_vm.rsData.contactPhone) ? _c('p', [_vm._v(_vm._s(_vm.$t("message.obj.telephone")) + "："), _c('em', [_vm._v(_vm._s(_vm.rsData.contactPhone))])]) : _vm._e()]), _vm._v(" "), (_vm.rsData.listProduct && _vm.rsData.listProduct.length > 0) ? _c('div', {
     staticClass: "goods-recommend"
   }, [_c('div', {
     staticClass: "goods-head"
-  }, [_c('strong', [_vm._v("本店推荐")]), _vm._v(" "), _c('a', {
+  }, [_c('strong', [_vm._v(_vm._s(_vm.$t("message.obj.shop_recommend")))]), _vm._v(" "), _c('a', {
     attrs: {
       "target": "_blank",
-      "href": _vm.rsData.goodsListUrl || 'http://baidu.com'
+      "href": _vm.rsData.goodsListUrl
     }
-  }, [_vm._v("更多>")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.$t("message.obj.product_more")) + ">")])]), _vm._v(" "), _c('div', {
     staticClass: "goods-list"
   }, [_vm._l((_vm.rsData.listProduct), function(v, k) {
     return _c('div', {
@@ -30251,7 +31097,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_vm._v(_vm._s(k + 1))])
-  })) : _vm._e()], 2)])]) : _c('div', {
+  })) : _vm._e()], 2)]) : _vm._e()]) : _c('div', {
     staticClass: "ad-box",
     domProps: {
       "innerHTML": _vm._s(_vm.rsData.adDetail)
@@ -30345,29 +31191,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.username),
-      expression: "username"
-    }],
     staticClass: "input-username",
     attrs: {
       "placeholder": _vm.$t('message.obj.username_hd')
     },
     domProps: {
-      "value": (_vm.username)
+      "value": _vm.username
     },
     on: {
-      "keyup": function($event) {
-        _vm.Searchname()
-      },
-      "click": function($event) {
-        $event.stopPropagation();
-      },
       "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.username = $event.target.value
+        $event.stopPropagation();
+        _vm.nameValue($event.target.value)
       }
     }
   })]), _vm._v(" "), _c('div', {
@@ -30489,7 +31323,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.cli('register')
       }
     }
-  }, [_vm._v(_vm._s(_vm.$t(("message.obj.register"))) + ">>")])])])]), _vm._v(" "), _c('Tip', {
+  }, [_vm._v(_vm._s(_vm.$t("message.obj.register")) + ">>")])])])]), _vm._v(" "), _c('Tip', {
     ref: "version"
   })], 1)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -30574,20 +31408,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "pic_box"
-  }, [_c('div', {
-    staticClass: "pic_dialog_header"
   }, [_c('span', {
     staticClass: "pic_dialog_closed",
     on: {
       "click": _vm.picDialogClosed
     }
-  }, [_vm._v("x")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("x")]), _vm._v(" "), _c('div', {
     staticClass: "pic_dialog_body",
     attrs: {
       "id": "pic_dialog_body"
     }
   }, [_c('img', {
     attrs: {
+      "id": "picScale",
       "src": _vm.imgsrc,
       "alt": ""
     }
@@ -30677,7 +31510,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return _c('a', {
       key: k,
       attrs: {
-        "href": "javascript: void(0);"
+        "href": "javascript: void(0);",
+        "title": v.txt
       },
       on: {
         "click": function($event) {
@@ -30737,6 +31571,231 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('img', {
     attrs: {
       "src": __webpack_require__(117)
+    }
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.guide_zh_show),
+      expression: "guide_zh_show"
+    }],
+    staticClass: "guides",
+    on: {
+      "click": _vm.closeGuide
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(188)
+    }
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.guide_ar_show),
+      expression: "guide_ar_show"
+    }],
+    staticClass: "guides",
+    on: {
+      "click": _vm.closeGuide
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(174)
+    }
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.guide_de_show),
+      expression: "guide_de_show"
+    }],
+    staticClass: "guides",
+    on: {
+      "click": _vm.closeGuide
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(175)
+    }
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.guide_en_show),
+      expression: "guide_en_show"
+    }],
+    staticClass: "guides",
+    on: {
+      "click": _vm.closeGuide
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(176)
+    }
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.guide_es_show),
+      expression: "guide_es_show"
+    }],
+    staticClass: "guides",
+    on: {
+      "click": _vm.closeGuide
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(177)
+    }
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.guide_fr_show),
+      expression: "guide_fr_show"
+    }],
+    staticClass: "guides",
+    on: {
+      "click": _vm.closeGuide
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(178)
+    }
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.guide_it_show),
+      expression: "guide_it_show"
+    }],
+    staticClass: "guides",
+    on: {
+      "click": _vm.closeGuide
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(180)
+    }
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.guide_ja_show),
+      expression: "guide_ja_show"
+    }],
+    staticClass: "guides",
+    on: {
+      "click": _vm.closeGuide
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(181)
+    }
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.guide_ms_show),
+      expression: "guide_ms_show"
+    }],
+    staticClass: "guides",
+    on: {
+      "click": _vm.closeGuide
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(183)
+    }
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.guide_ru_show),
+      expression: "guide_ru_show"
+    }],
+    staticClass: "guides",
+    on: {
+      "click": _vm.closeGuide
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(185)
+    }
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.guide_th_show),
+      expression: "guide_th_show"
+    }],
+    staticClass: "guides",
+    on: {
+      "click": _vm.closeGuide
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(186)
+    }
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.guide_vi_show),
+      expression: "guide_vi_show"
+    }],
+    staticClass: "guides",
+    on: {
+      "click": _vm.closeGuide
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(187)
+    }
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.guide_ko_show),
+      expression: "guide_ko_show"
+    }],
+    staticClass: "guides",
+    on: {
+      "click": _vm.closeGuide
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(182)
+    }
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.guide_pt_show),
+      expression: "guide_pt_show"
+    }],
+    staticClass: "guides",
+    on: {
+      "click": _vm.closeGuide
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(184)
+    }
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.guide_in_show),
+      expression: "guide_in_show"
+    }],
+    staticClass: "guides",
+    on: {
+      "click": _vm.closeGuide
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(179)
     }
   })]), _vm._v(" "), _c('div', {
     directives: [{
@@ -30992,24 +32051,43 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "src": "images/file2.png",
       "alt": "image"
     }
-  })])]), _vm._v(" "), _c('li', [_c('img', {
+  })])]), _vm._v(" "), _c('li', {
+    staticClass: "screenshot-box"
+  }, [_c('span', {
+    staticClass: "screenShot-btn",
+    class: {
+      active: _vm.screenshotItem
+    },
+    on: {
+      "click": _vm.selectScreenShot
+    }
+  }, [_c('img', {
     staticClass: "screenShot",
     attrs: {
       "src": "images/cut2.png",
       "alt": "snap"
-    },
+    }
+  })]), _vm._v(" "), _c('dl', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.screenshotItem),
+      expression: "screenshotItem"
+    }],
+    staticClass: "screenshot-setting"
+  }, [_c('dd', {
     on: {
-      "click": _vm.screenshot
+      "click": function($event) {
+        _vm.screenShotFn(true)
+      }
     }
-  }), _c('input', {
-    staticStyle: {
-      "display": "none"
-    },
-    attrs: {
-      "tyle": "file",
-      "id": "cutFile"
+  }, [_vm._v("隐藏主页面")]), _vm._v(" "), _c('dd', {
+    on: {
+      "click": function($event) {
+        _vm.screenShotFn(false)
+      }
     }
-  })])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("不隐藏主页面")])])])]), _vm._v(" "), _c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -31444,6 +32522,96 @@ module.exports = require("util");
 /***/ (function(module, exports) {
 
 module.exports = require("zlib");
+
+/***/ }),
+/* 174 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/ar.png";
+
+/***/ }),
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/de.png";
+
+/***/ }),
+/* 176 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/en.png";
+
+/***/ }),
+/* 177 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/es.png";
+
+/***/ }),
+/* 178 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/fr.png";
+
+/***/ }),
+/* 179 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/in.png";
+
+/***/ }),
+/* 180 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/it.png";
+
+/***/ }),
+/* 181 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/ja.png";
+
+/***/ }),
+/* 182 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/ko.png";
+
+/***/ }),
+/* 183 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/ms.png";
+
+/***/ }),
+/* 184 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/pt.png";
+
+/***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/ru.png";
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/th.png";
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/vi.png";
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/zh.png";
 
 /***/ })
 /******/ ]);

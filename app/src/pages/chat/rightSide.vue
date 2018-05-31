@@ -1,50 +1,4 @@
 <!-- rightSide.vue Created by xh on 2018-4-19  -->
-<template>
-    <div class="rightSide" v-if="rsData">
-        <div class="shop-info-box" v-if="!rsData.adDetail">
-            <div class="shop-info">
-                <div class="shop-name">
-                    <a href="javascript: void(0);"><img :src="rsData.storeLogo" :alt="rsData.storeName"></a>
-                    <div>
-                        <h2><a href="javascript: void(0);">{{rsData.storeName}}</a></h2>
-                        <div class="badge">
-                            <i v-for="v of rsData.auditUrl" :key="v.code" :style="{background: `url(${v.identifyFlag})`}"></i>
-                        </div>
-                    </div>
-                </div>
-                <p>供货等级：<span class="level"><i :key="k" v-for="(v, k) of new Array(rsData.packageItemStart || 0)" class="highlight"></i></span></p>
-                <p>经营模式：<em>{{rsData.businessModel}}</em></p>
-                <p>企业地址：<em>{{rsData.thAddress}}</em></p>
-                <p>手机：<em>{{rsData.contactTel}}</em></p>
-                <p>固定电话：<em>{{rsData.contactPhone}}</em></p>
-            </div>
-            <div class="goods-recommend">
-                <div class="goods-head">
-                    <strong>本店推荐</strong>
-                    <a target="_blank" :href="rsData.goodsListUrl || 'http://baidu.com'">更多&gt;</a>
-                </div>
-                <div class="goods-list">
-                    <div class="goods-item" :data-index="k" v-for="(v, k) of rsData.listProduct" :style="{zIndex: 1}" :key="k">
-                        <a target="_blank" :href="v.goodsUrl" :title="v.title">
-                            <img :src="v.imgUrl" :alt="v.title">
-                        </a>
-                        <div class="goods-info">
-                            <a :href="v.goodsUrl" :title="v.title">
-                                <p>{{v.title}}</p>
-                                <strong><i>{{v.currencyRemark}}</i>{{v.price}}</strong>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="goods-index" v-if="rsData.listProduct && rsData.listProduct.length < 2">
-                        <i @click="manualMove(k)" :class="{active: (k === current)}" v-for="(v, k) of rsData.listProduct" :key="k">{{k + 1}}</i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- 普通用户的广告预留位 -->
-        <div v-html="rsData.adDetail" class="ad-box" v-else></div>
-    </div>
-</template>
 
 <script>
     import fetch from '../../util/fetch'
@@ -88,10 +42,10 @@
             getData(dataSourceId, tbMemberId){
                 var data = {
                     "method": 'queryAllInfo',
-                    "dataSourceId": dataSourceId || this.getLan,
+                    "dataSourceId": dataSourceId.replace(/\-/g, '_') || this.getLan.replace(/\-/g, '_'),
                     "tbMemberId": tbMemberId.match(/([^UID]+)/g)[0] || this.getSelToID.match(/([^UID]+)/g)[0]
                 };
-                var url = `http://10.240.0.130/leading/imProductAction.aspx`;
+                var url = `http://${config.rDomain}/leading/imProductAction.aspx`;
                 var proxyUrl = `/api/ws/v1/imProductServiceWs/queryAllInfo`;
                 fetch({
                     url,
@@ -147,12 +101,59 @@
                 this.getData(val, this.getSelToID);
             },
             getSelToID: function(val, oldVal){
-                this.getData(this.getLan, val);
+                let lan = this.$store.getters.getLan;
+                this.getData(lan, val);
             }
         }
     }
 </script>
 
+<template>
+    <div class="rightSide" v-if="rsData">
+        <div class="shop-info-box" v-if="!rsData.adDetail">
+            <div class="shop-info">
+                <div class="shop-name">
+                    <a href="javascript: void(0);"><img :src="rsData.storeLogo" :alt="rsData.storeName"></a>
+                    <div>
+                        <h2><a href="javascript: void(0);">{{rsData.storeName}}</a></h2>
+                        <div class="badge">
+                            <i v-for="v of rsData.auditUrl" :key="v.code" :style="{background: `url(${v.identifyFlag})`}"></i>
+                        </div>
+                    </div>
+                </div>
+                <p v-if="rsData.packageItemStart > 0">{{$t("message.obj.supply_level")}}：<span class="level"><i :key="k" v-for="(v, k) of new Array(rsData.packageItemStart || 0)" class="highlight"></i></span></p>
+                <p v-if="rsData.businessModel">{{$t("message.obj.business_model")}}：<em>{{rsData.businessModel}}</em></p>
+                <p v-if="rsData.thAddress">{{$t("message.obj.enterprise_address")}}：<em>{{rsData.thAddress}}</em></p>
+                <p v-if="rsData.contactTel">{{$t("message.obj.cellphone")}}：<em>{{rsData.contactTel}}</em></p>
+                <p v-if="rsData.contactPhone">{{$t("message.obj.telephone")}}：<em>{{rsData.contactPhone}}</em></p>
+            </div>
+            <div class="goods-recommend" v-if="rsData.listProduct && rsData.listProduct.length > 0">
+                <div class="goods-head">
+                    <strong>{{$t("message.obj.shop_recommend")}}</strong>
+                    <a target="_blank" :href="rsData.goodsListUrl">{{$t("message.obj.product_more")}}&gt;</a>
+                </div>
+                <div class="goods-list">
+                    <div class="goods-item" :data-index="k" v-for="(v, k) of rsData.listProduct" :style="{zIndex: 1}" :key="k">
+                        <a target="_blank" :href="v.goodsUrl" :title="v.title">
+                            <img :src="v.imgUrl" :alt="v.title">
+                        </a>
+                        <div class="goods-info">
+                            <a :href="v.goodsUrl" :title="v.title">
+                                <p>{{v.title}}</p>
+                                <strong><i>{{v.currencyRemark}}</i>{{v.price}}</strong>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="goods-index" v-if="rsData.listProduct && rsData.listProduct.length < 2">
+                        <i @click="manualMove(k)" :class="{active: (k === current)}" v-for="(v, k) of rsData.listProduct" :key="k">{{k + 1}}</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 普通用户的广告预留位 -->
+        <div v-html="rsData.adDetail" class="ad-box" v-else></div>
+    </div>
+</template>
 <style scoped>
     .rightSide{
         width: 199px;

@@ -2,9 +2,9 @@
 //import Vue from 'vue'
 const transOption = {
     state: {
-      transLan:'中文',
+      transLan:'中文',//要翻译的语言
       send:'true',
-      setLan:'zh_CN'//系统语言
+      setLan:'zh_TW'//系统语言
     },
     mutations: {
       //设置翻译的目标语言
@@ -14,8 +14,8 @@ const transOption = {
       SET_SEND:(state,send) =>{//设置发送快捷键
         state.send = send;
       },
-      SET_LAN:(state, lan) =>{//设置系统语言快捷键
-        state.setLan = null;
+      SET_LAN:(state, lan) =>{
+        //state.setLan = null;
         state.setLan = lan;
       }
     },

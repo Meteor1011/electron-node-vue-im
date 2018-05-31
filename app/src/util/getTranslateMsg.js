@@ -10,7 +10,7 @@ export function getTranslateMsg(trans){
     url: '/trans/imtrans.action',
     method: 'post',
     mode:'cors',
-    data: formData
+    data: formData  
   }).then(resp=>{
     let respdata= resp.data;
     if(respdata.code === '000000'){

@@ -8,7 +8,6 @@ const getters = {
         return '/images/1.jpg';
       }
     },
-    getNeedTalk: state => state.friendList.needTalk,
     getSelToID: state=>state.friendList.selToID,
     getMsg: (state)=>state.messageList.currentMsg,
     getMsgTrigger:(state)=>state.messageList.msgtrigger,
@@ -32,6 +31,7 @@ const getters = {
       return state.transOption.setLan
     },
     getFriendName:(state)=>state.friendList.friendName,
-    getProductId:(state)=>state.friendList.productId
+    getProductId:(state)=>state.friendList.productId,
+    set_scrolltop:state=>state.messageList.scrollTop
   };
   export default getters

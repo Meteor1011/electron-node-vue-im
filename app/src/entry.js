@@ -50,11 +50,7 @@ import VueI18n from 'vue-i18n'
                     obj:require('../../im_lan/im_fr_FR'),
                 }
             },
-            in:{
-                message:{
-                    obj:require('../../im_lan/im_in_ID'),
-                }
-            },
+
             it:{
                 message:{
                     obj:require('../../im_lan/im_it_IT'),
@@ -65,19 +61,9 @@ import VueI18n from 'vue-i18n'
                     obj:require('../../im_lan/im_ja_JP'),
                 }
             },
-            ko:{
-                message:{
-                    obj:require('../../im_lan/im_ko_KR'),
-                }
-            },
             ms:{
                 message:{
                     obj:require('../../im_lan/im_ms_MY'),
-                }
-            },
-            pt:{
-                message:{
-                    obj:require('../../im_lan/im_pt_PT'),
                 }
             },
             ru:{
@@ -95,6 +81,11 @@ import VueI18n from 'vue-i18n'
                     obj:require('../../im_lan/im_vi_VN'),
                 }
             },
+            pt:{
+                message:{
+                    obj:require('../../im_lan/im_pt_PT'),
+                }
+            },
             'zh-CN':{
                 message:{
                     obj:require('../../im_lan/im_zh_CN'),
@@ -104,7 +95,17 @@ import VueI18n from 'vue-i18n'
                 message:{
                     obj:require('../../im_lan/im_zh_TW'),
                 }
-            }
+            },
+            ko:{
+                message:{
+                    obj:require('../../im_lan/im_ko_KR'),
+                }
+            },
+            in:{
+                 message:{
+                     obj:require('../../im_lan/im_in_ID'),
+                 }
+             }
         }
     })
 //console.log('i18n======',i18n.messages,i18n.locale);

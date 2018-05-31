@@ -87,9 +87,11 @@ define(function (require, exports, module) {
                 webim.syncMsgs(_onMsgNotify);
                 break;
             case webim.CONNECTION_STATUS.OFF:
-                info = '连接已断开，无法收到新消息，请检查下你的网络是否正常: ' + resp.ErrorInfo;
+                //info = '连接已断开，无法收到新消息，请检查下你的网络是否正常: ' + resp.ErrorInfo;
+                info = mI18nObj.$t("message.obj.check_network") + resp.ErrorInfo;
                 //console.log(info)
-                ipc.send('off-line', {'title': '掉线通知', 'info': info});
+                //ipc.send('off-line', {'title': '掉线通知', 'info': info});
+                ipc.send('off-line', {'title': mI18nObj.$t("message.obj.notice") , 'info': info});
                 break;
             case webim.CONNECTION_STATUS.RECONNECT:
                 info = '连接状态恢复正常: ' + resp.ErrorInfo;
@@ -282,7 +284,13 @@ define(function (require, exports, module) {
 
     //解析文本消息
     function convertTextMsgToHtml(content) {//解析文本消息
-        return content.getText().replace(/' '/g, "&nbsp;").replace(/\n/g, "<br>");;
+        return content.getText()
+                    .replace(/' '/g, "&nbsp;")
+                    .replace(/\n/g, "<br>")
+                    .replace(/\t+/gim, function(word){
+                        console.log(word.match(/\t/gim));
+                        return `<span style="white-space:pre">${word}</span>`;
+                    });
     }
 
     //解析表情消息元素
@@ -295,7 +303,7 @@ define(function (require, exports, module) {
             url = emotion[1];
         }
         if (url) {
-            return "<img src='" + url + "'/>";
+            return    "<img src='" + url + "' ondragstart='return false;'/>";
         } else {
             return data;
         }
@@ -313,7 +321,8 @@ define(function (require, exports, module) {
         if (!oriImage) {
             oriImage = smallImage;
         }
-        return "<img class = 'imgClick' src='" + smallImage.getUrl() + "#" + bigImage.getUrl() + "#" + oriImage.getUrl() + "' style='CURSOR: hand' id='" + content.getImageId() + "' bigImgUrl='" + bigImage.getUrl() + "'ondragstart=”return false;/>";
+        return    "<img class = 'imgClick' src='" + smallImage.getUrl() + "#" + bigImage.getUrl() + "#" + oriImage.getUrl() + "' style='CURSOR: hand' id='" + content.getImageId() + "' bigImgUrl='" + bigImage.getUrl() + "' ondragstart='return false;'/>";
+
     }
 
     //解析自定义消息
@@ -626,7 +635,7 @@ define(function (require, exports, module) {
                         box-shadow:0 0 12px 2px rgba(0,0,0,.5);
                         transform:translate(-50%,-50%);
                             padding: 0px 5px 5px 5px;">
-                <div style="margin: 15px 10px">${mI18nObj.$t("message.obj.del_mdir")}</div>
+                <div style="margin: 15px 10px">${mI18nObj.$t("message.obj.del_friend")}</div>
                 <div style="text-align: right;margin: 8px 3px 5px 0px;">
                     <span style=";padding: 5px 10px;border-radius: 3px;background-color: #2799ea;
                     color: #fff" id="box_sure">${mI18nObj.$t("message.obj.sure")}</span>
@@ -1093,20 +1102,20 @@ define(function (require, exports, module) {
     exports.setFriendHeadImg = function (friendHeadimg) {
         friendHeadUrl = friendHeadimg;
     },
-        /*设置已读*/
-        exports.setRead = function (selToID) {
-            //console.log('setread====')
-            var selSess = webim.MsgStore.sessByTypeId(selType, selToID);
-            if (!selSess) {
-                selSess = new webim.Session(selType, selToID, selToID, friendHeadUrl, Math.round(new Date().getTime() / 1000));
-            }
-            webim.setAutoRead(selSess, true, true)
-        },
-        /*退出登录 */
-        exports.logout = function (cbOK, cbErr) {
-            //console.log('logout')
-            webim.logout(cbOK, cbErr)
+    /*设置已读*/
+    exports.setRead = function (selToID) {
+        //console.log('setread====')
+        var selSess = webim.MsgStore.sessByTypeId(selType, selToID);
+        if (!selSess) {
+            selSess = new webim.Session(selType, selToID, selToID, friendHeadUrl, Math.round(new Date().getTime() / 1000));
         }
+        webim.setAutoRead(selSess, true, true)
+    },
+    /*退出登录 */
+    exports.logout = function (cbOK, cbErr) {
+        //console.log('logout')
+        webim.logout(cbOK, cbErr)
+    }
     /* 获取i18n对象*/
     exports.getI18n = function (obj) {
         mI18nObj = obj;
@@ -1116,5 +1125,381 @@ define(function (require, exports, module) {
 
     }
 
+    function uploadPicByBase64(base64str,selToID,cbOk){
+        return new Promise(function(resolve, reject){
+            var businessType;//业务类型，1-发群图片，2-向好友发图片
+            if (selType == webim.SESSION_TYPE.C2C) {//向好友发图片
+                businessType = webim.UPLOAD_PIC_BUSSINESS_TYPE.C2C_MSG;
+            }
+            base64str = electron.clipboard.readImage();
+            var dataArr = base64str.toPng();
+            var base64Img = base64str.toDataURL();
+            var base64 = base64Img.substring(22);
+            var equalIndex = base64.indexOf('=');
+            if(base64.indexOf('=')>0)
+            {
+                base64=base64.substring(0, equalIndex);
+            }
+            var len=base64.length;
+            var fileSize=parseInt(len-len/8*2);
 
+            var spark = new SparkMD5.ArrayBuffer(); //获取MD5对象
+            spark.append(dataArr);
+            var fileMd5 = spark.end();
+            var opt = {
+                'toAccount': selToID, //接收者
+                'businessType': businessType,//图片的使用业务类型
+                'fileMd5':fileMd5,//fileMd5, //图片md5
+                'totalSize':fileSize, //图片大小,Byte
+                'base64Str':base64 //图片base64编码
+                }
+            webim.uploadPicByBase64(opt,
+                function (resp) {
+                    resolve({
+                        type: 'success',
+                        data: resp
+                    });
+                    // console.log(resp,'uploadPicbase64')
+                    // console.log(resp);
+                    return false;
+                    images=resp;
+                    //上传成功发送图片
+                    var URL_INFO=resp.URL_INFO;
+                    var picBox=document.querySelector('#previewPicDiv');
+                    picBox.innerHTML="";
+                    var img=new Image();
+                    img.src=URL_INFO[2].DownUrl+'#'+URL_INFO[1].DownUrl+'#'+URL_INFO[0].DownUrl;
+                    picBox.appendChild(img);
+                    cbOk();
+                },
+                function (err) {
+                    if(err.ErrorCode == -4){ // 没有登录，走Promise的捕错流程
+                        reject(err);
+                    }else{ // 其他错误，走自定义的错误处理流程
+                        resolve({
+                            type: 'error',
+                            data: {
+                                err,
+                                base64str,
+                                selToID
+                            }
+                        });
+                    }
+                    // alert(err.ErrorInfo);
+                }
+            );
+        });
+        
+    }
+
+    function returnImageObject(image){
+        var images_obj = new webim.Msg.Elem.Images(image.File_UUID);
+        for (var i in image.URL_INFO) {
+            var img = image.URL_INFO[i];
+            var newImg;
+            var type;
+            switch (img.PIC_TYPE) {
+                case 1://原图
+                    type = 1;//原图
+                    break;
+                case 2://小图（缩略图）
+                    type = 3;//小图
+                    break;
+                case 4://大图
+                    type = 2;//大图
+                    break;
+            }
+            newImg = new webim.Msg.Elem.Images.Image(type, img.PIC_Size, img.PIC_Width, img.PIC_Height, img.DownUrl);
+            images_obj.addImage(newImg);
+        }
+        return images_obj;
+    }
+
+    // 上传编辑器中的base64格式图片
+    function uploadImageOfMsg(msgtosend, selToID){
+        var imageExpr = /<img[^>]*\bdata-format\b[^>]*[\/]*>/img;  // 匹配带有data-format属性的img标签 图片消息
+        var images = msgtosend.match(imageExpr);
+        var imageArray = [];
+        let promiseArray = [];
+        if(images && images.length > 0){
+            for(let i = 0, len = images.length; i < len; i++){
+                let base64str = images[i].match(/src\s*=\s*[\'|\"][^\s\'\"]*/gim)[0].split('=')[1];
+                let p = uploadPicByBase64(base64str, selToID);
+                promiseArray.push(p);
+            }
+        }
+        return promiseArray;
+    }
+    // 执行同步上传图片，第一次失败后，重新执行失败的，重新执行失败后，提示错误，请求重新发送信息
+    function executePromiseArray(promiseArray, index, cb){
+        if(promiseArray.length < 1){
+            cb([]);
+            return false;
+        }
+        index++;
+        Promise.all(promiseArray)
+        .then(function(values){
+            let rejectPromiseArray = [];
+            for(let i = 0; i < values.length; i++){
+                if(values[i].type == 'error'){
+                    rejectPromiseArray.push(uploadPicByBase64(values[i].base64str, values[i].selToID));
+                }
+            }
+            if(rejectPromiseArray.length > 0 && index <= 2){
+                executePromiseArray(rejectPromiseArray, index, cb);
+            }else if(rejectPromiseArray.length > 0 && index > 2){
+                alert('上传图片失败，请重新发送。');
+            }else if(rejectPromiseArray.length < 1 && index <= 2){
+                cb(values);
+            }
+        })
+        .catch(function(err){
+            alert(err.ErrorInfo);
+        });
+    }
+
+    function exist(str, array){
+        let temp = false;
+        for(let i = 0; i < array.length; i++){
+            temp = str.includes(array[i]);
+            if(temp){
+                break;
+            }
+        }
+        return temp;
+    }
+
+    // 增加一条自定义消息（包括文本、表情、图片(base64格式)3种元素） by xh
+    exports.addCustomMsg = function(msgtosend, selToID){
+        if (!selToID) {
+            mAlert(mI18nObj.$t("message.obj.no_friend"), mI18nObj.$t("message.obj.sure"));
+            return;
+        }
+        if (msgtosend.length < 1) {
+            mAlert(mI18nObj.$t("message.obj.send_msg"), mI18nObj.$t("message.obj.sure"));
+            return;
+        }
+        if(!selSess){
+            var selSess=new webim.Session(selType,selToID,selToID,friendHeadUrl,Math.round(new Date().getTime() / 1000))
+        }
+        var isSend=true,//是否为自己发送
+            seq=-1,
+            random=Math.round(Math.random()*4294967296),
+            msgTime=Math.round(new Date().getTime()/1000),//消息时间戳
+            subType;
+        if(selType==webim.SESSION_TYPE.C2C){
+            subType=webim.C2C_MSG_SUB_TYPE.COMMON;
+        }
+
+        var msg = new webim.Msg(selSess, isSend, seq, random, msgTime, loginInfo.identifier, subType, loginInfo.identifierNick);   
+        var text_obj, face_obj, tmsg, emotionIndex, emotion, image, restMsgIndex;
+
+        executePromiseArray(uploadImageOfMsg(msgtosend, selToID), 0, function(values){
+            let imagesMsg_array = [];
+            if(values && values.length > 0){
+                for(let i = 0; i < values.length; i++){
+                    imagesMsg_array.push(returnImageObject(values[i].data));
+                }
+            }
+
+            // 匹配带有data-format属性的img标签 图片消息
+            var imageExpr = /<img[^>]*\bdata-format\b[^>]*[\/]*>/img;
+            // 匹配带有xfei标记的img标签  表情消息 
+            var faceExpr = /<img[^>]*xfei\b[^>]*[\/]*>/img;
+            let imageSign = 0;
+            msgtosend = msgtosend.replace(faceExpr, function(faceword){
+                return faceword.match(/alt\s*=\s*[\'|\"]+[^\s\'\"]*[\'|\"]+/gim)[0].split('=')[1].split('"')[1];
+            });
+            msgtosend = msgtosend.replace(imageExpr, function(imageword){
+                return `{imageSign_${imageSign++}}`;
+            });
+
+            var maxLen, errInfo;
+            if (selType == webim.SESSION_TYPE.C2C) {
+                maxLen = webim.MSG_MAX_LENGTH.C2C;
+                errInfo = mI18nObj.$t("message.obj.msg_length");
+            } 
+            var msgLen = webim.Tool.getStrBytes(msgtosend);
+            if (msgLen > maxLen) {
+                console.log(msgLen, maxLen);
+                alert(errInfo);
+                return;
+            }
+
+            var imageStringExpr = /\{imageSign_[^{\}]{1,3}\}/mg;
+            var faceStringExpr = /\[[^[\]]{1,3}\]/mg;
+
+            var images = msgtosend.match(imageStringExpr);
+            var emotions = msgtosend.match(faceStringExpr);
+
+            // 只有文本
+            if((!images || images.length < 1) && (!emotions || emotions.length < 1)){
+                text_obj = new webim.Msg.Elem.Text(msgtosend);
+                msg.addText(text_obj);
+            }else if((emotions && emotions.length > 0) && (!images || images.length < 1)){ // 包含表情，即文本+表情
+                for(var i = 0; i < emotions.length; i++){
+                    tmsg = msgtosend.substring(0, msgtosend.indexOf(emotions[i]));
+                    if(tmsg){
+                        text_obj = new webim.Msg.Elem.Text(tmsg);
+                        msg.addText(text_obj);
+                    }
+                    emotionIndex = webim.EmotionDataIndexs[emotions[i]];
+                    emotion = webim.Emotions[emotionIndex];
+                    if (emotion) {
+                        face_obj = new webim.Msg.Elem.Face(emotionIndex, emotions[i]);
+                        msg.addFace(face_obj);
+                    } else {
+                        text_obj = new webim.Msg.Elem.Text(emotions[i]);
+                        msg.addText(text_obj);
+                    }
+                    restMsgIndex = msgtosend.indexOf(emotions[i]) + emotions[i].length;
+                    msgtosend = msgtosend.substring(restMsgIndex);
+
+                    if (!exist(msgtosend, emotions)) {
+                        text_obj = new webim.Msg.Elem.Text(msgtosend);
+                        msg.addText(text_obj);
+                    }
+                }
+            }else if((images && images.length > 0) && (!emotions || emotions.length < 1)){ // 包含图片，即文本+图片
+                for(var i = 0; i < images.length; i++){
+                    tmsg = msgtosend.substring(0, msgtosend.indexOf(images[i]));
+                    if(tmsg){
+                        text_obj = new webim.Msg.Elem.Text(tmsg);
+                        msg.addText(text_obj);
+                    }
+                    image = imagesMsg_array[i];
+                    if (image) {
+                        msg.addImage(image);
+                    } else {
+                        text_obj = new webim.Msg.Elem.Text(images[i]);
+                        msg.addText(text_obj);
+                    }
+                    restMsgIndex = msgtosend.indexOf(images[i]) + images[i].length;
+                    msgtosend = msgtosend.substring(restMsgIndex);
+
+                    if (!exist(msgtosend, images)) {
+                        text_obj = new webim.Msg.Elem.Text(msgtosend);
+                        msg.addText(text_obj);
+                    }
+                }
+            }else if(emotions &&  emotions.length > 0 && images && images.length > 0){ // 包含图片，表情，即文本+表情+图片 
+                for(let i = 0; i < images.length; i++){
+                    tmsg = msgtosend.substring(0, msgtosend.indexOf(images[i]));
+                    if(tmsg){
+                        if(exist(tmsg, emotions)){
+                            for(let n = 0; n < emotions.length; n++){
+                                subtmsg = tmsg.substring(0, tmsg.indexOf(emotions[n]));
+                                if(subtmsg){
+                                    text_obj = new webim.Msg.Elem.Text(subtmsg);
+                                    msg.addText(text_obj);
+                                }
+                                emotionIndex = webim.EmotionDataIndexs[emotions[n]];
+                                emotion = webim.Emotions[emotionIndex];
+                                if (emotion) {
+                                    face_obj = new webim.Msg.Elem.Face(emotionIndex, emotions[n]);
+                                    msg.addFace(face_obj);
+                                } else {
+                                    text_obj = new webim.Msg.Elem.Text(emotions[n]);
+                                    msg.addText(text_obj);
+                                }
+                                subRestMsgIndex = tmsg.indexOf(emotions[n]) + emotions[n].length;
+                                tmsg = tmsg.substring(subRestMsgIndex);
+                                if (!exist(tmsg, emotions)) {
+                                    text_obj = new webim.Msg.Elem.Text(tmsg);
+                                    msg.addText(text_obj);
+                                }
+                            }
+                        }else{
+                            text_obj = new webim.Msg.Elem.Text(tmsg);
+                            msg.addText(text_obj);
+                        }
+                    }
+                    image = imagesMsg_array[i];
+                    if (image) {
+                        msg.addImage(image);
+                    } else {
+                        text_obj = new webim.Msg.Elem.Text(images[i]);
+                        msg.addText(text_obj);
+                    }
+                    
+                    restMsgIndex = msgtosend.indexOf(images[i]) + images[i].length;
+                    msgtosend = msgtosend.substring(restMsgIndex);
+                    
+                    if(!exist(msgtosend, images)) {
+                        if(exist(msgtosend, emotions)){
+                            for(let m = 0; m < emotions.length; m++){
+                                subtmsg = msgtosend.substring(0, msgtosend.indexOf(emotions[m]));
+                                if(subtmsg && subtmsg.trim() != ''){
+                                    text_obj = new webim.Msg.Elem.Text(subtmsg);
+                                    msg.addText(text_obj);
+                                }
+                                emotionIndex = webim.EmotionDataIndexs[emotions[m]];
+                                emotion = webim.Emotions[emotionIndex];
+                                if (emotion) {
+                                    face_obj = new webim.Msg.Elem.Face(emotionIndex, emotions[m]);
+                                    msg.addFace(face_obj);
+                                } else {
+                                    text_obj = new webim.Msg.Elem.Text(emotions[m]);
+                                    msg.addText(text_obj);
+                                }
+                                subRestMsgIndex = msgtosend.indexOf(emotions[m]) + emotions[m].length;
+                                msgtosend = msgtosend.substring(subRestMsgIndex);
+                                if (!exist(msgtosend, emotions)) {
+                                    text_obj = new webim.Msg.Elem.Text(msgtosend);
+                                    msg.addText(text_obj);
+                                }
+                            }
+                        }else{
+                            text_obj = new webim.Msg.Elem.Text(msgtosend);
+                            msg.addText(text_obj);
+                        }
+                    }
+                }
+            }
+
+            // console.log(msg);
+            // return false;
+
+            webim.sendMsg(msg, function (resp) {
+                if (selType == webim.SESSION_TYPE.C2C) {//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
+                    iframe = document.getElementById('editor'),
+                        content = iframe.contentDocument || iframe.contentWindow.document;
+                    content.body.innerHTML = "";
+                    var msgList = [];
+                    var flag = new webim.Msg.Elem.Text('succ');
+                    msg.addText(flag);
+                    msgList.push(addMsg(msg));
+                    store.default.dispatch('append_msg', {
+                        selToID: selToID,
+                        msgList: msgList
+                    });
+                    store.default.dispatch('update_friend_order',{
+                        selToID: selToID,
+                    });
+                }
+                webim.Tool.setCookie("tmpmsg_" + selToID, '', 0);
+            }, function (err) {
+                //发送出错处理
+                console.log('err.ErrorInfo.response======', err);
+                if (err.ErrorCode == -2) {
+                    mAlert(mI18nObj.$t("message.obj.check_network"), mI18nObj.$t("message.obj.sure"));
+                    return;
+                } else {
+                    iframe = document.getElementById('editor'),
+                        content = iframe.contentDocument || iframe.contentWindow.document;
+                    content.body.innerHTML = "";
+                    var msgList = [];
+                    var flag = new webim.Msg.Elem.Text('fail');
+                    msg.addText(flag);
+                    msgList.push(addMsg(msg));
+                    store.default.dispatch('append_msg', {
+                        selToID: selToID,
+                        msgList: msgList
+                    });
+                }
+            });
+
+        });
+    }
+    
 }) 

@@ -34,13 +34,12 @@
         },
         mounted: function () {
             getI18n(this);
-           
-           this.checkVersion();
 
             //将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新。
             this.$nextTick(function () {
                 document.getElementById('main').addEventListener('click', this.blur);
                 //console.log(JSON.parse(localStorage.getItem('userInfo')));
+
                 var userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
                 //console.log(typeof userInfo);
@@ -57,18 +56,22 @@
                         //console.log(item.pwd);
                     });
                 }
-
                 var userLan = JSON.parse(localStorage.getItem('userLan'));
                 ipc.on('localLang', (event, arg) => {
                     //console.log('主进程传过来的语言', arg);
                     //var _this = this;
                     if (userLan && userLan.length > 0) {
                         this.$i18n.locale = userLan[userLan.length - 1].language;
+                        this.$store.dispatch('setLan',userLan[userLan.length - 1].language);
                     }else{
                         this.$i18n.locale = arg;
+                        this.$store.dispatch('setLan',arg);
                     }
+                    console.log('localstorage中的语言', this.$i18n.locale);
+                    this.checkVersion();
                 })
             });
+
 
         },
         methods: {
@@ -100,12 +103,16 @@
                 } else {
                     this.blur();
                 }
-                console.log('this.isShow++++', this.isShow);
+                //console.log('this.isShow++++', this.isShow);
             },
             nameSelect: function (str) {
                 var _this = this;
                 _this.username = str.name;
-                _this.userpassword = str.pwd;
+                if(str.isRem){
+                    _this.userpassword = str.pwd;
+                }else{
+                    _this.userpassword = '';
+                }
                 _this.isRemeber = str.isRem;
                 console.log('str====', str);
                 this.blur();
@@ -185,6 +192,7 @@
                         let data = res.data;
                         console.log('data', data);
                         if (data.ret == -1) {
+                            _this.userpassword = '';
                             _this.errorInfo = _this.$t("message.obj.pwd_err");
                         } else if (data.ret == -2) {
                             _this.errorInfo = _this.$t("message.obj.username_err");
@@ -208,7 +216,7 @@
                                         if (name == _this.username) {
                                             temp = _this.userArr.splice(i, 1)[0];
                                             temp.isRem = _this.isRemeber;
-                                            console.log('temp=====',temp);
+                                            temp.pwd = _this.userpassword;
                                         }
                                     }
                                     // 更新不重建
@@ -243,30 +251,31 @@
 
             },
             checkVersion(){
+                console.log('this.$i18n.locale======',this.$i18n.locale);
                 let _this = this;
                 this.get_remoteversion().then(res => {
                     if(this.$store.state.card.remoteVersion > +versionCode){
                         this.$refs.version.init({
-                            content: '检测到新版本，是否更新',
+                            content: this.$t("message.obj.isUpdate"),
                             btns: {
                                 ok: {
-                                    txt: '确定',
+                                    txt: _this.$t("message.obj.sure"),
                                     cb(){
                                         _this.download();
                                         return false;
                                     }
                                 },
                                 cancle: {
-                                    txt: '取消'
+                                    txt: _this.$t("message.obj.off")
                                 }
                             }
                         });
                     }else{
                         this.$refs.version.init({
-                            content: '当前是最新版本',
+                            content: _this.$t("message.obj.new_version"),
                             btns: {
                                 cancle: {
-                                    txt: '确定'
+                                    txt: _this.$t("message.obj.sure")
                                 }
                             }
                         });
@@ -279,7 +288,15 @@
             download(){
                 shell.openExternal('http://chat.16lao.com/')
             },
-        }
+            nameValue(val){
+                console.log('val=====',val);
+                if(val != this.username){
+                    this.username = val;
+                    this.userpassword = '';
+                    this.isRemeber = false;
+                }
+            }
+        },
     };
 </script>
 <template>
@@ -310,7 +327,7 @@
                     <img src="../../../../dist/images/c_06.png" @click.stop="usernameFocus"
                          v-bind:class="{'drop-up':isShow}"/>
                     <input :placeholder="$t('message.obj.username_hd')" class="input-username"
-                           v-model="username" v-on:keyup="Searchname()" v-on:click.stop/>
+                           v-bind:value="username" v-on:input.stop="nameValue($event.target.value)"/>
                 </div>
                 <div class="option-container" v-show="isShow">
                     <ul class=option-ul-list>
@@ -341,7 +358,7 @@
                 </div>
                 <div class="errorShow">
                     <span>{{errorInfo}}</span>
-                    <span @click.stop="cli('register')">{{$t(("message.obj.register"))}}>></span>
+                    <span @click.stop="cli('register')">{{$t("message.obj.register")}}>></span>
                 </div>
             </div>
         </div>

@@ -20,6 +20,7 @@
             this.clickLanlist();
         },
         methods:{
+            //点击某个好友显示对应的聊天记录
             selectFriend(member, friendHeadimg, friendName){
                 if(member == '' || member == undefined) return;
                 if(this.selToID== member ) {
@@ -40,8 +41,6 @@
                 },300);
             },
             changeLan(lan){
-                //var strings = this.$store.getters.GetStrings;
-                //strings.setLocale(lan);
                 this.$store.dispatch('setTransLan',lan)
             },
             _getSupportLan(){
@@ -75,6 +74,7 @@
                     }
                 });
             },
+            //显示或隐藏翻译语言列表
             clickLanlist(){
                 var self = this;
                 document.body.addEventListener('click',function(e){
@@ -86,6 +86,7 @@
                     e.stopPropagation();
                 })
             },
+            //打开翻译语言列表
             openLans(){
                 if(this.showLan){
                     this.showLan = false;
@@ -98,6 +99,7 @@
                     })
                 }
             },
+            //删除好友
             closedFriend(index){
                 var selToID = this.filterFriends[index].selToID;
                 var friendNum = this.filterFriends.length-1;
@@ -143,7 +145,7 @@
 <template>
 <div class="list">
     <footer>
-        <input class="search" type="text" placeholder="搜索" @keyup="onKeyup">
+        <input class="search" type="text" :placeholder="$t('message.obj.search')" @keyup="onKeyup">
     </footer>
     <div class="mList">
         <ul>
@@ -151,7 +153,7 @@
                 <img class="avatar" :class="{masking:item.offline}"  width="32" height="32" :alt="item.friendName" :src="item.headImage">
                 <p class="name" :title="item.friendName">{{item.friendName}}</p>
                 <span class="msg_hint" v-show="item.unRead"></span>
-                <em class = "closed_friend" v-on:click = "closedFriend(index)"></em>
+                <em class = "closed_friend" v-on:click.stop = "closedFriend(index)"></em>
             </li>
         </ul>
     </div>

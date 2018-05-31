@@ -44,6 +44,10 @@
     "lang":"ti\u1ebfng vi\u1ec7t"
   },
   {
+    "lang":"Português",
+    "shortname":"pt"
+  },
+  {
     "shortname":"zh-CN",
     "lang":"\u4e2d\u6587"
   },
@@ -52,15 +56,11 @@
     "shortname":"zh-TW"
   },
   {
-    "lang":"\u10e5\u10d0\u10e0\u10d7\u10e3\u10da\u10d8",
-    "shortname":"ka"
+    "lang":"\ud55c\uad6d\uc5b4",
+    "shortname":"ko"
   },
   {
     "lang":"Indonesia",
-    "shortname":"id"
-  },
-  {
-    "lang":"Português",
-    "shortname":"pt"
+    "shortname":"in"
   }
 ]

@@ -1,50 +1,101 @@
 <script>
-    import {getPrePageHistorymsg} from '../../util/wrapsdk.js';
+    import {sendMsg,getPrePageHistorymsg} from '../../util/wrapsdk.js';
     import {getTranslateMsg} from '../../util/getTranslateMsg';
+    
     const {shell} = require('electron')
-    var menu = new window.Electron.Menu();
-   
+
 
     export default {
         data() {
             var data = {
                 selToID:this.$store.getters.getSelToID,
-                currentMsg:[]
+                currentMsg:[],
+                mScrollTop:0,
+                uid:'',
+                tranLan:''
             };
             return data;
         },
         methods:{
+            /*
+            *获取更多历史消息
+            */
             getMoreHistorymsg(){
                 this.$store.dispatch("set_msgtip",2);
                 var selToID=this.$store.getters.getSelToID;
                 getPrePageHistorymsg(selToID);
+                var scrollTop = document.getElementById('msg_show').scrollTop;
+                this.$store.dispatch("set_scrolltop",scrollTop);
+                console.log('点击获取更过scrollTop=======',scrollTop);
             },
             imgFilter(data){
-                let transText = this.$store.getters.getMsgTransed(data.uniqueId)
+                var selToID=this.$store.getters.getSelToID;
+                var sub = data.content.substring(data.content.length-4,data.content.length);
+                let transText = this.$store.getters.getMsgTransed(data.uniqueId);
                 if(transText === undefined){
-                    return '<span data-uid="'+ data.uniqueId+'">'+this.emojiFilter(data.content)+'</span>';
+                    if(sub == 'fail'){
+                        var str = data.content.substring(0,data.content.length-4);
+                        return '<img id="reSend" src="images/refresh.png"><span id="err">发送失败</span><span data-uid="'+ data.uniqueId+'">'+this.emojiFilter(str)+'</span>';
+                    }else if(sub == 'succ'){
+                        var str = data.content.substring(0,data.content.length-4);
+                        return '<span data-uid="'+ data.uniqueId+'">'+this.emojiFilter(str)+'</span>';
+                    }else{
+                        return '<span data-uid="'+ data.uniqueId+'">'+this.emojiFilter(data.content)+'</span>';
+                    }
+
                 }else{
-                    return '<span data-uid="'+ data.uniqueId+'">'+this.emojiFilter(data.content)+
-                    '<br>'+transText+
-                    '</span>';
+                    //var str = data.content.substring(0,data.content.length-4);
+                    //console.log('翻译的str====',data.content);
+                    if(sub == 'fail'){
+                        var str = data.content.substring(0,data.content.length-4);
+                        return '<img id="reSend" src="images/refresh.png"><span id="err">发送失败</span><span data-uid="'+ data.uniqueId+'">'+this.emojiFilter(str)+ '<br>'+transText+
+                            '</span>';
+                    }else if(sub == 'succ'){
+                        var str = data.content.substring(0,data.content.length-4);
+                        //console.log('翻译成功截取=====',sub,str);
+                        return '<span data-uid="'+ data.uniqueId+'">'+this.emojiFilter(str)+ '<br>'+transText+
+                            '</span>';
+                    }else{
+                        return '<span data-uid="'+ data.uniqueId+'">'+this.emojiFilter(data.content)+
+                            '<br>'+transText+
+                            '</span>';
+                    }
                 }
             },
             emojiFilter(data){
                 return data;
             },
+            /*
+            *翻译
+            */
             trans(){
                 let transLan = this.$store.getters.getTransLan;
                 let ele = window.getSelection().focusNode.parentElement;
                 if(ele.dataset.uid === undefined){
-                    ele = window.getSelection().focusNode;
+                    ele = window.getSelection().focusNode.parentElement.parentElement;
                 }
+                var str1 = window.getSelection().toString().replace(/\s+/g,"");
+                //console.log('翻译的内容str====',str1);
                 let tran = {
-                    text:window.getSelection().toString(),
+                    text:window.getSelection().toString().replace(/\s+/g, "").replace(/[\r\n]/g, ""),
                     from:'auto',
                     to:transLan,
                     uid:ele.dataset.uid
                     }
-                getTranslateMsg(tran);
+                    console.log('翻译的内容111',tran.text);
+                if(this.uid != tran.uid){
+                    getTranslateMsg(tran);
+                    this.uid = tran.uid;
+                }else if(this.tranLan != tran.to){
+                    //console.log('翻译的内容222',window.getSelection().toString().split(/[\r\n]/g)[0]);
+                    tran.text = window.getSelection().toString().split(/[\r\n]/g)[0];
+                    getTranslateMsg(tran);
+                    this.tranLan = tran.to;
+                }else{
+                    return;
+                }
+
+
             },
             imageClick(){
                 var self = this;
@@ -62,13 +113,31 @@
                 });
             }
         },
+        //自定义指令
         directives: {
             // 发送消息后滚动到底部
             'scroll-bottom':{
-               update:function(el){
-                   setTimeout(function () {
-                        el.scrollTop = el.scrollHeight - el.clientHeight
-                    }, 300);
+                //el:指令绑定的元素，可以用来直接操作dom
+                //binding 一个对象  包含name、value、oldValue等属性
+              update:function(el,binding){
+                   console.log('binding======',binding.value.len,binding.oldValue.len);
+                  console.log('binding.value.scrollTop======',binding.value.scrollTop,binding.oldValue.scrollTop);
+                   if(binding.value.len != binding.oldValue.len) {
+                       if (binding.value.len - binding.oldValue.len == 1 || binding.oldValue.len == 0) {
+                           setTimeout(function () {
+                               el.scrollTop = el.scrollHeight - el.clientHeight;
+                               console.log('if el.scrollTop======', el.scrollTop);
+                               console.log('if el.scrollHeight======', el.scrollHeight);
+                           }, 300);
+
+                       } else if (binding.value.len - binding.oldValue.len > 1) {
+                           setTimeout(function () {
+                               el.scrollTop = 0;
+                               console.log('else el.scrollTop======', el.scrollTop);
+                               console.log('else el.scrollHeight======', el.scrollHeight);
+                           }, 300);
+                       }
+                   }
                }
             }
         },
@@ -77,6 +146,9 @@
                 let msgTrigger = this.$store.getters.getMsgTrigger;
                 let current = this.$store.getters.getMsg;
                 this.currentMsg = current;
+                let scrollTop = this.$store.getters.set_scrolltop;
+                console.log('计算属性中的scrollTop===',scrollTop);
+                this.mScrollTop = scrollTop;
                 return msgTrigger;
             },
             msgTip(){
@@ -119,26 +191,45 @@
                 }
                 return true;
             }
-
+            /*
+            *右键复制或翻译
+            * */
             div_message.oncontextmenu=function(e){
                 e.preventDefault();
+                var menu = new window.Electron.Menu();
+                var reSend = document.getElementById('reSend');
                 if(e.target.nodeName === 'SPAN'){
                    if(selText(e.target)) {
                        setTimeout(function(){menu.popup(window.Electron.remote.getCurrentWindow())},200);
+                       menu.items = [];
+                       menu.append(new window.Electron.MenuItem({ label: self.$t("message.obj.copy"), click:function() { window.Electron.clipboard.writeText(window.getSelection().toString()); } }));
+                       menu.append(new window.Electron.MenuItem({ type: 'separator' }));
+                       menu.append(new window.Electron.MenuItem({ label: self.$t("message.obj.trans"),click:self.trans}));
                    }
                 }
             }
-            menu.append(new window.Electron.MenuItem({ label: '复制', click:function() { window.Electron.clipboard.writeText(window.getSelection().toString()); } }));
-            menu.append(new window.Electron.MenuItem({ type: 'separator' }));
-            menu.append(new window.Electron.MenuItem({ label: '翻译',click:self.trans}));
 
-            
+        },
+        updated(){
+            var reSend = document.getElementById('reSend');
+            if(reSend != null){
+                var _this = this;
+                reSend.addEventListener('click',function (e) {
+                   console.log('id===',this.parentElement.children[2].innerHTML);
+                    var selToID = _this.$store.getters.getSelToID;
+                    var text = this.parentElement.children[2].innerHTML.split('<br>')[0];
+                    sendMsg(text,selToID);
+                    this.parentElement.parentElement.parentElement.remove();
+                })
+            }else{
+                //console.log('updated reSend为null');
+            }
         }
     };
 </script>
 
 <template>
-<div id="msg_show" class="message" v-scroll-bottom="messages">
+<div id="msg_show" class="message" v-scroll-bottom="{len:currentMsg.length,scrollTop:mScrollTop}">
 <div class='style-hide'>{{getselToIDMsg}}</div>
     <ul >
         <li class="has" id="moreMsgBox"><em id="showmore_msg" @click="getMoreHistorymsg" >{{msgTip}}</em></li>
@@ -224,7 +315,7 @@
         font-size: 12px;
         text-align: left;
         word-break: break-all;
-        background-color: #fafafa;
+        background-color: #0e64a9;
         border-radius: 4px;
     }
     
@@ -260,14 +351,26 @@
     }
     
     .message .self .msgtext {
-        background-color: #b2e281;
+        background-color: #0e64a9;
     }
-    
+
+    .message .self .msgtext #err{
+        color: red;
+        position: absolute;
+        left: -60px;
+    }
+
+    .message .self .msgtext #reSend{
+        position: absolute;
+        left: -90px;
+        top: 14px;
+    }
+
     .message .self .msgtext:before {
         right: inherit;
         left: 100%;
         border-right-color: transparent;
-        border-left-color: #b2e281;
+        border-left-color: #0e64a9;
     }
     .xf_fileimg{
         display:block;
@@ -280,9 +383,11 @@
         word-wrap: break-word;
         /* white-space: pre-wrap; */
         overflow:hidden;
+        color: #fff;
     }
     .msgtext img{
         max-height:300px;
+        max-width:300px;
         vertical-align: bottom;
     }
     .has{

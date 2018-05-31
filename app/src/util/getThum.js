@@ -10,7 +10,7 @@ function getThum(friendid,unread) {
     method: 'post',
     mode:'cors',
     data: formData
-  }).then(res=>{
+  }).then(res=>{  
     let data =JSON.parse(res.data.ret);
     for(var item in data){
         var obj=data[item];
